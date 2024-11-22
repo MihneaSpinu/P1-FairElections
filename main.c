@@ -3,7 +3,7 @@
 #include <time.h>
 
 #define STATE_MAX 51
-#define POPULATION 1000
+#define POPULATION 50000
 #define CANDIDATES 3
 
 typedef enum {white, black, hispanic, asian, native_american, native_hawaiian, other} race;
@@ -64,16 +64,17 @@ candidate find_winner_rcv();
 void print_results();
 
 int main(void) {
-    /*
+
     //fair elections
     //Initialize state (by attributes)
     state state_array[STATE_MAX];
     init_state(state_array);
-    */
+
     //Initialize voters (by attributes) (political compass)
     srand(time(NULL));
     voter voters_array[POPULATION];
     init_voters(voters_array);
+
 
     for(int i = 0; i < POPULATION; i++) {
         printf("G: %d A: %d I: %d R: %d\n", voters_array[i].gender_v, voters_array[i].age_v,
@@ -82,7 +83,7 @@ int main(void) {
 
 
 
-    /*
+
     //Initialize candidates (by attributes)
     candidate candidate_array[CANDIDATES];
     init_candidates(candidate_array);
@@ -109,7 +110,7 @@ int main(void) {
 
     //show the result of the vote
     print_results();
-    */
+
     return 0;
 }
 
@@ -153,11 +154,10 @@ void init_voters(voter voters_arr[]) {
         } else {
             female_prc++;
         }
-        // voters_arr[i].gender_v = rand() % 2; <- simplificering
 
         // INDKOMST:
         random_income = (rand() % 10) + 1;
-        if(random_income <= 2) { // 20% TJENER LAV
+        if(random_income <= 1) { // 20% TJENER LAV
             voters_arr[i].income_v = low;
             low_prc++;
         } else if(random_income <= 8) { // 60% TJENER MIDDEL
@@ -188,7 +188,7 @@ void init_voters(voter voters_arr[]) {
         } else if(random_race <= 996) { // NATIVE HAWAIIEN 0,3%
             voters_arr[i].race_v = native_hawaiian;
             hawaiian_prc++;
-        } else { // ALT DETTE GIVER 99,6 TIL SAMMEN (uden other)
+        } else {
             voters_arr[i].race_v = other;
             other_prc++;
         }
