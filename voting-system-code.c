@@ -1,3 +1,8 @@
+// Waiting to be implemented in the main program
+// Commented out for now
+
+/*
+ *
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -8,7 +13,7 @@
 
 /**
  * Struct representing a voter.
- */
+ #1#
 typedef struct
 {
     int age; // Age of the voter (18-100)
@@ -22,7 +27,7 @@ typedef struct
 
 /**
  * Struct representing a candidate.
- */
+ #1#
 typedef struct
 {
     char name[25]; // Name of the candidate
@@ -33,7 +38,7 @@ typedef struct
 
 /**
  * Struct representing a state.
- */
+ #1#
 typedef struct
 {
     int votes_fptp; // Total votes in First-Past-The-Post system
@@ -44,19 +49,19 @@ typedef struct
 /**
  * Initialize states with default values.
  * @param state_arr Array of states to initialize
- */
+ #1#
 void init_state(state state_arr[]);
 
 /**
  * Initialize voters with random values.
  * @param voters_arr Array of voters to initialize
- */
+ #1#
 void init_voters(voter voters_arr[]);
 
 /**
  * Initialize candidates with default names and random values.
  * @param candidate_arr Array of candidates to initialize
- */
+ #1#
 void init_candidates(candidate candidate_arr[]);
 
 /**
@@ -64,26 +69,26 @@ void init_candidates(candidate candidate_arr[]);
  * @param current_state The state where voting is simulated
  * @param voters_arr Array of voters participating in the election
  * @param candidate_arr Array of candidates participating in the election
- */
+ #1#
 void voting_fptp(state current_state, voter voters_arr[], candidate candidate_arr[]);
 
 /**
  * Find the winner of the election using First-Past-The-Post system.
  * @param candidate_arr Array of candidates
  * @return The winning candidate
- */
+ #1#
 candidate find_winner_fptp(candidate candidate_arr[]);
 
 /**
  * Print the election results.
  * @param winner The winning candidate
- */
+ #1#
 void print_results(candidate winner);
 
 /**
  * Print all candidates and their votes.
  * @param candidate_arr Array of candidates
- */
+ #1#
 void print_test(candidate* candidate_arr);
 
 int main(void)
@@ -183,3 +188,6 @@ void print_results(candidate winner)
     printf("The winner is: %s\n", winner.name);
     printf("Votes: %d\n", winner.votes_fptp);
 }
+
+*/
+
