@@ -15,7 +15,8 @@
 					"source" : ".",
 					"targetIndexes" : 
 					[
-						0
+						0,
+						1
 					]
 				}
 			],
@@ -30,7 +31,8 @@
 					"name" : "P1_Projekt",
 					"targetIndexes" : 
 					[
-						0
+						0,
+						1
 					]
 				}
 			],
@@ -39,8 +41,15 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "P1_Projekt::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-P1_Projekt-Debug-c8c15d2ca4b15da11224.json",
+					"jsonFile" : "target-P1_Projekt-Debug-1127267e444793d77494.json",
 					"name" : "P1_Projekt",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "new_target::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-new_target-Debug-c55d53808bc82ba4ef20.json",
+					"name" : "new_target",
 					"projectIndex" : 0
 				}
 			]

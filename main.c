@@ -4,39 +4,45 @@
 #include <time.h>
 
 #define STATE_MAX 51
-#define POPULATION 50000
+#define POPULATION 10000
 #define CANDIDATES 3
 
-typedef enum {white, black, hispanic, asian, native_american, native_hawaiian, other} race;
-typedef enum {male, female} gender;
-typedef enum {low, middle, high} income;
-typedef enum  {young, adult, middle_aged, old, elderly} age;
+typedef enum { white, black, hispanic, asian, native_american, native_hawaiian, other } race;
+
+typedef enum { male, female } gender;
+
+typedef enum { low, middle, high } income;
+
+typedef enum { young, adult, middle_aged, old, elderly } age;
 
 //VOTER STRUCT
-typedef struct {
+typedef struct
+{
     age age_v; // ung 18-25. voksen 26-39. middelaldrene 40-59. ældre 60-69. gammel 70+?
     gender gender_v; // 0=male, 1=female
     race race_v;
-    income income_v;//by level: 0 = low, 1 = middle, 2 = high
+    income income_v; //by level: 0 = low, 1 = middle, 2 = high
     int is_voting; //0 = not voting, 1 = voting
     //politics:
     double værdipolitik_v; // Value politics?/policy?
-    double fordelingspolitik_v;// Distribution Politics?/policy?
-}voter;
+    double fordelingspolitik_v; // Distribution Politics?/policy?
+} voter;
 
-//CANDIDATE STRUCT
-typedef struct {
+//CANDIDATE STRUCTF
+typedef struct
+{
     char name[25];
     double værdipolitik_c; // Value politics?/policy?
-    double fordelingspolitik_c;// Distribution Politics?/policy?
+    double fordelingspolitik_c; // Distribution Politics?/policy?
     int votes_fptp;
     int votes_star;
     int votes_rated;
     int votes_rcv;
-}candidate;
+} candidate;
 
 //STATE STRUCT
-typedef struct {
+typedef struct
+{
     char name[20];
     int votes_fptp;
     int votes_star;
@@ -44,11 +50,12 @@ typedef struct {
     int votes_rcv;
     int voters_population;
     int electoral_mandates;
-}state;
+} state;
+
 //initalization functions
-void init_state(state state_arr[]);//DONE
+void init_state(state state_arr[]); //DONE
 void init_voters(voter voters_arr[]);
-void init_candidates(candidate candidate_arr[]);//DONE
+void init_candidates(candidate candidate_arr[]); //DONE
 
 //Voting system functions
 void voting_fptp(state current_state, voter voters_arr[], candidate candidate_arr[]);
@@ -65,8 +72,8 @@ candidate find_winner_rcv();
 //result function
 void print_results();
 
-int main(void) {
-
+int main(void)
+{
     //fair elections
     //Initialize state (by attributes)
     state state_array[STATE_MAX];
@@ -85,13 +92,11 @@ int main(void) {
     init_voters(voters_array);
 
 
-    for(int i = 0; i < POPULATION; i++) {
+    for (int i = 0; i < POPULATION; i++)
+    {
         printf("G: %d A: %d I: %d R: %d\n", voters_array[i].gender_v, voters_array[i].age_v,
-                                            voters_array[i].income_v, voters_array[i].race_v);
+               voters_array[i].income_v, voters_array[i].race_v);
     }
-
-
-
 
     //Initialize candidates (by attributes)
     candidate candidate_array[CANDIDATES];
@@ -126,23 +131,29 @@ int main(void) {
     return 0;
 }
 
-void init_state(state state_arr[]) {
-    FILE *f = fopen("state_data.txt", "r");
-    if (f == NULL) {
+void init_state(state state_arr[])
+{
+    FILE* f = fopen("state_data.txt", "r");
+    if (f == NULL)
+    {
         printf("Error: couldn't open file named state_data.txt");
         exit(EXIT_FAILURE);
     }
-    for(int i = 0; i < STATE_MAX; i++) {
-        fscanf(f,"%[^0-9] %d %d\n", state_arr[i].name, &state_arr[i].voters_population, &state_arr[i].electoral_mandates);
+    for (int i = 0; i < STATE_MAX; i++)
+    {
+        fscanf(f, "%[^0-9] %d %d\n", state_arr[i].name, &state_arr[i].voters_population,
+               &state_arr[i].electoral_mandates);
     }
     fclose(f);
 }
 
-void init_candidates(candidate candidate_arr[]) {
-    const char *names[] = {"Donald Trump", "Kamala Harris", "Robert F. Kennedy"};
+void init_candidates(candidate candidate_arr[])
+{
+    const char* names[] = {"Donald Trump", "Kamala Harris", "Robert F. Kennedy"};
     double værdipolitik_c[] = {-4.0, 3, -1};
     double fordelingspolitik_c[] = {4.0, -3, 2};
-    for(int i = 0; i < CANDIDATES; i++) {
+    for (int i = 0; i < CANDIDATES; i++)
+    {
         strcpy(candidate_arr[i].name, names[i]);
         candidate_arr[i].værdipolitik_c = værdipolitik_c[i];
         candidate_arr[i].fordelingspolitik_c = fordelingspolitik_c[i];
@@ -152,8 +163,9 @@ void init_candidates(candidate candidate_arr[]) {
         candidate_arr[i].votes_rcv = 0;
     }
 }
-void init_voters(voter voters_arr[]) {
 
+void init_voters(voter voters_arr[])
+{
     int random_age;
     int random_gender;
     int random_race;
@@ -180,72 +192,111 @@ void init_voters(voter voters_arr[]) {
     double old_prc = 0;
     double elderly_prc = 0;
 
-    for(int i = 0; i < POPULATION; i++) {
-
+    for (int i = 0; i < POPULATION; i++)
+    {
         // POLITISK INDFLYDELSE SKAL TILFØJES TIL ALLE KATEGORIERNE
 
         // ALDER: Giver 0 eller 1 som output for køn
         random_gender = rand() % 2;
         voters_arr[i].gender_v = random_gender;
-        if(random_gender == 0) {
+        if (random_gender == 0)
+        {
             male_prc++;
-        } else {
+        }
+        else
+        {
             female_prc++;
         }
 
         // INDKOMST:
         random_income = (rand() % 10) + 1;
-        if(random_income <= 1) { // 20% TJENER LAV
+        if (random_income <= 1)
+        {
+            // 20% TJENER LAV
             voters_arr[i].income_v = low;
             low_prc++;
-        } else if(random_income <= 8) { // 60% TJENER MIDDEL
+        }
+        else if (random_income <= 8)
+        {
+            // 60% TJENER MIDDEL
             voters_arr[i].income_v = middle;
             middle_prc++;
-        } else { // 20% TJENER HØJT
+        }
+        else
+        {
+            // 20% TJENER HØJT
             voters_arr[i].income_v = high;
             high_prc++;
         } // DISSE PROCENTER ER IKKE BASERET PÅ NOGET, BURDE NOK BLIVE ÆNDRET, MÅSKE INDDELT I FLERE KATEGORIER
 
         // RACE:
         random_race = (rand() % 1000) + 1;
-        if(random_race <= 584) { // WHITE POPULATION: 58,4
+        if (random_race <= 584)
+        {
+            // WHITE POPULATION: 58,4
             voters_arr[i].race_v = white;
             white_prc++;
-        } else if(random_race <= 721) { //BLACK POPULATION: 13,7%
+        }
+        else if (random_race <= 721)
+        {
+            //BLACK POPULATION: 13,7%
             voters_arr[i].race_v = black;
             black_prc++;
-        } else if(random_race <= 916) { // HISPANIC / LATINO: 19,5%
+        }
+        else if (random_race <= 916)
+        {
+            // HISPANIC / LATINO: 19,5%
             voters_arr[i].race_v = hispanic;
             hispanic_prc++;
-        } else if(random_race <= 980) { // ASIAN POPULATION 6,4%
+        }
+        else if (random_race <= 980)
+        {
+            // ASIAN POPULATION 6,4%
             voters_arr[i].race_v = asian;
             asian_prc++;
-        } else if(random_race <= 993) { // NATIVE AMERICAN 1,3%
+        }
+        else if (random_race <= 993)
+        {
+            // NATIVE AMERICAN 1,3%
             voters_arr[i].race_v = native_american;
             american_prc++;
-        } else if(random_race <= 996) { // NATIVE HAWAIIEN 0,3%
+        }
+        else if (random_race <= 996)
+        {
+            // NATIVE HAWAIIEN 0,3%
             voters_arr[i].race_v = native_hawaiian;
             hawaiian_prc++;
-        } else {
+        }
+        else
+        {
             voters_arr[i].race_v = other;
             other_prc++;
         }
         // SOURCE: https://www.census.gov/quickfacts/
 
         random_age = (rand() % 100) + 1;
-        if(random_age <= 20) {
+        if (random_age <= 20)
+        {
             voters_arr[i].age_v = young;
             young_prc++;
-        } else if(random_age <= 40) {
+        }
+        else if (random_age <= 40)
+        {
             voters_arr[i].age_v = adult;
             adult_prc++;
-        } else if(random_age <= 60) {
+        }
+        else if (random_age <= 60)
+        {
             voters_arr[i].age_v = middle_aged;
             middle_age_prc++;
-        } else if(random_age <= 80) {
+        }
+        else if (random_age <= 80)
+        {
             voters_arr[i].age_v = old;
             old_prc++;
-        } else {
+        }
+        else
+        {
             voters_arr[i].age_v = elderly;
             elderly_prc++;
         } // SKAL OMFORDELES BASERET PÅ DATA
@@ -271,5 +322,4 @@ void init_voters(voter voters_arr[]) {
     printf("Middle aged: %.2lf%\n", (middle_age_prc /= POPULATION) * 100);
     printf("Old: %.2lf%\n", (old_prc /= POPULATION) * 100);
     printf("Elderly: %.2lf%\n", (elderly_prc /= POPULATION) * 100);
-
 }
