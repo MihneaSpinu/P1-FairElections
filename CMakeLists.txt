@@ -4,3 +4,4 @@ project(P1_Projekt C)
 set(CMAKE_C_STANDARD 11)
 
 add_executable(P1_Projekt main.c)
+add_executable(new_target rated.c)
