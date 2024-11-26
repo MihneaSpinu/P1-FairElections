@@ -8,11 +8,8 @@
 #define CANDIDATES 3
 
 typedef enum { white, black, hispanic, asian, native_american, native_hawaiian, other } race;
-
 typedef enum { male, female } gender;
-
 typedef enum { low, middle, high } income;
-
 typedef enum { young, adult, middle_aged, old, elderly } age;
 
 //VOTER STRUCT
@@ -95,7 +92,7 @@ int main(void)
     for (int i = 0; i < POPULATION; i++)
     {
         printf("G: %d A: %d I: %d R: %d\n", voters_array[i].gender_v, voters_array[i].age_v,
-               voters_array[i].income_v, voters_array[i].race_v);
+                                            voters_array[i].income_v, voters_array[i].race_v);
     }
 
     //Initialize candidates (by attributes)
@@ -142,14 +139,14 @@ void init_state(state state_arr[])
     for (int i = 0; i < STATE_MAX; i++)
     {
         fscanf(f, "%[^0-9] %d %d\n", state_arr[i].name, &state_arr[i].voters_population,
-               &state_arr[i].electoral_mandates);
+                                                            &state_arr[i].electoral_mandates);
     }
     fclose(f);
 }
 
 void init_candidates(candidate candidate_arr[])
 {
-    const char* names[] = {"Donald Trump", "Kamala Harris", "Robert F. Kennedy"};
+    const char *names[] = {"Donald Trump", "Kamala Harris", "Robert F. Kennedy"};
     double værdipolitik_c[] = {-4.0, 3, -1};
     double fordelingspolitik_c[] = {4.0, -3, 2};
     for (int i = 0; i < CANDIDATES; i++)
@@ -229,7 +226,7 @@ void init_voters(voter voters_arr[])
             high_prc++;
         } // DISSE PROCENTER ER IKKE BASERET PÅ NOGET, BURDE NOK BLIVE ÆNDRET, MÅSKE INDDELT I FLERE KATEGORIER
 
-        // RACE:
+        // RACE: // LAV MED ARRAY I STEDET
         random_race = (rand() % 1000) + 1;
         if (random_race <= 584)
         {
