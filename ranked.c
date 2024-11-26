@@ -1,3 +1,5 @@
+/*
+//Bliver ikke brugt og skal fin pudses, eventuelt skæres fra hvor der er unødvendige linjer
 #include <stdio.h>
 #include <stdlib.h>
 #define STATE_MAX 51
@@ -122,3 +124,4 @@ void voting_rcv(state current_state, voter voters_arr[], candidate candidate_arr
        }
    }
 }
+*/
