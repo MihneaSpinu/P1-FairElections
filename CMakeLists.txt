@@ -5,4 +5,8 @@ set(CMAKE_C_STANDARD 11)
 
 add_executable(P1_Projekt main.c
         ranked.c
-        rated.c)
+        rated.c
+        FPTP.c
+        initialisering.c
+        functions.h
+)
