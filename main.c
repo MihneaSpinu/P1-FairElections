@@ -11,10 +11,10 @@ int main(void)
     //Initialize state (by attributes)
     state state_array[STATE_MAX];
     init_state(state_array);
-    for (int i = 0; i < STATE_MAX; i++)
+    /*for (int i = 0; i < STATE_MAX; i++)
     {
         printf("%s %d %d\n", state_array[i].name, state_array[i].voters_population, state_array[i].electoral_mandates);
-    }
+    }*/
     //Initialize voters (by attributes) (political compass)
     voter voters_array[POPULATION];
     init_voters(voters_array);
@@ -66,8 +66,6 @@ int main(void)
 
     //show the result of the vote
     /*print_results();*/
-
-
 
     return 0;
 }

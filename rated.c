@@ -3,6 +3,62 @@
 
 #include "functions.h"
 
+void get_votes(FILE* f, votes* v)
+{
+    fscanf(f, "Total votes: %d\n", &v->total);
+    for (int i = 0; i < 10; i++)
+    {
+        fscanf(f, "Trump %*d: %d\n", &v->trump[i]);
+        v->trump[i] *= (i + 1);
+        fscanf(f, "Harris %*d: %d\n", &v->harris[i]);
+        v->harris[i] *= (i + 1);
+    }
+}
+void results(votes* v)
+{
+    printf("Total votes: %d\n", v->total);
+    for (int i = 0; i < 10; i++)
+    {
+        printf("Rated %d:\n", i + 1);
+        printf("  Trump: %d\n", v->trump[i]);
+        printf("  Harris: %d\n", v->harris[i]);
+    }
+}
+
+double median(int votes[], int size)
+{
+    for (int i = 0; i < size - 1; i++)
+    {
+        for (int j = i + 1; j < size; j++)
+        {
+            if (votes[i] > votes[j])
+            {
+                int temp = votes[i];
+                votes[i] = votes[j];
+                votes[j] = temp;
+            }
+        }
+    }
+
+    if (size % 2 == 0)
+    {
+        return (votes[size / 2 - 1] + votes[size / 2]) / 2.0;
+    }
+    else
+    {
+        return votes[size / 2];
+    }
+}
+
+double average(int votes[], int size)
+{
+    int sum = 0;
+    for (int i = 0; i < size; i++)
+    {
+        sum += votes[i];
+    }
+    return sum / (double)size;
+}
 
 /*int main(void)
 {
@@ -51,61 +107,3 @@
 
     return 0;
 }*/
-
-void get_votes(FILE* f, votes* v)
-{
-    fscanf(f, "Total votes: %d\n", &v->total);
-    for (int i = 0; i < 10; i++)
-    {
-        fscanf(f, "Trump %*d: %d\n", &v->trump[i]);
-        v->trump[i] *= (i + 1) * 0.1;
-        fscanf(f, "Harris %*d: %d\n", &v->harris[i]);
-        v->harris[i] *= (i + 1) * 0.1;
-    }
-}
-
-void results(votes* v)
-{
-    printf("Total votes: %d\n", v->total);
-    for (int i = 0; i < 10; i++)
-    {
-        printf("Rated %d:\n", i + 1);
-        printf("  Trump: %d\n", v->trump[i]);
-        printf("  Harris: %d\n", v->harris[i]);
-    }
-}
-
-double median(int votes[], int size)
-{
-    for (int i = 0; i < size - 1; i++)
-    {
-        for (int j = i + 1; j < size; j++)
-        {
-            if (votes[i] > votes[j])
-            {
-                int temp = votes[i];
-                votes[i] = votes[j];
-                votes[j] = temp;
-            }
-        }
-    }
-
-    if (size % 2 == 0)
-    {
-        return (votes[size / 2 - 1] + votes[size / 2]) / 2.0;
-    }
-    else
-    {
-        return votes[size / 2];
-    }
-}
-
-double average(int votes[], int size)
-{
-    int sum = 0;
-    for (int i = 0; i < size; i++)
-    {
-        sum += votes[i];
-    }
-    return sum / (double)size;
-}

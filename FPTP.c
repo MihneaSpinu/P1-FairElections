@@ -6,10 +6,12 @@
 
 void start_fptp_voting(state state_arr[], voter voters_arr[], candidate candidate_arr[])
 {
-    state current_state;
-    voting_fptp(current_state,voters_arr,candidate_arr);
-    find_winner_fptp(candidate_arr);
-    candidate winner;
+    for (int i = 0; i < STATE_MAX; i++)
+    {
+        state current_state = state_arr[i];
+        voting_fptp(current_state, voters_arr, candidate_arr);
+    }
+    candidate winner = find_winner_fptp(candidate_arr);
     print_results(winner);
 }
 
@@ -17,11 +19,8 @@ void voting_fptp(state current_state, voter voters_arr[], candidate candidate_ar
 {
     for (int i = 0; i < current_state.voters_population; i++)
     {
-        if (voters_arr[i].is_voting == 1)
-        {
             int vote = rand() % CANDIDATES;
             candidate_arr[vote].votes_fptp++;
-        }
     }
 }
 
