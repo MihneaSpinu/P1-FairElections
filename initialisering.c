@@ -37,162 +37,118 @@ void init_candidates(candidate candidate_arr[])
     }
 }
 
-void init_voters(voter voters_arr[])
-{
-    int random_age;
-    int random_gender;
-    int random_race;
-    int random_income;
+void init_voters(voter voters_arr[]) {
 
-    double male_prc = 0;
-    double female_prc = 0;
+    int income_distr[5], race_distr[7], age_distr[5];
+    income income_arr[5];
+    race race_arr[7];
+    age age_arr[5];
 
-    double low_prc = 0;
-    double middle_prc = 0;
-    double high_prc = 0;
+    const char *voter_attributes[4][7] = {
+        {"Male", "Female"},
+        {"Poor", "Low", "Middle", "High", "Rich"},
+        {"White", "Black", "Hispanic", "Asian", "Native American", "Native Hawaiian", "Other"},
+        {"Young", "Adult", "Middle aged", "Old", "Elderly"}
+        };
 
-    double white_prc = 0;
-    double black_prc = 0;
-    double hispanic_prc = 0;
-    double asian_prc = 0;
-    double american_prc = 0;
-    double hawaiian_prc = 0;
-    double other_prc = 0;
-
-    double young_prc = 0;
-    double adult_prc = 0;
-    double middle_age_prc = 0;
-    double old_prc = 0;
-    double elderly_prc = 0;
-
-    for (int i = 0; i < POPULATION; i++)
-    {
-        // POLITISK INDFLYDELSE SKAL TILFØJES TIL ALLE KATEGORIERNE
-
-        // ALDER: Giver 0 eller 1 som output for køn
-        random_gender = rand() % 2;
-        voters_arr[i].gender_v = random_gender;
-        if (random_gender == 0)
-        {
-            male_prc++;
+    // SÆTTER ALLE VÆRDIERNE TIL 0
+    // FØRSTE ARRAY ER TIL DE FORSKELLIGE ATTRIBUTTER, ANDET ARRAY ER TIL DERES VÆRDI
+    double calc_percent[4][7];
+    for(int i = 0; i < 4; i++) {
+        for(int j = 0; j < 7; j++) {
+            calc_percent[i][j] = 0;
         }
-        else
-        {
-            female_prc++;
+    }
+
+    // STARTER HELE TILDELINGSPROCESSEN
+    for (int i = 0; i < POPULATION; i++) {
+
+        // KØN:
+        int random_gender = rand() % 2;
+        voters_arr[i].gender_v = random_gender;
+        if (random_gender == 0) {
+            calc_percent[0][0]++;
+        } else {
+            calc_percent[0][1]++;
         }
 
         // INDKOMST:
-        random_income = (rand() % 10) + 1;
-        if (random_income <= 1)
-        {
-            // 20% TJENER LAV
-            voters_arr[i].income_v = low;
-            low_prc++;
+        int random_income = rand() % 100 + 1;
+        for(int j = 0; j < 5; j++) {
+            income_arr[j] = j;
         }
-        else if (random_income <= 8)
-        {
-            // 60% TJENER MIDDEL
-            voters_arr[i].income_v = middle;
-            middle_prc++;
-        }
-        else
-        {
-            // 20% TJENER HØJT
-            voters_arr[i].income_v = high;
-            high_prc++;
-        } // DISSE PROCENTER ER IKKE BASERET PÅ NOGET, BURDE NOK BLIVE ÆNDRET, MÅSKE INDDELT I FLERE KATEGORIER
 
-        // RACE: // LAV MED ARRAY I STEDET
-        random_race = (rand() % 1000) + 1;
-        if (random_race <= 584)
-        {
-            // WHITE POPULATION: 58,4
-            voters_arr[i].race_v = white;
-            white_prc++;
+        income_distr[0] = 20, income_distr[1] = 40, income_distr[2] = 60,
+        income_distr[3] = 80, income_distr[4] = 100; // SKAL OMFORDELES BASERET PÅ DATA
+        for(int j = 0; j < 5; j++) {
+            if(random_income <= income_distr[j]) {
+                voters_arr[i].income_v = income_arr[j];
+                calc_percent[1][j]++;
+                break;
+            }
         }
-        else if (random_race <= 721)
-        {
-            //BLACK POPULATION: 13,7%
-            voters_arr[i].race_v = black;
-            black_prc++;
-        }
-        else if (random_race <= 916)
-        {
-            // HISPANIC / LATINO: 19,5%
-            voters_arr[i].race_v = hispanic;
-            hispanic_prc++;
-        }
-        else if (random_race <= 980)
-        {
-            // ASIAN POPULATION 6,4%
-            voters_arr[i].race_v = asian;
-            asian_prc++;
-        }
-        else if (random_race <= 993)
-        {
-            // NATIVE AMERICAN 1,3%
-            voters_arr[i].race_v = native_american;
-            american_prc++;
-        }
-        else if (random_race <= 996)
-        {
-            // NATIVE HAWAIIEN 0,3%
-            voters_arr[i].race_v = native_hawaiian;
-            hawaiian_prc++;
-        }
-        else
-        {
-            voters_arr[i].race_v = other;
-            other_prc++;
-        }
-        // SOURCE: https://www.census.gov/quickfacts/
 
-        random_age = (rand() % 100) + 1;
-        if (random_age <= 20)
-        {
-            voters_arr[i].age_v = young;
-            young_prc++;
+        // RACE:
+        int random_race = rand() % 1000 + 1;
+        for(int j = 0; j < 7; j++) {
+            race_arr[j] = j;
         }
-        else if (random_age <= 40)
-        {
-            voters_arr[i].age_v = adult;
-            adult_prc++;
+
+        race_distr[0] = 584, race_distr[1] = 721, race_distr[2] = 916, race_distr[3] = 980,
+        race_distr[4] = 993, race_distr[5] = 996, race_distr[6] = 1000; // SOURCE: https://www.census.gov/quickfacts/
+        for(int j = 0; j < 7; j++) {
+            if(random_race <= race_distr[j]) {
+                voters_arr[i].race_v = race_arr[j];
+                calc_percent[2][j]++;
+                break;
+            }
         }
-        else if (random_age <= 60)
-        {
-            voters_arr[i].age_v = middle_aged;
-            middle_age_prc++;
+
+        // ALDER:
+        int random_age = rand() % 100 + 1;
+        for(int j = 0; j < 5; j++) {
+            income_arr[j] = j;
         }
-        else if (random_age <= 80)
-        {
-            voters_arr[i].age_v = old;
-            old_prc++;
+
+        age_distr[0] = 20, age_distr[1] = 40, age_distr[2] = 60,
+        age_distr[3] = 80, age_distr[4] = 100; // SKAL OMFORDELES BASERET PÅ DATA
+        for(int j = 0; j < 5; j++) {
+            if(random_age <= age_distr[j]) {
+                voters_arr[i].age_v = age_arr[j];
+                calc_percent[3][j]++;
+                break;
+            }
         }
-        else
-        {
-            voters_arr[i].age_v = elderly;
-            elderly_prc++;
-        } // SKAL OMFORDELES BASERET PÅ DATA
     }
 
-    printf("Male: %.2lf%\n", (male_prc /= POPULATION) * 100);
-    printf("Female: %.2lf%\n", (female_prc /= POPULATION) * 100);
+    // PRINTER PROCENTERNE, SKAL FLYTTES OVER I EN SEPERAT FUNKTION:
+    for(int i = 0; i < 4; i++) {
+        printf("\n");
+        for(int j = 0; j < 7; j++) {
+            if(calc_percent[i][j] != 0) { // DER ER EN LILLE CHANCE FOR INGEN F.EKS. FÅR OTHER RACEN, SÅ BLIVER DE EKSKLUDERET FRA PRINTEN
+                printf("%s: %.2lf%\n", voter_attributes[i][j], calc_percent[i][j] / POPULATION * 100);
+            }
+        }
+    }
 
-    printf("Low income: %.2lf%\n", (low_prc /= POPULATION) * 100);
-    printf("Middle income: %.2lf%\n", (middle_prc /= POPULATION) * 100);
-    printf("High income: %.2lf%\n", (high_prc /= POPULATION) * 100);
-
-    printf("White: %.2lf%\n", (white_prc /= POPULATION) * 100);
-    printf("Black: %.2lf%\n", (black_prc /= POPULATION) * 100);
-    printf("Hispanic: %.2lf%\n", (hispanic_prc /= POPULATION) * 100);
-    printf("Asian: %.2lf%\n", (asian_prc /= POPULATION) * 100);
-    printf("Native American: %.2lf%\n", (american_prc /= POPULATION) * 100);
-    printf("Native Hawaiian: %.2lf%\n", (hawaiian_prc /= POPULATION) * 100);
-    printf("Other: %.2lf%\n", (other_prc /= POPULATION) * 100);
-
-    printf("Young: %.2lf%\n", (young_prc /= POPULATION) * 100);
-    printf("Adult: %.2lf%\n", (adult_prc /= POPULATION) * 100);
-    printf("Middle aged: %.2lf%\n", (middle_age_prc /= POPULATION) * 100);
-    printf("Old: %.2lf%\n", (old_prc /= POPULATION) * 100);
-    printf("Elderly: %.2lf%\n", (elderly_prc /= POPULATION) * 100);
 }
+
+/*
+void get_percent(double calc_percent[][7]) {
+
+    char *voter_attributes[4][7] = {{"Male", "Female"},
+                                   {"Poor", "Low", "Middle", "High", "Rich"},
+                                   {"White", "Black", "Hispanic", "Asian", "Native American", "Native Hawaiian", "Other"},
+                                   {"Young", "Adult", "Middle aged", "Old", "Elderly"}};
+
+    for(int i = 0; i < 4; i++) {
+        printf("\n");
+        for(int j = 0; j < 7; j++) {
+            if(calc_percent[i][j] != 0) {
+                printf("%s: %.2lf%\n", voter_attributes[i][j], calc_percent[i][j] / POPULATION * 100);
+            }
+        }
+    }
+
+}
+*/

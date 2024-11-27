@@ -11,7 +11,7 @@
 
 typedef enum { white, black, hispanic, asian, native_american, native_hawaiian, other } race;
 typedef enum { male, female } gender;
-typedef enum { low, middle, high } income;
+typedef enum { poor, low, middle, high, rich } income;
 typedef enum { young, adult, middle_aged, old, elderly } age;
 
 //VOTER STRUCT
@@ -20,7 +20,7 @@ typedef struct
     age age_v; // ung 18-25. voksen 26-39. middelaldrene 40-59. ældre 60-69. gammel 70+?
     gender gender_v; // 0=male, 1=female
     race race_v;
-    income income_v; //by level: 0 = low, 1 = middle, 2 = high
+    income income_v; //by level: 0 = poor, 1 = low, 2 = middle, 3 = high, 4 = rich
     int is_voting; //0 = not voting, 1 = voting
     //politics:
     double værdipolitik_v; // Value politics?/policy?
@@ -58,6 +58,7 @@ typedef struct
 //initalization functions
 void init_state(state state_arr[]); //DONE
 void init_voters(voter voters_arr[]);
+void get_percent(double calc_percent[][7]);
 void init_candidates(candidate candidate_arr[]); //DONE
 
 //Voting system functions
