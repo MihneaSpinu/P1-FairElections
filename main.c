@@ -19,10 +19,17 @@ int main(void)
     }
     */
 
+    double calc_percent[4][7];
     //Initialize voters (by attributes) (political compass)
     voter voters_array[POPULATION];
-    init_voters(voters_array);
+    init_voters(voters_array, calc_percent);
 
+    char choice;
+    printf("See distribution of voters characteristics? (y/n)\n");
+    scanf("%c", &choice);
+    if(choice == 'y') {
+        get_percent(calc_percent);
+    }
     /*
     //Initialize candidates (by attributes)
 

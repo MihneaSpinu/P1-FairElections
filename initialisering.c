@@ -37,23 +37,13 @@ void init_candidates(candidate candidate_arr[])
     }
 }
 
-void init_voters(voter voters_arr[]) {
+void init_voters(voter voters_arr[], double calc_percent[][7]) {
 
     int income_distr[5], race_distr[7], age_distr[5];
     income income_arr[5];
     race race_arr[7];
     age age_arr[5];
 
-    const char *voter_attributes[4][7] = {
-        {"Male", "Female"},
-        {"Poor", "Low", "Middle", "High", "Rich"},
-        {"White", "Black", "Hispanic", "Asian", "Native American", "Native Hawaiian", "Other"},
-        {"Young", "Adult", "Middle aged", "Old", "Elderly"}
-        };
-
-    // SÆTTER ALLE VÆRDIERNE TIL 0
-    // FØRSTE ARRAY ER TIL DE FORSKELLIGE ATTRIBUTTER, ANDET ARRAY ER TIL DERES VÆRDI
-    double calc_percent[4][7];
     for(int i = 0; i < 4; i++) {
         for(int j = 0; j < 7; j++) {
             calc_percent[i][j] = 0;
@@ -120,27 +110,15 @@ void init_voters(voter voters_arr[]) {
             }
         }
     }
-
-    // PRINTER PROCENTERNE, SKAL FLYTTES OVER I EN SEPERAT FUNKTION:
-    for(int i = 0; i < 4; i++) {
-        printf("\n");
-        for(int j = 0; j < 7; j++) {
-            if(calc_percent[i][j] != 0) { // DER ER EN LILLE CHANCE FOR INGEN F.EKS. FÅR OTHER RACEN, SÅ BLIVER DE EKSKLUDERET FRA PRINTEN
-                printf("%s: %.2lf%\n", voter_attributes[i][j], calc_percent[i][j] / POPULATION * 100);
-            }
-        }
-    }
-
 }
 
-/*
+
 void get_percent(double calc_percent[][7]) {
 
     char *voter_attributes[4][7] = {{"Male", "Female"},
                                    {"Poor", "Low", "Middle", "High", "Rich"},
                                    {"White", "Black", "Hispanic", "Asian", "Native American", "Native Hawaiian", "Other"},
                                    {"Young", "Adult", "Middle aged", "Old", "Elderly"}};
-
     for(int i = 0; i < 4; i++) {
         printf("\n");
         for(int j = 0; j < 7; j++) {
@@ -149,6 +127,4 @@ void get_percent(double calc_percent[][7]) {
             }
         }
     }
-
 }
-*/

@@ -6,7 +6,7 @@
 //
 //Initialiserings-funktioner
 #define STATE_MAX 51
-#define POPULATION 10000
+#define POPULATION 1000
 #define CANDIDATES 3
 
 typedef enum { white, black, hispanic, asian, native_american, native_hawaiian, other } race;
@@ -57,7 +57,7 @@ typedef struct
 
 //initalization functions
 void init_state(state state_arr[]); //DONE
-void init_voters(voter voters_arr[]);
+void init_voters(voter voters_arr[], double calc_percent[][7]);
 void get_percent(double calc_percent[][7]);
 void init_candidates(candidate candidate_arr[]); //DONE
 
