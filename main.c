@@ -28,18 +28,12 @@ int main(void)
     printf("See distribution of voters characteristics? (y/n)\n");
     scanf("%c", &choice);
     if(choice == 'y') {
-        get_percent(calc_percent);
+        print_percent(calc_percent);
     }
     /*
     //Initialize candidates (by attributes)
 
     //Initialize voters (by attributes) (political compass)
-
-    for (int i = 0; i < POPULATION; i++)
-    {
-        printf("G: %d A: %d I: %d R: %d\n", voters_array[i].gender_v, voters_array[i].age_v,
-               voters_array[i].income_v, voters_array[i].race_v);
-    }
 
     //Initialize candidates(by attributes)
     candidate candidate_array[CANDIDATES];

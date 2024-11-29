@@ -40,9 +40,9 @@ void init_candidates(candidate candidate_arr[])
 void init_voters(voter voters_arr[], double calc_percent[][7]) {
 
     int income_distr[5], race_distr[7], age_distr[5];
-    income income_arr[5];
-    race race_arr[7];
-    age age_arr[5];
+    income_e income_arr[5];
+    race_e race_arr[7];
+    age_e age_arr[5];
 
     for(int i = 0; i < 4; i++) {
         for(int j = 0; j < 7; j++) {
@@ -113,7 +113,7 @@ void init_voters(voter voters_arr[], double calc_percent[][7]) {
 }
 
 
-void get_percent(double calc_percent[][7]) {
+void print_percent(double calc_percent[][7]) {
 
     char *voter_attributes[4][7] = {{"Male", "Female"},
                                    {"Poor", "Low", "Middle", "High", "Rich"},
@@ -123,8 +123,142 @@ void get_percent(double calc_percent[][7]) {
         printf("\n");
         for(int j = 0; j < 7; j++) {
             if(calc_percent[i][j] != 0) {
-                printf("%s: %.2lf%\n", voter_attributes[i][j], calc_percent[i][j] / POPULATION * 100);
+                printf("%s: %d, %.2lf%\n", voter_attributes[i][j], (int)calc_percent[i][j], calc_percent[i][j] / POPULATION * 100);
             }
         }
     }
 }
+
+/*
+void init_voters(state current_state, voter voters_arr[]);
+void init_race(state current_state, voter voters_arr[], int i);
+void init_gender(state current_state, voter voters_arr[], int i);
+void init_income(state current_state, voter voters_arr[], int i);
+void init_age(state current_state, voter voters_arr[], int i);
+void print_winner();
+
+int main() {
+
+    voter voters_arr[POPULATION];
+
+    int race_dis[7], gender_dis[2], income_dis[5], age_dis[5],
+        population,
+        electoral_votes;
+
+    FILE *fil;
+
+    for(int i = 0; i < STATES; i++) {
+
+        for(int j = 0; j < RACES; j++) {
+            race_dis[j] = fscanf(fil, "%[^ ]");
+        }
+        for(int j = 0; j < GENDERS; j++) {
+            gender_dis[j] = fscanf(fil, "%[^ ]");
+        }
+        for(int j = 0; j < INCOME; j++) {
+            income_dis[j] = fscanf(fil, "%[^ ]");
+        }
+        for(int j = 0; j < AGES; j++) {
+            age_dis[j] = fscanf(fil, "%[^ ]");
+        }
+
+        population = fscanf(fil, "%[^ ]");
+        electoral_votes = fscanf(fil, "%[^ ]");
+
+        state current_state = {race_dis[0], race_dis[1], race_dis[2], race_dis[3], race_dis[4], race_dis[5], race_dis[6],
+                               gender_dis[0], gender_dis[1],
+                               income_dis[0], income_dis[1], income_dis[2], income_dis[3], income_dis[4],
+                               age_dis[0], age_dis[1], age_dis[2], age_dis[3], age_dis[4],
+                               population, electoral_votes};
+
+        printf("%s is voting...\n", current_state.name[i])
+        init_voters(current_state, voters_arr);
+        political_compass_placement();
+        calculate_distance();
+
+        fptp(current_state, distance);
+        rcv(current_state, distance);
+        star(current_state, distance);
+        ranked(current_state, distance);
+
+    }
+
+    print_winner(); // for hver valgsystem
+}
+
+void init_voters(state current_state, voter voters_arr[]) {
+
+    for (int i = 0; i < current_state.population; i++) {
+        init_race(current_state, voters_arr, i);
+        init_gender(current_state, voters_arr, i);
+        init_income(current_state, voters_arr, i);
+        init_age(current_state, voters_arr, i);
+    }
+}
+
+void init_race(state current_state, voter voters_arr[], int i) {
+
+    race_e race_arr[7];
+    int random_race = rand() % 1000 + 1;
+    for(int j = 0; j < RACES; j++) {
+        race_arr[j] = j;
+    }
+
+    for(int j = 0; j < RACES; j++) {
+        if(random_race <= current_state.race_distribution[j]) {
+            voters_arr[i].race_v = race_arr[j];
+            break;
+        }
+    }
+}
+
+void init_gender(state current_state, voter voters_arr[], int i) {
+
+    gender_e gender_arr[2];
+    int random_gender = rand() % 2;
+    for(int j = 0; j < GENDERS; j++) {
+        gender_arr[j] = j;
+    }
+
+    for(int j = 0; j < GENDERS; j++) {
+        if(random_gender <= current_state.gender_distribution[j]) {
+            voters_arr[i].gender_v = gender_arr[j];
+            break;
+        }
+    }
+}
+
+void init_income(state current_state, voter voters_arr[], int i) {
+
+    income_e income_arr[5];
+    int random_income = rand() % 100 + 1;
+    for(int j = 0; j < INCOME; j++) {
+        income_arr[j] = j;
+    }
+
+    for(int j = 0; j < INCOME; j++) {
+        if(random_income <= current_state.income_distribution[j]) {
+            voters_arr[i].income_v = income_arr[j];
+            break;
+        }
+    }
+}
+
+void init_age(state current_state, voter voters_arr[], int i) {
+
+    age_e age_arr[5];
+    int random_age = rand() % 100 + 1;
+    for(int j = 0; j < AGES; j++) {
+        age_arr[j] = j;
+    }
+
+    for(int j = 0; j < AGES; j++) {
+        if(random_age <= current_state.age_distribution[j]) {
+            voters_arr[i].age_v = age_arr[j];
+            break;
+        }
+    }
+}
+*/
+
+
