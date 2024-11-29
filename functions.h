@@ -93,11 +93,16 @@ typedef struct {
     int total;
     int trump[10];
     int harris[10];
-} votes;
+} votes_rated;
 
-void get_votes(FILE *f, votes *v);
-void results(votes *v);
-double median(int votes[], int size);
+typedef struct {
+    int mandates;
+    votes_rated v;
+} state_rated;
+
+void get_votes(FILE *f, votes_rated *v);
+void results(votes_rated *v);
+//double median(int votes[], int size);
 double average(int votes[], int size);
 
 //
