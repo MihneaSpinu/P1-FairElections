@@ -23,21 +23,24 @@ int main()
 
     voter* voters_arr = malloc(sizeof(voter) * POPULATION);
 
-    for (int i = 0; i < STATES; i++)
-    {
+    // Initialiserer politisk kompas til midten for alle vælgere
+    for(int i = 0; i < POPULATION; i++) {
+        voters_arr[i].fordelingspolitik_v = 0;
+        voters_arr[i].værdipolitik_v = 0;
+    }
+
+    for(int i = 0; i < STATES; i++) {
+
         init_state(state_array);
         init_voters(current_state, voters_arr, attribute);
 
-
-        /*
-        political_compass();
         calculate_distance();
 
         first_past_the_post();
         ranked_choice_voting();
         rated_voting();
-        voting_star();
-        */
+        star_voting();
+
     }
 
     /*print_winners();*/

@@ -41,30 +41,55 @@ void init_candidates(candidate candidate_arr[])
 
 // funktion til at initialisere vælgerne
 void init_voters(state current_state, voter voters_arr[], int attribute[]) {
-    init_attributes(current_state.population, voters_arr, attribute, RACES, current_state.race_distribution, 0); // RACE
-    init_attributes(current_state.population, voters_arr, attribute, GENDERS, current_state.gender_distribution, 1); // GENDER
-    init_attributes(current_state.population, voters_arr, attribute, INCOME, current_state.income_distribution, 2); // INCOME
-    init_attributes(current_state.population, voters_arr, attribute, AGES, current_state.age_distribution, 3); // AGE
+
+    int fordelingspolitik[4][5] = {{-2,-1,0,1,2},   // RACE
+                                   {-2,-1},         // GENDER
+                                   {-2,-1,0,1,2},   // INCOME
+                                   {-2,-1,0,1,2}};  // AGE
+
+    int værdipolitik[4][5]    =   {{-2,-1,-0,1,2},  // RACE
+                                   {-2,-1},         // GENDER
+                                   {-2,-1,-0,1,2},  // INCOME
+                                   {-2,-1,-0,1,2}}; // AGE
+
+    init_attributes(current_state.population, voters_arr, attribute, RACES, current_state.race_distribution,
+                    race, fordelingspolitik, værdipolitik); // RACE
+    init_attributes(current_state.population, voters_arr, attribute, GENDERS, current_state.gender_distribution,
+                    gender, fordelingspolitik, værdipolitik); // GENDER
+    init_attributes(current_state.population, voters_arr, attribute, INCOME, current_state.income_distribution,
+                    income, fordelingspolitik, værdipolitik); // INCOME
+    init_attributes(current_state.population, voters_arr, attribute, AGES, current_state.age_distribution,
+                    age, fordelingspolitik, værdipolitik); // AGE
 }
 
 // funktion til at initialisere attributterne for vælgerne
-void init_attributes(int state_population, voter voters_arr[], int attribute[], int attribute_amount, int distribution[], int attribute_type) {
+void init_attributes(int state_population, voter voters_arr[], int attribute[], int attribute_amount, int distribution[],
+                     int attribute_type, int fordelingspolitik[][5], int værdipolitik[][5]) {
+
     for (int i = 0; i < state_population; i++) {
         int random = rand() % 1000 + 1;
         for (int j = 0; j < attribute_amount; j++) {
             if (random <= distribution[j]) {
                 switch (attribute_type) {
-                case 0:
+                case race:
                     voters_arr[i].race_v = attribute[j];
+                    voters_arr[i].fordelingspolitik_v += fordelingspolitik[race][j];
+                    voters_arr[i].værdipolitik_v += værdipolitik[race][j];
                     break;
-                case 1:
+                case gender:
                     voters_arr[i].gender_v = attribute[j];
+                    voters_arr[i].fordelingspolitik_v += fordelingspolitik[gender][j];
+                    voters_arr[i].værdipolitik_v += værdipolitik[gender][j];
                     break;
-                case 2:
+                case income:
                     voters_arr[i].income_v = attribute[j];
+                    voters_arr[i].fordelingspolitik_v += fordelingspolitik[income][j];
+                    voters_arr[i].værdipolitik_v += værdipolitik[income][j];
                     break;
-                case 3:
+                case age:
                     voters_arr[i].age_v = attribute[j];
+                    voters_arr[i].fordelingspolitik_v += fordelingspolitik[age][j];
+                    voters_arr[i].værdipolitik_v += værdipolitik[age][j];
                     break;
                 }
                 break;

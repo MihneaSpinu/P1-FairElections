@@ -12,10 +12,11 @@
 #define MAX_NAME_LENGTH 20
 
 // ENUMS
-typedef enum { white, black, hispanic, asian, native_american, native_hawaiian, other } race_e;
-typedef enum { male, female } gender_e;
-typedef enum { poor, low, middle, high, rich } income_e;
-typedef enum { young, adult, middle_aged, old, elderly } age_e;
+typedef enum: unsigned char { white, black, hispanic, asian, native_american, native_hawaiian, other } race_e;
+typedef enum: unsigned char { male, female } gender_e;
+typedef enum: unsigned char { poor, low, middle, high, rich } income_e;
+typedef enum: unsigned char { young, adult, middle_aged, old, elderly } age_e;
+typedef enum: unsigned char { race, gender, income, age } categories_e;
 
 // STRUCTS
 typedef struct {
@@ -54,8 +55,9 @@ typedef struct {
 // Initalization functions
 void init_state(state state_arr[]); //DONE
 void init_voters(state current_state, voter voters_arr[], int attribute[]);
-void init_attributes(int state_population, voter voters_arr[], int attribute[], int attribute_options, int distribution[], int attribute_type);
 void init_candidates(candidate candidate_arr[]); //DONE
+void init_attributes(int state_population, voter voters_arr[], int attribute[], int attribute_options, int distribution[],
+                     int attribute_type, int fordelingspolitik[][5], int værdipoltik[][5]);
 
 // Voting system functions
 void voting_fptp(state current_state, voter voters_arr[], candidate candidate_arr[]);
