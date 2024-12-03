@@ -1,8 +1,103 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-
+#include <limits.h>
 #include "functions.h"
+
+// Run the first past the post voting system
+void first_past_the_post(voter voters_arr[], candidate candidate_arr[], int total_voters)
+{
+    // Loop through all voters
+    for (int i = 0; i < total_voters; i++)
+    {
+        // Check if the voter is voting
+        if (voters_arr[i].is_voting)
+        {
+            // Find the candidate with the smallest distance to the voter
+            int min_distance = INT_MAX;
+            int candidate_index = -1;
+
+            // Loop through all candidates
+            for (int j = 0; j < CANDIDATES; j++)
+            {
+                // Check if the candidate is eliminated
+                if (voters_arr[i].distance_to_[j] < min_distance)
+                {
+                    // Update the candidate with the smallest distance
+                    min_distance = voters_arr[i].distance_to_[j];
+                    candidate_index = j;
+                }
+            }
+
+            // Increment the votes for the candidate
+            if (candidate_index != -1)
+            {
+                candidate_arr[candidate_index].votes_fptp++;
+            }
+        }
+    }
+}
+
+
+/*
+int main() {
+    // Define the number of voters and candidates
+    int total_voters = 10000;
+    int total_candidates = CANDIDATES;
+
+    // Initialize voters
+    voter voters_arr[total_voters];
+    for (int i = 0; i < total_voters; i++) {
+        voters_arr[i].is_voting = 1; // All voters are voting
+        for (int j = 0; j < total_candidates; j++) {
+            voters_arr[i].distance_to_[j] = rand() % 11; // Random distances between 0 and 10
+        }
+    }
+
+    // Initialize candidates
+    candidate candidate_arr[total_candidates];
+    for (int i = 0; i < total_candidates; i++) {
+        snprintf(candidate_arr[i].name, sizeof(candidate_arr[i].name), "Candidate %d", i + 1);
+        candidate_arr[i].votes_fptp = 0;
+    }
+
+    // Run the first past the post voting system
+    first_past_the_post(voters_arr, candidate_arr, total_voters);
+
+    // Print the results
+    for (int i = 0; i < total_candidates; i++) {
+        printf("Candidate %d: %s, Votes: %d\n", i + 1, candidate_arr[i].name, candidate_arr[i].votes_fptp);
+    }
+
+    return 0;
+}
+*/
+
+/*
+ * Mine varianter til test
+ *
+ *
+int main(void)
+{
+    srand(time(NULL)); // Seed the random number generator
+
+    state state_arr[STATE_MAX];
+    voter voters_arr[POPULATION];
+    candidate candidate_arr[CANDIDATES];
+
+    // Initialize states, voters, and candidates
+    init_state(state_arr);
+    init_voters(voters_arr);
+    init_candidates(candidate_arr);
+
+    // Simulate voting in the first state
+    voting_fptp(state_arr[0], voters_arr, candidate_arr);
+
+    // Find and print the winner
+    candidate winner = find_winner_fptp(candidate_arr);
+    print_results(winner); // Print the winner
+    print_test(candidate_arr); // Print all candidates and their votes
+
+return 0;
+}
 
 void start_fptp_voting(state state_arr[], voter voters_arr[], candidate candidate_arr[])
 {
@@ -41,38 +136,6 @@ void print_results(candidate winner)
 {
     printf("The winner is: %s\n", winner.name);
     printf("Votes: %d\n", winner.votes_fptp);
-}
-
-
-
-
-
-/*
- * Mine varianter til test
- *
- *
-int main(void)
-{
-    srand(time(NULL)); // Seed the random number generator
-
-    state state_arr[STATE_MAX];
-    voter voters_arr[POPULATION];
-    candidate candidate_arr[CANDIDATES];
-
-    // Initialize states, voters, and candidates
-    init_state(state_arr);
-    init_voters(voters_arr);
-    init_candidates(candidate_arr);
-
-    // Simulate voting in the first state
-    voting_fptp(state_arr[0], voters_arr, candidate_arr);
-
-    // Find and print the winner
-    candidate winner = find_winner_fptp(candidate_arr);
-    print_results(winner); // Print the winner
-    print_test(candidate_arr); // Print all candidates and their votes
-
-return 0;
 }
 
 void print_test(candidate candidate_arr[])

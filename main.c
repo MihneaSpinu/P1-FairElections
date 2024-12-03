@@ -3,40 +3,44 @@
 #include <time.h>
 #include "functions.h"
 
-int main() {
 
+int main()
+{
     srand(time(NULL));
 
     int distance;
     int attribute[7];
-    for(int i = 0; i < 7; i++) {
+    for (int i = 0; i < 7; i++)
+    {
         attribute[i] = i;
     }
 
     candidate candidate_array[CANDIDATES];
     state state_array[STATES];
 
-    FILE *fil;
+    FILE* fil;
     state current_state;
 
-    voter *voters_arr = malloc(sizeof(voter) * POPULATION);
+    voter* voters_arr = malloc(sizeof(voter) * POPULATION);
 
-    for(int i = 0; i < STATES; i++) {
+    // Initialiserer politisk kompas til midten for alle vælgere
+    for (int i = 0; i < POPULATION; i++)
+    {
+        voters_arr[i].fordelingspolitik_v = 0;
+        voters_arr[i].værdipolitik_v = 0;
+    }
 
-
+    for (int i = 0; i < STATES; i++)
+    {
         init_state(state_array);
         init_voters(current_state, voters_arr, attribute);
 
-        /*
-        political_compass();
         calculate_distance();
 
         first_past_the_post();
         ranked_choice_voting();
         rated_voting();
-        star_voting();
-        */
-
+        voting_star();
     }
 
     /*print_winners();*/
@@ -44,4 +48,3 @@ int main() {
 
     return 0;
 }
-
