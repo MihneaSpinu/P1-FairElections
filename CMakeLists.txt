@@ -9,4 +9,5 @@ add_executable(P1_Projekt main.c
         FPTP.c
         initialisering.c
         functions.h
+        STAR.c
 )
