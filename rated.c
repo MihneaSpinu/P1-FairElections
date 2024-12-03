@@ -3,7 +3,7 @@
 
 #include "functions.h"
 
-int main(void) {
+int rated_voting() {
     const char *filenames[] = {"state1.txt", "state2.txt", "state3.txt", /*Add more*/};
     int num_states = sizeof(filenames) / sizeof(filenames[0]);
     state_rated *states = malloc(num_states * sizeof(state_rated));
