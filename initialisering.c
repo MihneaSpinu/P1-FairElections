@@ -3,6 +3,7 @@
 #include <string.h>
 #include "functions.h"
 
+// funktion til at initialisere staterne
 void init_state(state state_arr[])
 {
     FILE* f = fopen("state_data.txt", "r");
@@ -20,6 +21,7 @@ void init_state(state state_arr[])
     fclose(f);
 }
 
+// funktion til at initialisere kandidaterne
 void init_candidates(candidate candidate_arr[])
 {
     const char* names[] = {"Donald Trump", "Kamala Harris", "Robert F. Kennedy"};
@@ -37,30 +39,41 @@ void init_candidates(candidate candidate_arr[])
     }
 }
 
+// funktion til at initialisere vælgerne
 void init_voters(state current_state, voter voters_arr[], int attribute[]) {
-
-    init_attributes(current_state.population, voters_arr, attribute, RACES, current_state.race_distribution); // RACE
-    init_attributes(current_state.population, voters_arr, attribute, GENDERS, current_state.gender_distribution); // GENDER
-    init_attributes(current_state.population, voters_arr, attribute, INCOME, current_state.income_distribution); // INCOME
-    init_attributes(current_state.population, voters_arr, attribute, AGES, current_state.age_distribution); // AGE
-
+    init_attributes(current_state.population, voters_arr, attribute, RACES, current_state.race_distribution, 0); // RACE
+    init_attributes(current_state.population, voters_arr, attribute, GENDERS, current_state.gender_distribution, 1); // GENDER
+    init_attributes(current_state.population, voters_arr, attribute, INCOME, current_state.income_distribution, 2); // INCOME
+    init_attributes(current_state.population, voters_arr, attribute, AGES, current_state.age_distribution, 3); // AGE
 }
 
-void init_attributes(int state_population, voter voters_arr[], int attribute[], int attribute_amount, int distribution[]) {
-
+// funktion til at initialisere attributterne for vælgerne
+void init_attributes(int state_population, voter voters_arr[], int attribute[], int attribute_amount, int distribution[], int attribute_type) {
     for (int i = 0; i < state_population; i++) {
-
         int random = rand() % 1000 + 1;
-        for(int j = 0; j < attribute_amount; j++) {
-            if(random <= distribution[j]) {
-                voters_arr[i].race_v = attribute[j]; // ??????????????????????????
+        for (int j = 0; j < attribute_amount; j++) {
+            if (random <= distribution[j]) {
+                switch (attribute_type) {
+                case 0:
+                    voters_arr[i].race_v = attribute[j];
+                    break;
+                case 1:
+                    voters_arr[i].gender_v = attribute[j];
+                    break;
+                case 2:
+                    voters_arr[i].income_v = attribute[j];
+                    break;
+                case 3:
+                    voters_arr[i].age_v = attribute[j];
+                    break;
+                }
                 break;
             }
         }
     }
 }
 
-
+// funktion til at printe fordeling af vælgerne
 void print_percent(double calc_percent[][7]) {
 
     char *voter_attributes[4][7] = {{"Male", "Female"},

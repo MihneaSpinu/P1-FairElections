@@ -54,7 +54,7 @@ typedef struct {
 // Initalization functions
 void init_state(state state_arr[]); //DONE
 void init_voters(state current_state, voter voters_arr[], int attribute[]);
-void init_attributes(int state_population, voter voters_arr[], int attribute[], int attribute_options, int distribution[]);
+void init_attributes(int state_population, voter voters_arr[], int attribute[], int attribute_options, int distribution[], int attribute_type);
 void init_candidates(candidate candidate_arr[]); //DONE
 
 // Voting system functions

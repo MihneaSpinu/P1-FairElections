@@ -27,6 +27,7 @@ int main() {
         init_state(state_array);
         init_voters(current_state, voters_arr, attribute);
 
+        /*
         political_compass();
         calculate_distance();
 
@@ -34,10 +35,11 @@ int main() {
         ranked_choice_voting();
         rated_voting();
         star_voting();
+        */
 
     }
 
-    print_winners();
+    /*print_winners();*/
     free(voters_arr);
 
     return 0;
