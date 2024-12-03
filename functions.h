@@ -27,7 +27,7 @@ typedef struct {
     int is_voting;
     double værdipolitik_v;
     double fordelingspolitik_v;
-    int rankings[CANDIDATES]; // Rangering af kandidater (ranked)
+    int distance[CANDIDATES]; // Rangering af kandidater (ranked)
 } voter;
 
 typedef struct {
@@ -56,6 +56,7 @@ typedef struct {
 void init_state(state state_arr[]); //DONE
 void init_voters(state current_state, voter voters_arr[], int attribute[]);
 void init_candidates(candidate candidate_arr[]); //DONE
+void get_distance(voter voters_arr[], candidate candidate_arr[], int state_population);
 void init_attributes(int state_population, voter voters_arr[], int attribute[], int attribute_options, int distribution[],
                      int attribute_type, int fordelingspolitik[][5], int værdipoltik[][5]);
 

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "functions.h"
 
 // funktion til at initialisere staterne
@@ -111,6 +112,23 @@ void print_percent(double calc_percent[][7]) {
             if(calc_percent[i][j] != 0) {
                 printf("%s: %d, %.2lf%\n", voter_attributes[i][j], (int)calc_percent[i][j], calc_percent[i][j] / POPULATION * 100);
             }
+        }
+    }
+}
+
+
+void get_distance(voter voters_arr[], candidate candidate_arr[], int state_population) {
+
+    for(int i = 0; i < state_population; i++) {
+        int x_1 = voters_arr[i].fordelingspolitik_v;
+        int y_1 = voters_arr[i].værdipolitik_v;
+
+        for(int j = 0; j < CANDIDATES; j++) {
+            int x_2 = candidate_arr[j].fordelingspolitik_c;
+            int y_2 = candidate_arr[j].værdipolitik_c;
+
+            // Distance = sqrt((x_2 - x_1)^2 + (y_2 - y_1)^2))
+            voters_arr[i].distance[j] = sqrt(pow(x_2 - x_1, 2) + pow(y_2 - y_1, 2));
         }
     }
 }
