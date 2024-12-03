@@ -13,13 +13,18 @@
 
 // ENUMS
 typedef enum: unsigned char { white, black, hispanic, asian, native_american, native_hawaiian, other } race_e;
+
 typedef enum: unsigned char { male, female } gender_e;
+
 typedef enum: unsigned char { poor, low, middle, high, rich } income_e;
+
 typedef enum: unsigned char { young, adult, middle_aged, old, elderly } age_e;
+
 typedef enum: unsigned char { race, gender, income, age } categories_e;
 
 // STRUCTS
-typedef struct {
+typedef struct
+{
     age_e age_v;
     gender_e gender_v;
     race_e race_v;
@@ -30,7 +35,8 @@ typedef struct {
     int distance_to_[CANDIDATES]; // Rangering af kandidater (ranked)
 } voter;
 
-typedef struct {
+typedef struct
+{
     char name[25];
     double værdipolitik_c; // Value politics?/policy?
     double fordelingspolitik_c; // Distribution Politics?/policy?
@@ -41,7 +47,8 @@ typedef struct {
     int eliminated; // Flag for elimineret kandidat (ranked)
 } candidate;
 
-typedef struct {
+typedef struct
+{
     char name[MAX_NAME_LENGTH];
     int race_distribution[RACES];
     int gender_distribution[GENDERS];
@@ -56,7 +63,8 @@ typedef struct {
 void init_state(state state_arr[]); //DONE
 void init_voters(state current_state, voter voters_arr[], int attribute[]);
 void init_candidates(candidate candidate_arr[]); //DONE
-void init_attributes(int state_population, voter voters_arr[], int attribute[], int attribute_options, int distribution[],
+void init_attributes(int state_population, voter voters_arr[], int attribute[], int attribute_options,
+                     int distribution[],
                      int attribute_type, int fordelingspolitik[][5], int værdipoltik[][5]);
 
 // Voting system functions
@@ -82,24 +90,26 @@ int find_lowest_votes(candidate candidate_arr[]);
 void redistribute_votes(voter voters_arr[], candidate candidate_arr[], int eliminated_candidate);
 void reset_votes(candidate candidate_arr[]);
 
-void start_ranked_voting(candidate candidate_arr[], voter voters_arr[],int total_voters,int eliminated_candidate);
+void start_ranked_voting(candidate candidate_arr[], voter voters_arr[], int total_voters, int eliminated_candidate);
 
 //
 //
 // Rated functions
-typedef struct {
+typedef struct
+{
     int total;
     int trump[10];
     int harris[10];
 } votes_rated;
 
-typedef struct {
+typedef struct
+{
     int mandates;
     votes_rated v;
 } state_rated;
 
-void get_votes(FILE *f, votes_rated *v);
-void results(votes_rated *v);
+void get_votes(FILE* f, votes_rated* v);
+void results(votes_rated* v);
 //double median(int votes[], int size);
 double average(int votes[], int size);
 

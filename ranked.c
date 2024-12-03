@@ -5,11 +5,11 @@
 
 #include "functions.h"
 
-void start_ranked_voting(candidate candidate_arr[], voter voters_arr[],int total_voters,int eliminated_candidate)
+void start_ranked_voting(candidate candidate_arr[], voter voters_arr[], int total_voters, int eliminated_candidate)
 {
     check_majority(candidate_arr, total_voters);
     find_lowest_votes(candidate_arr);
-    redistribute_votes( voters_arr, candidate_arr, eliminated_candidate);
+    redistribute_votes(voters_arr, candidate_arr, eliminated_candidate);
     reset_votes(candidate_arr);
 }
 
@@ -132,8 +132,6 @@ void redistribute_votes(voter voters_arr[], candidate candidate_arr[], int elimi
         }
     }
 }
-
-
 
 
 /*
