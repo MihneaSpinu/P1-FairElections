@@ -4,7 +4,7 @@
 // DEFINES
 #define STATES 51
 #define POPULATION 10000
-#define CANDIDATES 3
+#define CANDIDATES 5
 #define RACES 7
 #define GENDERS 2
 #define INCOME 5
@@ -26,7 +26,7 @@ typedef struct {
     int is_voting;
     double værdipolitik_v;
     double fordelingspolitik_v;
-    int rankings[CANDIDATES]; // Rangering af kandidater (ranked)
+    int distance_to_[CANDIDATES]; // Rangering af kandidater (ranked)
 } voter;
 
 typedef struct {
@@ -106,10 +106,14 @@ double average(int votes[], int size);
 // FPTP functions
 void print_results(candidate winner);
 candidate find_winner_fptp(candidate candidate_arr[]);
-void voting_fptp(state current_state, voter voters_arr[], candidate candidate_arr[]);
-void start_fptp_voting(state state_arr[], voter voters_arr[], candidate candidate_arr[]);
+void first_past_the_post(voter voters_arr[], candidate candidate_arr[], int total_voters);
 
 // Misc.
 void print_percent(double calc_percent[][7]);
+
+//
+//
+// STAR functions
+void voting_star(state current_state, voter voters_arr[], candidate candidate_arr[]);
 
 #endif //FUNCTIONS_H

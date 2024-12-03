@@ -38,7 +38,7 @@ void voting_rcv(state current_state, voter voters_arr[], candidate candidate_arr
         {
             if (voters_arr[i].is_voting == 1)
             {
-                int first_choice = voters_arr[i].rankings[0]; // Første valg
+                int first_choice = voters_arr[i].distance_to_[0]; // Første valg
                 candidate_arr[first_choice].votes_rcv++;
             }
         }
@@ -122,7 +122,7 @@ void redistribute_votes(voter voters_arr[], candidate candidate_arr[], int elimi
         {
             for (int j = 0; j < CANDIDATES; j++)
             {
-                int ranked_candidate = voters_arr[i].rankings[j];
+                int ranked_candidate = voters_arr[i].distance_to_[j];
                 if (ranked_candidate != eliminated_candidate && !candidate_arr[ranked_candidate].eliminated)
                 {
                     candidate_arr[ranked_candidate].votes_rcv++;
