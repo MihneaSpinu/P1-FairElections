@@ -40,17 +40,21 @@ void init_candidates(candidate candidate_arr[])
 }
 
 // funktion til at initialisere vælgerne
-void init_voters(state current_state, voter voters_arr[], int attribute[]) {
+void init_voters(state current_state, voter voters_arr[], int attribute[])
+{
+    int fordelingspolitik[4][5] = {
+        {-2, -1, 0, 1, 2}, // RACE
+        {-2, -1}, // GENDER
+        {-2, -1, 0, 1, 2}, // INCOME
+        {-2, -1, 0, 1, 2}
+    }; // AGE
 
-    int fordelingspolitik[4][5] = {{-2,-1,0,1,2},   // RACE
-                                   {-2,-1},         // GENDER
-                                   {-2,-1,0,1,2},   // INCOME
-                                   {-2,-1,0,1,2}};  // AGE
-
-    int værdipolitik[4][5]    =   {{-2,-1,-0,1,2},  // RACE
-                                   {-2,-1},         // GENDER
-                                   {-2,-1,-0,1,2},  // INCOME
-                                   {-2,-1,-0,1,2}}; // AGE
+    int værdipolitik[4][5] = {
+        {-2, -1, -0, 1, 2}, // RACE
+        {-2, -1}, // GENDER
+        {-2, -1, -0, 1, 2}, // INCOME
+        {-2, -1, -0, 1, 2}
+    }; // AGE
 
     init_attributes(current_state.population, voters_arr, attribute, RACES, current_state.race_distribution,
                     race, fordelingspolitik, værdipolitik); // RACE
@@ -63,14 +67,19 @@ void init_voters(state current_state, voter voters_arr[], int attribute[]) {
 }
 
 // funktion til at initialisere attributterne for vælgerne
-void init_attributes(int state_population, voter voters_arr[], int attribute[], int attribute_amount, int distribution[],
-                     int attribute_type, int fordelingspolitik[][5], int værdipolitik[][5]) {
-
-    for (int i = 0; i < state_population; i++) {
+void init_attributes(int state_population, voter voters_arr[], int attribute[], int attribute_amount,
+                     int distribution[],
+                     int attribute_type, int fordelingspolitik[][5], int værdipolitik[][5])
+{
+    for (int i = 0; i < state_population; i++)
+    {
         int random = rand() % 1000 + 1;
-        for (int j = 0; j < attribute_amount; j++) {
-            if (random <= distribution[j]) {
-                switch (attribute_type) {
+        for (int j = 0; j < attribute_amount; j++)
+        {
+            if (random <= distribution[j])
+            {
+                switch (attribute_type)
+                {
                 case race:
                     voters_arr[i].race_v = attribute[j];
                     voters_arr[i].fordelingspolitik_v += fordelingspolitik[race][j];
@@ -99,17 +108,23 @@ void init_attributes(int state_population, voter voters_arr[], int attribute[], 
 }
 
 // funktion til at printe fordeling af vælgerne
-void print_percent(double calc_percent[][7]) {
-
-    char *voter_attributes[4][7] = {{"Male", "Female"},
-                                   {"Poor", "Low", "Middle", "High", "Rich"},
-                                   {"White", "Black", "Hispanic", "Asian", "Native American", "Native Hawaiian", "Other"},
-                                   {"Young", "Adult", "Middle aged", "Old", "Elderly"}};
-    for(int i = 0; i < 4; i++) {
+void print_percent(double calc_percent[][7])
+{
+    char* voter_attributes[4][7] = {
+        {"Male", "Female"},
+        {"Poor", "Low", "Middle", "High", "Rich"},
+        {"White", "Black", "Hispanic", "Asian", "Native American", "Native Hawaiian", "Other"},
+        {"Young", "Adult", "Middle aged", "Old", "Elderly"}
+    };
+    for (int i = 0; i < 4; i++)
+    {
         printf("\n");
-        for(int j = 0; j < 7; j++) {
-            if(calc_percent[i][j] != 0) {
-                printf("%s: %d, %.2lf%\n", voter_attributes[i][j], (int)calc_percent[i][j], calc_percent[i][j] / POPULATION * 100);
+        for (int j = 0; j < 7; j++)
+        {
+            if (calc_percent[i][j] != 0)
+            {
+                printf("%s: %d, %.2lf%\n", voter_attributes[i][j], (int)calc_percent[i][j],
+                       calc_percent[i][j] / POPULATION * 100);
             }
         }
     }
