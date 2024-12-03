@@ -25,7 +25,7 @@ void reset_votes(candidate candidate_arr[])
 // Ranked Choice Voting (RCV) funktion
 void voting_rcv(state current_state, voter voters_arr[], candidate candidate_arr[])
 {
-    int total_voters = current_state.voters_population;
+    int total_voters = current_state.population;
     int winner;
 
     // Loop indtil der er en vinder
