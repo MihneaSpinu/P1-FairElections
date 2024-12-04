@@ -7,9 +7,9 @@
 #define STATES 51
 #define POPULATION 10000
 #define CANDIDATES 5
-#define RACES 7
+#define RACES 5
 #define GENDERS 2
-#define INCOME 5
+#define INCOME 3
 #define AGES 5
 #define MAX_NAME_LENGTH 20
 
@@ -33,7 +33,7 @@ typedef struct {
     int is_voting;
     int værdipolitik_v;
     int fordelingspolitik_v;
-    int distance_to_[CANDIDATES]; // Rangering af kandidater (ranked)
+    double distance_to_[CANDIDATES]; // Rangering af kandidater (ranked)
 } voter;
 
 typedef struct {
@@ -64,7 +64,7 @@ void init_state(state state_arr[]); //DONE
 void init_voters(state state_arr[], voter voters_arr[]);
 void init_candidates(candidate candidate_arr[]); //DONE
 void init_attributes(int population, voter voters_arr[], int attribute_options, int distribution[],
-                     int attribute_type, int fordelingspolitik[][5], int værdipoltik[][5]);
+    double calc_percent[][5], int attribute_type, int fordelingspolitik[][5], int værdipoltik[][5]);
 
 //
 //
@@ -126,7 +126,7 @@ void first_past_the_post(voter voters_arr[], candidate candidate_arr[], int tota
 //
 // Misc.
 void print_percent(double calc_percent[][7]);
-void get_distance(voter voters_arr[], candidate candidate_arr[], int state_population);
+void get_distance(voter voters_arr[], candidate candidate_arr[], int population);
 
 //
 //
