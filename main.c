@@ -7,40 +7,28 @@ int main() {
 
     srand(time(NULL));
 
-    int attribute[7];
-    for(int i = 0; i < 7; i++) {
-        attribute[i] = i;
-    }
-
     candidate candidate_arr[CANDIDATES];
-    state state_arr[STATES];
-    state current_state;
-
     voter *voter_arr = malloc(sizeof(voter) * POPULATION);
-
-    // Initialiserer politisk kompas til midten for alle vælgere
-    for(int i = 0; i < POPULATION; i++) {
-        voter_arr[i].fordelingspolitik_v = 0;
-        voter_arr[i].værdipolitik_v = 0;
+    state *state_arr = malloc(sizeof(state) * STATES);
+    if(voter_arr == NULL || state_arr == NULL) {
+        printf("Error allocating memory\n");
+        exit(EXIT_FAILURE);
     }
 
-    for(int i = 0; i < STATES; i++) {
+    init_state(state_arr);
+    init_voters(state_arr, voter_arr);
+    get_distance(voter_arr, candidate_arr, state_arr[i].population);
 
-        init_state(state_arr);
-        init_voters(current_state, voter_arr, attribute);
+    first_past_the_post(voter_arr, candidate_arr, state_arr[i].population);
+    ranked_choice_voting();
+    rated_voting();
+    voting_star(state_arr, voter_arr, candidate_arr);
 
-        get_distance(voter_arr, candidate_arr, current_state.population);
+    print_winners();
+    determine_fairness();
 
-        /*
-        first_past_the_post();
-        ranked_choice_voting();
-        rated_voting();
-        star_voting();
-        */
-    }
-
-    /*print_winners();*/
     free(voter_arr);
+    free(state_arr);
 
     return 0;
 }
