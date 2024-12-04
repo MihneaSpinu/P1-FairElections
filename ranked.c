@@ -115,3 +115,4 @@ void redistribute_votes(voter voter_arr[], candidate candidate_arr[], int elimin
         }
     }
 }
+
