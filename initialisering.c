@@ -8,7 +8,7 @@
 void init_state(state state_arr[]) {
     FILE* f = fopen("state_data.txt", "r");
     if (f == NULL) {
-        printf("Error: couldn't open file named state_data.txt");
+        printf("Error: couldn't open file 'state_data.txt'");
         exit(EXIT_FAILURE);
     }
 
@@ -29,8 +29,7 @@ void init_candidates(candidate candidate_arr[]) {
     int værdipolitik_c[CANDIDATES] = {-4, 3, -1};
     int fordelingspolitik_c[CANDIDATES] = {4, -3, 2};
 
-    for (int i = 0; i < CANDIDATES; i++)
-    {
+    for (int i = 0; i < CANDIDATES; i++) {
         strcpy(candidate_arr[i].name, names[i]);
         candidate_arr[i].værdipolitik_c = værdipolitik_c[i];
         candidate_arr[i].fordelingspolitik_c = fordelingspolitik_c[i];
@@ -44,10 +43,17 @@ void init_candidates(candidate candidate_arr[]) {
 // funktion til at initialisere vælgerne
 void init_voters(state state_arr[], voter voter_arr[]) {
 
-    for (int i = 0; i < POPULATION; i++) {
+    for(int i = 0; i < POPULATION; i++) {
         voter_arr[i].fordelingspolitik_v = 0;
         voter_arr[i].værdipolitik_v = 0;
     }
+    double calc_percent[4][5];
+    for(int i = 0; i < 4; i++) {
+        for(int j = 0; j < 5; j++) {
+            calc_percent[i][j] = 0;
+        }
+    }
+    calc_percent[1][2] = '\0'; // stopper gender fra at fylde mere end 2 pladser
 
     int fordelingspolitik[4][5] = {
         {-2, -1, 0, 1, 2},  // RACE
@@ -61,21 +67,21 @@ void init_voters(state state_arr[], voter voter_arr[]) {
         {-2, -1, 0, 1, 2},  // INCOME
         {-2, -1, 0, 1, 2}}; // AGE
 
-    init_attributes(state_arr[i].population, voter_arr, RACES,
+    init_attributes(state_arr[i].population, voter_arr, RACES, calc_percent,
                     state_arr[i].race_distribution, race, fordelingspolitik, værdipolitik);
 
-    init_attributes(state_arr[i].population, voter_arr, GENDERS,
+    init_attributes(state_arr[i].population, voter_arr, GENDERS, calc_percent,
                     state_arr[i].gender_distribution, gender, fordelingspolitik, værdipolitik);
 
-    init_attributes(state_arr[i].population, voter_arr, INCOME,
+    init_attributes(state_arr[i].population, voter_arr, INCOME, calc_percent,
                     state_arr[i].income_distribution, income, fordelingspolitik, værdipolitik);
 
-    init_attributes(state_arr[i].population, voter_arr, AGES,
+    init_attributes(state_arr[i].population, voter_arr, AGES, calc_percent,
                     state_arr[i].age_distribution, age, fordelingspolitik, værdipolitik);
 }
 
 // funktion til at initialisere attributterne for vælgerne
-void init_attributes(int state_population, voter voter_arr[], int attribute_amount,
+void init_attributes(int state_population, voter voter_arr[], int attribute_amount, double calc_percent[][5],
                      int distribution[], int attribute_type, int fordelingspolitik[][5], int værdipolitik[][5]) {
 
     for (int i = 0; i < state_population; i++) {
@@ -85,25 +91,20 @@ void init_attributes(int state_population, voter voter_arr[], int attribute_amou
                 switch(attribute_type) {
                 case race:
                     voter_arr[i].race_v = j;
-                    voter_arr[i].fordelingspolitik_v += fordelingspolitik[race][j];
-                    voter_arr[i].værdipolitik_v += værdipolitik[race][j];
                     break;
                 case gender:
                     voter_arr[i].gender_v = j;
-                    voter_arr[i].fordelingspolitik_v += fordelingspolitik[gender][j];
-                    voter_arr[i].værdipolitik_v += værdipolitik[gender][j];
                     break;
                 case income:
                     voter_arr[i].income_v = j;
-                    voter_arr[i].fordelingspolitik_v += fordelingspolitik[income][j];
-                    voter_arr[i].værdipolitik_v += værdipolitik[income][j];
                     break;
                 case age:
                     voter_arr[i].age_v = j;
-                    voter_arr[i].fordelingspolitik_v += fordelingspolitik[age][j];
-                    voter_arr[i].værdipolitik_v += værdipolitik[age][j];
                     break;
                 }
+                voter_arr[i].fordelingspolitik_v += fordelingspolitik[attribute_type][j];
+                voter_arr[i].værdipolitik_v += værdipolitik[attribute_type][j];
+                calc_percent[attribute_type][j]++;
                 break;
             }
         }
@@ -114,10 +115,10 @@ void init_attributes(int state_population, voter voter_arr[], int attribute_amou
 void print_percent(double calc_percent[][7]) {
     const char *voter_attributes[4][7] = {
         {"Male", "Female", '\0'},
-        {"Poor", "Low", "Middle", "High", "Rich"},
+        {"Poor", "Low", "Middle", "High", "Rich", '\0'},
         {"White", "Black", "Hispanic", "Asian", "Native American", "Native Hawaiian", "Other"},
-        {"Young", "Adult", "Middle aged", "Old", "Elderly"}
-    };
+        {"Young", "Adult", "Middle aged", "Old", "Elderly", '\0'}};
+
     for (int i = 0; i < 4; i++) {
         printf("\n");
         for (int j = 0; j < 7; j++) {
@@ -129,9 +130,9 @@ void print_percent(double calc_percent[][7]) {
     }
 }
 
-void get_distance(voter voter_arr[], candidate candidate_arr[], int state_population) {
+void get_distance(voter voter_arr[], candidate candidate_arr[], int population) {
 
-    for(int i = 0; i < state_population; i++) {
+    for(int i = 0; i < population; i++) {
         int x_1 = voter_arr[i].fordelingspolitik_v;
         int y_1 = voter_arr[i].værdipolitik_v;
 
