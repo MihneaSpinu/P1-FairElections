@@ -3,48 +3,33 @@
 #include <time.h>
 #include "functions.h"
 
+int main() {
 
-int main()
-{
     srand(time(NULL));
 
-    int distance;
-    int attribute[7];
-    for (int i = 0; i < 7; i++)
-    {
-        attribute[i] = i;
+    candidate candidate_arr[CANDIDATES];
+    voter *voter_arr = malloc(sizeof(voter) * POPULATION);
+    state *state_arr = malloc(sizeof(state) * STATES);
+    if(voter_arr == NULL || state_arr == NULL) {
+        printf("Error allocating memory\n");
+        exit(EXIT_FAILURE);
     }
 
-    candidate candidate_array[CANDIDATES];
-    state state_array[STATES];
+    init_state(state_arr);
 
-    FILE* fil;
-    state current_state;
+    init_voters(state_arr, voter_arr);
+    get_distance(voter_arr, candidate_arr, POPULATION);
 
-    voter* voters_arr = malloc(sizeof(voter) * POPULATION);
+    first_past_the_post(voter_arr, candidate_arr, state_arr[i].population);
+    ranked_choice_voting();
+    rated_voting();
+    voting_star(state_arr, voter_arr, candidate_arr);
 
-    // Initialiserer politisk kompas til midten for alle vælgere
-    for (int i = 0; i < POPULATION; i++)
-    {
-        voters_arr[i].fordelingspolitik_v = 0;
-        voters_arr[i].værdipolitik_v = 0;
-    }
+    print_winners();
+    determine_fairness();
 
-    for (int i = 0; i < STATES; i++)
-    {
-        init_state(state_array);
-        init_voters(current_state, voters_arr, attribute);
-
-        calculate_distance();
-
-        first_past_the_post();
-        ranked_choice_voting();
-        rated_voting();
-        voting_star();
-    }
-
-    /*print_winners();*/
-    free(voters_arr);
+    free(voter_arr);
+    free(state_arr);
 
     return 0;
 }
