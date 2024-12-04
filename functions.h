@@ -7,9 +7,9 @@
 #define STATES 51
 #define POPULATION 10000
 #define CANDIDATES 5
-#define RACES 7
+#define RACES 5
 #define GENDERS 2
-#define INCOME 5
+#define INCOME 3
 #define AGES 5
 #define MAX_NAME_LENGTH 20
 

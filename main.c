@@ -16,6 +16,7 @@ int main() {
     }
 
     init_state(state_arr);
+
     init_voters(state_arr, voter_arr);
     get_distance(voter_arr, candidate_arr, POPULATION);
 

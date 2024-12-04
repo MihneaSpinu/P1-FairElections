@@ -12,20 +12,51 @@ void init_state(state state_arr[]) {
         exit(EXIT_FAILURE);
     }
 
-    for (int i = 0; i < STATES; i++) {
-        fscanf(f, "%[^0-9] %d %d\n", state_arr[i].name, &state_arr[i].population,
-                                           &state_arr[i].electoral_votes);
+    for (int s = 0; s < STATES; s++) {
+        fscanf(f, "%[^,],%d,%d,", state_arr[s].name, &state_arr[s].population,
+                                           &state_arr[s].electoral_votes);
+        for(int r = 0; r < RACES; r++) {
+            fscanf(f, "%d,", &state_arr[s].race_distribution[r]);
+        }
+        for(int g = 0; g < GENDERS; g++) {
+            fscanf(f, "%d,", &state_arr[s].gender_distribution[g]);
+        }
+        for(int a = 0; a < AGES; a++) {
+            fscanf(f, "%d,", &state_arr[s].age_distribution[a]);
+        }
+        for(int i = 0; i < INCOME; i++) {
+            fscanf(f, "%d,", &state_arr[s].income_distribution[i]);
+        }
+        //fscanf(f, "\n");
 
-        printf("%s %d %d\n", state_arr[i].name, state_arr[i].population, state_arr[i].electoral_votes);
     }
+    /*
+    for (int s = 0; s < STATES; s++) {
+        printf("%s %d %d ", state_arr[s].name, state_arr[s].population,
+                                           state_arr[s].electoral_votes);
+        for(int r = 0; r < RACES; r++) {
+            printf("%d ", state_arr[s].race_distribution[r]);
+        }
+        for(int g = 0; g < GENDERS; g++) {
+            printf("%d ", state_arr[s].gender_distribution[g]);
+        }
+        for(int a = 0; a < AGES; a++) {
+            printf("%d ", state_arr[s].age_distribution[a]);
+        }
+        for(int i = 0; i < INCOME; i++) {
+            printf("%d ", state_arr[s].income_distribution[i]);
+        }
+        //State,Pop,Mandates,WHITE,BLACK,HISPANIC,ASIAN,OTHER,MALE,FEMALE,18-25,26-34,35-54,55-64,65+,LOWER,MIDDLE,HIGHER
 
+    }
+    */
     fclose(f);
 }
 
 // funktion til at initialisere kandidaterne
 void init_candidates(candidate candidate_arr[]) {
 
-    const char* names[] = {"Donald Trump", "Kamala Harris", "Robert F. Kennedy"};
+    const char* names[60] = {"Donald Trump", "Kamala Harris", "Robert F. Kennedy"};
     int værdipolitik_c[CANDIDATES] = {-4, 3, -1};
     int fordelingspolitik_c[CANDIDATES] = {4, -3, 2};
 
