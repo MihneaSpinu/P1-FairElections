@@ -5,8 +5,8 @@
 //
 // DEFINES
 #define STATES 51
-#define POPULATION 10000
-#define CANDIDATES 5
+#define POPULATION 331526990
+#define CANDIDATES 3
 #define RACES 5
 #define GENDERS 2
 #define INCOME 3
@@ -17,9 +17,9 @@
 //
 // ENUMS
 typedef enum { race, gender, income, age } categories_e;
-typedef enum: unsigned char { white, black, hispanic, asian, native_american, native_hawaiian, other } race_e;
+typedef enum: unsigned char { white, black, hispanic, asian, other } race_e;
 typedef enum: unsigned char { male, female } gender_e;
-typedef enum: unsigned char { poor, low, middle, high, rich } income_e;
+typedef enum: unsigned char { low, middle, high } income_e;
 typedef enum: unsigned char { young, adult, middle_aged, old, elderly } age_e;
 
 //
@@ -61,15 +61,15 @@ typedef struct {
 //
 // Initalization functions
 void init_state(state state_arr[]); //DONE
-void init_voters(state state_arr[], voter voters_arr[]);
+void init_voters(state state_arr[], voter voters_arr[], state cur_state, int current_i_voter);
 void init_candidates(candidate candidate_arr[]); //DONE
-void init_attributes(int population, voter voters_arr[], int attribute_options, int distribution[],
-    double calc_percent[][5], int attribute_type, int fordelingspolitik[][5], int værdipoltik[][5]);
+void init_attributes(int state_population, voter voter_arr[], int attribute_amount, double calc_percent[][5],
+                     int distribution[], int attribute_type, int fordelingspolitik[][5], int værdipolitik[][5], int current_i_voter);
 
 //
 //
 // Voting system functions
-void voting_fptp(state state_arr[], voter voters_arr[], candidate candidate_arr[]);
+int first_past_the_post(voter voter_arr[], candidate candidate_arr[], int total_voters, int current_i_voter);
 void voting_star(state state_arr[], voter voters_arr[], candidate candidate_arr[]);
 void voting_rated(state state_arr[], voter voters_arr[], candidate candidate_arr[]);
 void voting_rcv(state state_arr[], voter voters_arr[], candidate candidate_arr[]);
@@ -126,7 +126,7 @@ void start_fptp_voting(state state_arr[], voter voters_arr[], candidate candidat
 //
 //
 // Misc.
-void print_percent(double calc_percent[][7]);
+void print_percent(double calc_percent[][5], int state_population);
 void get_distance(voter voters_arr[], candidate candidate_arr[], int population);
 
 //
