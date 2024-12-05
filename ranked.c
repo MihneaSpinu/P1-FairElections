@@ -141,7 +141,6 @@ void voting_rcv(state state_arr[], voter voter_arr[], candidate candidate_arr[],
 
         int eliminated_candidate = find_lowest_votes(candidate_arr);
         eliminate_candidate(candidate_arr, eliminated_candidate);
-
         clear_votes(candidate_arr);
         redistribute_votes(voter_arr, candidate_arr, total_voters);
 
