@@ -8,15 +8,6 @@ int main() {
 
     srand(time(NULL));
 
-    double calc_percent[STATES][4][5];
-    for(int s = 0; s < STATES; s++) {
-        for(int i = 0; i < 4; i++) {
-            for(int j = 0; j < 5; j++) {
-                calc_percent[s][i][j] = 0;
-            }
-        }
-    }
-
     candidate candidate_arr[CANDIDATES];
     voter *voter_arr = malloc(sizeof(voter) * POPULATION);
     state *state_arr = malloc(sizeof(state) * STATES);
@@ -24,6 +15,9 @@ int main() {
         printf("Error allocating memory\n");
         exit(EXIT_FAILURE);
     }
+
+    double calc_percent[STATES][4][5];
+    init_percent(calc_percent);
 
     printf("Initializing the states...\n");
     init_state(state_arr);

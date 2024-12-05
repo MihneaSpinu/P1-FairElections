@@ -11,7 +11,7 @@
 #define INCOME 3
 #define AGES 5
 #define MAX_NAME_LENGTH 21
-#define VARIANCE 10
+#define VARIANCE 20
 
 #define POPULATION 250947173 // VIRKER MED POPULATION + 173 (250947000 + 173) DETTE ER MINDSTE GRÆNSEN
                              // STOPPER VED GET_DISTANCE FUNKTIONEN (SOM TAGER POPULATION SOM INPUT)
@@ -131,6 +131,7 @@ void print_percent(double calc_percent[][4][5], int state_population, int state)
 void get_distance(voter voters_arr[], candidate candidate_arr[], int population);
 int variance();
 void prompt_stats(state state_arr[], double calc_percent[][4][5]);
+void init_percent(double calc_percent[][4][5]);
 
 //
 //

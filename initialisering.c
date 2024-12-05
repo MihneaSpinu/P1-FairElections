@@ -199,3 +199,13 @@ void prompt_stats(state state_arr[], double calc_percent[][4][5]) {
     } while(strcmp(input, "q") != 0);
 
 }
+
+void init_percent(double calc_percent[][4][5]) {
+    for(int state = 0; state < STATES; state++) {
+        for(int category = 0; category < 4; category++) {
+            for(int attribute = 0; attribute < 5; attribute++) {
+                calc_percent[state][category][attribute] = 0;
+            }
+        }
+    }
+}
