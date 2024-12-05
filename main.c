@@ -44,7 +44,7 @@ int main() {
     }
 
     for (int i = 0; i < CANDIDATES; i++) {
-        printf("Candidate %d: %s got \n%d FPTP votes\n%d STAR votes\n\n", i + 1, candidate_arr[i].name, candidate_arr[i].votes_fptp, candidate_arr[i].mandates_star);
+        printf("\n%s (%d) got \n%d FPTP votes\n%d STAR votes\n", candidate_arr[i].name, i + 1, candidate_arr[i].votes_fptp, candidate_arr[i].mandates_star);
     }
 
     //print_winners();
