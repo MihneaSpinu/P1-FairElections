@@ -35,7 +35,7 @@ int main() {
         candidate_arr[fptp_winner].votes_fptp += state_arr[i].electoral_votes;
         //ranked_choice_voting();
         //rated_voting();
-        int star_winner = voting_star(state_arr, voter_arr, candidate_arr, current_i_voter);
+        int star_winner = voting_star(state_arr[i].population, voter_arr, candidate_arr, current_i_voter);
         candidate_arr[star_winner].mandates_star += state_arr[i].electoral_votes;
         current_i_voter += state_arr[i].population;
     }

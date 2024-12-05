@@ -2,15 +2,15 @@
 #include <stdlib.h>
 #include "functions.h"
 
-int voting_star(state state_arr[], voter voter_arr[], candidate candidate_arr[], int current_i_voter) {
+int voting_star(int current_state_population, voter voter_arr[], candidate candidate_arr[], int current_i_voter) {
 
     // Initialize scores for each candidate
     int scores[CANDIDATES] = {0};
 
     // Calculate scores based on distances
-    for (int i = 0; i < state_arr[i].population; i++) {
+    for (int i = current_i_voter; i < current_state_population + current_i_voter; i++) {
         for (int j = 0; j < CANDIDATES; j++) {
-            scores[j] += (10 - voter_arr[i + current_i_voter].distance_to_[j]); // Assuming distance is from 0 to 10
+            scores[j] += (100 - voter_arr[i].distance_to_[j]); // Assuming distance is from 0 to 10
         }
     }
 
@@ -32,7 +32,7 @@ int voting_star(state state_arr[], voter voter_arr[], candidate candidate_arr[],
 
     // Runoff between top two candidates
     int votes_top1 = 0, votes_top2 = 0;
-    for (int i = 0; i < state_arr[i].population; i++) {
+    for (int i = current_i_voter; i < current_i_voter + current_state_population; i++) {
         if (voter_arr[i].distance_to_[top1] < voter_arr[i].distance_to_[top2]) {
             votes_top1++;
         } else {
