@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "functions.h"
 
-void voting_star(state state_arr[], voter voter_arr[], candidate candidate_arr[]) {
+int voting_star(state state_arr[], voter voter_arr[], candidate candidate_arr[], int current_i_voter) {
 
     // Initialize scores for each candidate
     int scores[CANDIDATES] = {0};
@@ -10,7 +10,7 @@ void voting_star(state state_arr[], voter voter_arr[], candidate candidate_arr[]
     // Calculate scores based on distances
     for (int i = 0; i < state_arr[i].population; i++) {
         for (int j = 0; j < CANDIDATES; j++) {
-            scores[j] += (10 - voter_arr[i].distance_to_[j]); // Assuming distance is from 0 to 10
+            scores[j] += (10 - voter_arr[i + current_i_voter].distance_to_[j]); // Assuming distance is from 0 to 10
         }
     }
 
@@ -41,16 +41,18 @@ void voting_star(state state_arr[], voter voter_arr[], candidate candidate_arr[]
     }
 
     // Determine the winner
-    candidate winner = (votes_top1 > votes_top2) ? candidate_arr[top1] : candidate_arr[top2];
+    int winner_index = (votes_top1 > votes_top2) ? top1 : top2;
+    candidate winner = candidate_arr[winner_index];
     winner.votes_star = (votes_top1 > votes_top2) ? votes_top1 : votes_top2;
     print_results(winner);
+    return winner_index;
 }
 
-void star_voting(state state_arr[], voter voters_arr[], candidate candidate_arr[]) {
-    for (int i = 0; i < STATES; i++) {
-        voting_star(state_arr, voters_arr, candidate_arr);
-    }
-}
+// void star_voting(state state_arr[], voter voters_arr[], candidate candidate_arr[]) {
+//     for (int i = 0; i < STATES; i++) {
+//         voting_star(state_arr, voters_arr, candidate_arr);
+//     }
+// }
 
 void print_results(candidate winner) {
     printf("The winner is: %s\n", winner.name);

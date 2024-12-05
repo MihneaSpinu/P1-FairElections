@@ -77,6 +77,7 @@ void init_candidates(candidate candidate_arr[]) {
         candidate_arr[i].votes_star = 0;
         candidate_arr[i].votes_rated = 0;
         candidate_arr[i].votes_rcv = 0;
+        candidate_arr[i].mandates_star = 0;
     }
 }
 
@@ -119,7 +120,7 @@ void init_voters(state state_arr[], voter voter_arr[], state cur_state, int curr
 
     init_attributes(cur_state.population, voter_arr, AGES, calc_percent,
                     cur_state.age_distribution, age, fordelingspolitik, værdipolitik, current_i_voter);
-    print_percent(calc_percent, cur_state.population);
+    //print_percent(calc_percent, cur_state.population);
 }
 
 // funktion til at initialisere attributterne for vælgerne

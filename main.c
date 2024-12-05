@@ -35,12 +35,14 @@ int main() {
         candidate_arr[fptp_winner].votes_fptp += state_arr[i].electoral_votes;
         //ranked_choice_voting();
         //rated_voting();
-        //voting_star(state_arr, voter_arr, candidate_arr);
+        int star_winner = voting_star(state_arr, voter_arr, candidate_arr, current_i_voter);
+        candidate_arr[star_winner].mandates_star += state_arr[i].electoral_votes;
         current_i_voter += state_arr[i].population;
     }
     for (int i = 0; i < CANDIDATES; i++) {
         printf("Candidate %d: %s\n", i, candidate_arr[i].name);
         printf("FPTP mandates: %d\n", candidate_arr[i].votes_fptp);
+        printf("Star Voting mandates: %d\n", candidate_arr[i].mandates_star);
     }
 
     //print_winners();
