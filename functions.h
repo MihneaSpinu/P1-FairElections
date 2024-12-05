@@ -43,6 +43,7 @@ typedef struct {
     int fordelingspolitik_c;
     int votes_fptp;
     int votes_star;
+    int mandates_star;
     int votes_rated;
     int votes_rcv;
     int eliminated; // Flag for elimineret kandidat (ranked)
@@ -70,7 +71,6 @@ void init_attributes(int state_population, voter voter_arr[], int attribute_amou
 //
 // Voting system functions
 int first_past_the_post(voter voter_arr[], candidate candidate_arr[], int total_voters, int current_i_voter);
-void voting_star(state state_arr[], voter voters_arr[], candidate candidate_arr[]);
 void voting_rated(state state_arr[], voter voters_arr[], candidate candidate_arr[]);
 void voting_rcv(state state_arr[], voter voters_arr[], candidate candidate_arr[]);
 
@@ -132,6 +132,6 @@ void get_distance(voter voters_arr[], candidate candidate_arr[], int population)
 //
 //
 // STAR functions
-void voting_star(state state_arr[], voter voters_arr[], candidate candidate_arr[]);
+int voting_star(int current_state_population, voter voter_arr[], candidate candidate_arr[], int current_i_voter);
 
 #endif //FUNCTIONS_H

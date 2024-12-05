@@ -33,17 +33,18 @@ int main() {
 
     current_i_voter = 0;
     for(int i = 0; i < STATES; i++) {
-        printf("Calculating winners for %s...\n", state_arr[i].name);
+        printf("Calculating winner for %s...\n", state_arr[i].name);
         int fptp_winner = first_past_the_post(voter_arr, candidate_arr, state_arr[i].population, current_i_voter);
         candidate_arr[fptp_winner].votes_fptp += state_arr[i].electoral_votes;
         //ranked_choice_voting();
         //rated_voting();
-        //voting_star(state_arr, voter_arr, candidate_arr);
+        int star_winner = voting_star(state_arr[i].population, voter_arr, candidate_arr, current_i_voter);
+        candidate_arr[star_winner].mandates_star += state_arr[i].electoral_votes;
         current_i_voter += state_arr[i].population;
     }
 
     for (int i = 0; i < CANDIDATES; i++) {
-        printf("Candidate %d: %s got %d votes\n", i + 1, candidate_arr[i].name, candidate_arr[i].votes_fptp);
+        printf("Candidate %d: %s got \n%d FPTP votes\n%d STAR votes\n\n", i + 1, candidate_arr[i].name, candidate_arr[i].votes_fptp, candidate_arr[i].mandates_star);
     }
 
     //print_winners();
@@ -54,3 +55,8 @@ int main() {
 
     return 0;
 }
+
+/*
+If((age >= old || race == white || gender == male)) && income != high && rand() % 5 == 0)
+Voter.income += 1;
+*/
