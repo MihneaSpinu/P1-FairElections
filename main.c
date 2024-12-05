@@ -36,7 +36,7 @@ int main() {
     for(int i = 0; i < STATES; i++) {
         printf("Calculating winners for voter %s...\n", state_arr[i].name);
         int fptp_winner = first_past_the_post(voter_arr, candidate_arr, state_arr[i].population, current_i_voter);
-        candidate_arr[fptp_winner].votes_fptp += state_arr[i].electoral_votes;
+        candidate_arr[fptp_winner].mandates_fptp += state_arr[i].electoral_votes;
         //ranked_choice_voting();
         //rated_voting();
         int star_winner = voting_star(state_arr[i].population, voter_arr, candidate_arr, current_i_voter);
@@ -45,7 +45,7 @@ int main() {
     }
     for (int i = 0; i < CANDIDATES; i++) {
         printf("Candidate %d: %s\n", i, candidate_arr[i].name);
-        printf("FPTP mandates: %d\n", candidate_arr[i].votes_fptp);
+        printf("FPTP mandates: %d\n", candidate_arr[i].mandates_fptp);
         printf("Star Voting mandates: %d\n", candidate_arr[i].mandates_star);
     }
 

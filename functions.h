@@ -40,11 +40,11 @@ typedef struct {
     char name[MAX_NAME_LENGTH];
     int værdipolitik_c;
     int fordelingspolitik_c;
-    int votes_fptp;
+    int mandates_fptp;
     int votes_star;
     int mandates_star;
-    int votes_rated;
-    int votes_rcv;
+    int mandates_rated;
+    int mandates_rcv;
     int eliminated; // Flag for elimineret kandidat (ranked)
 } candidate;
 
