@@ -5,14 +5,15 @@
 //
 // DEFINES
 #define STATES 51
-#define POPULATION 331526990
 #define CANDIDATES 3
 #define RACES 5
 #define GENDERS 2
 #define INCOME 3
 #define AGES 5
-#define MAX_NAME_LENGTH 20
-
+#define MAX_NAME_LENGTH 21
+#define VARIANCE 30
+#define POPULATION 250947173 // VIRKER MED POPULATION + 173 (250947000 + 173) DETTE ER MINDSTE GRÆNSEN
+                             // STOPPER VED GET_DISTANCE FUNKTIONEN (SOM TAGER POPULATION SOM INPUT)
 //
 //
 // ENUMS
@@ -65,7 +66,6 @@ void init_voters(state state_arr[], voter voters_arr[], state cur_state, int cur
 void init_candidates(candidate candidate_arr[]); //DONE
 void init_attributes(int state_population, voter voter_arr[], int attribute_amount, double calc_percent[][5],
                      int distribution[], int attribute_type, int fordelingspolitik[][5], int værdipolitik[][5], int current_i_voter);
-
 //
 //
 // Voting system functions

@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <time.h>
+
 #include "functions.h"
 
 // funktion til at initialisere staterne
@@ -11,17 +13,9 @@ void init_state(state state_arr[]) {
         printf("Error: couldn't open file 'state_data.txt'");
         exit(EXIT_FAILURE);
     }
-    for(int i = 0; i < 5; i++) {
-
-    }
 
     for (int s = 0; s < STATES; s++) {
-        for(int i = 0; i < 5; i++) {
-            state_arr[i].age_distribution[i] = 0;
-            state_arr[i].race_distribution[i] = 0;
-            state_arr[i].income_distribution[i] = 0;
-            state_arr[i].gender_distribution[i] = 0;
-        }
+
         fscanf(f, "%[^,],%d,%d,", state_arr[s].name, &state_arr[s].population,
                                            &state_arr[s].electoral_votes);
         for(int r = 0; r < RACES; r++) {
@@ -36,9 +30,8 @@ void init_state(state state_arr[]) {
         for(int i = 0; i < INCOME; i++) {
             fscanf(f, "%d,", &state_arr[s].income_distribution[i]);
         }
-        //fscanf(f, "\n");
-
     }
+
 
     for (int s = 0; s < STATES; s++) {
         printf("%s %d %d ", state_arr[s].name, state_arr[s].population,
@@ -56,8 +49,8 @@ void init_state(state state_arr[]) {
             printf("%d ", state_arr[s].income_distribution[i]);
         }
         //State,Pop,Mandates,WHITE,BLACK,HISPANIC,ASIAN,OTHER,MALE,FEMALE,18-25,26-34,35-54,55-64,65+,LOWER,MIDDLE,HIGHER
-
     }
+
 
     fclose(f);
 }
@@ -66,8 +59,8 @@ void init_state(state state_arr[]) {
 void init_candidates(candidate candidate_arr[]) {
 
     const char* names[60] = {"Donald Trump", "Kamala Harris", "Robert F. Kennedy"};
-    int værdipolitik_c[CANDIDATES] = {7, -5, 3};
-    int fordelingspolitik_c[CANDIDATES] = {7, -5, 3};
+    int værdipolitik_c[CANDIDATES] = {10, -10, -50};
+    int fordelingspolitik_c[CANDIDATES] = {-70, 70, -50};
 
     for (int i = 0; i < CANDIDATES; i++) {
         strcpy(candidate_arr[i].name, names[i]);
@@ -94,19 +87,18 @@ void init_voters(state state_arr[], voter voter_arr[], state cur_state, int curr
             calc_percent[i][j] = 0;
         }
     }
-    calc_percent[1][2] = '\0'; // stopper gender fra at fylde mere end 2 pladser
 
     int fordelingspolitik[4][5] = {
-        {-2, -1, 0, 1, 2},  // RACE
-        {-2, 2, '\0'},     // GENDER
-        {-2, -1, 0, 1, 2},  // INCOME
-        {-2, -1, 0, 1, 2}}; // AGE
+        {-20, -10, 0, 10, 20},  // RACE
+        {-25, 25},               // GENDER
+        {-50, 0, 50},    // INCOME
+        {-50, -25, 0, 25, 50}};  // AGE
 
     int værdipolitik[4][5] = {
-        {-2, -1, 0, 1, 2},  // RACE
-        {-2, 2, '\0'},     // GENDER
-        {-2, -1, 0, 1, 2},  // INCOME
-        {-2, -1, 0, 1, 2}}; // AGE
+        {-20, -10, 0, 10, 20},  // RACE
+        {-25, 25},               // GENDER
+        {-50, 0, 50},    // INCOME
+        {-50, -25, 0, 25, 50}};  // AGE
 
     init_attributes(cur_state.population, voter_arr, RACES, calc_percent,
                     cur_state.race_distribution, race, fordelingspolitik, værdipolitik, current_i_voter);
@@ -119,34 +111,30 @@ void init_voters(state state_arr[], voter voter_arr[], state cur_state, int curr
 
     init_attributes(cur_state.population, voter_arr, AGES, calc_percent,
                     cur_state.age_distribution, age, fordelingspolitik, værdipolitik, current_i_voter);
-    print_percent(calc_percent, cur_state.population);
+    //print_percent(calc_percent, cur_state.population);
 }
 
 // funktion til at initialisere attributterne for vælgerne
 void init_attributes(int state_population, voter voter_arr[], int attribute_amount, double calc_percent[][5],
-                     int distribution[], int attribute_type, int fordelingspolitik[][5], int værdipolitik[][5], int current_i_voter) {
+                     int attribute_distribution[], int category, int fordelingspolitik[][5], int værdipolitik[][5], int current_i_voter) {
 
     for (int i = current_i_voter; i < state_population + current_i_voter; i++) {
         int random = rand() % 1000 + 1;
         for (int j = 0; j < attribute_amount; j++) {
-            if (random <= distribution[j]) {
-                switch(attribute_type) {
-                case race:
+            if (random <= attribute_distribution[j]) {
+                if(category == race) {
                     voter_arr[i].race_v = j;
-                    break;
-                case gender:
+                } else if(category == gender) {
                     voter_arr[i].gender_v = j;
-                    break;
-                case income:
+                } else if(category == income) {
                     voter_arr[i].income_v = j;
-                    break;
-                case age:
+                } else {
                     voter_arr[i].age_v = j;
-                    break;
                 }
-                voter_arr[i].fordelingspolitik_v += fordelingspolitik[attribute_type][j];
-                voter_arr[i].værdipolitik_v += værdipolitik[attribute_type][j];
-                calc_percent[attribute_type][j]++;
+
+                voter_arr[i].fordelingspolitik_v += fordelingspolitik[category][j] + (rand() % (VARIANCE+1) - VARIANCE/2);
+                voter_arr[i].værdipolitik_v += værdipolitik[category][j] + (rand() % (VARIANCE+1) - VARIANCE/2);
+                calc_percent[category][j]++;
                 break;
             }
         }
@@ -171,7 +159,7 @@ void print_percent(double calc_percent[][5], int state_population) {
         }
     }
 }
-
+//289 249
 void get_distance(voter voter_arr[], candidate candidate_arr[], int population) {
 
     for(int i = 0; i < population; i++) {
@@ -185,8 +173,10 @@ void get_distance(voter voter_arr[], candidate candidate_arr[], int population) 
             // Distance = sqrt((x_2 - x_1)^2 + (y_2 - y_1)^2))
             voter_arr[i].distance_to_[j] = sqrt(pow(x_2 - x_1, 2) + pow(y_2 - y_1, 2));
         }
-        if(i % 1000000 == 0) {
-            printf("%d voters calculated\n");
+
+        if(i % (population / 100) == 0) {
+            printf("%.0lf%% of voters calculated\n", (double)i / population * 100);
+
         }
     }
 }
