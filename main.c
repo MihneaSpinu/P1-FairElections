@@ -33,7 +33,7 @@ int main() {
         printf("Calculating winners for voter %s...\n", state_arr[i].name);
         int fptp_winner = first_past_the_post(voter_arr, candidate_arr, state_arr[i].population, current_i_voter);
         candidate_arr[fptp_winner].votes_fptp += state_arr[i].electoral_votes;
-        //ranked_choice_voting();
+        //rcv_voting();
         //rated_voting();
         //voting_star(state_arr, voter_arr, candidate_arr);
         current_i_voter += state_arr[i].population;
@@ -42,6 +42,8 @@ int main() {
         printf("Candidate %d: %s\n", i, candidate_arr[i].name);
         printf("FPTP mandates: %d\n", candidate_arr[i].votes_fptp);
     }
+
+    start_ranked_voting(state_arr, voter_arr, candidate_arr, 0);
 
     //print_winners();
     //determine_fairness();

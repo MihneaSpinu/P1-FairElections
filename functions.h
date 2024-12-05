@@ -72,7 +72,7 @@ void init_attributes(int state_population, voter voter_arr[], int attribute_amou
 int first_past_the_post(voter voter_arr[], candidate candidate_arr[], int total_voters, int current_i_voter);
 void voting_star(state state_arr[], voter voters_arr[], candidate candidate_arr[]);
 void voting_rated(state state_arr[], voter voters_arr[], candidate candidate_arr[]);
-void voting_rcv(state state_arr[], voter voters_arr[], candidate candidate_arr[]);
+void voting_rcv(state state_arr[], voter voter_arr[], candidate candidate_arr[], int index);
 
 //
 //
@@ -90,12 +90,12 @@ void print_winners();
 //
 //
 // Ranked functions
-void start_ranked_voting(candidate candidate_arr[], voter voters_arr[], int total_voters, int eliminated_candidate);
-int check_majority(candidate candidate_arr[], int total_voters);
+void start_ranked_voting(state state_arr[], voter voter_arr[], candidate candidate_arr[], int index);
 int find_lowest_votes(candidate candidate_arr[]);
-void redistribute_votes(voter voters_arr[], candidate candidate_arr[], int eliminated_candidate);
-void reset_votes(candidate candidate_arr[]);
-
+void redistribute_votes(voter voter_arr[], candidate candidate_arr[], int total_voters);
+int check_majority(candidate candidate_arr[], int total_voters);
+void eliminate_candidate(candidate candidate_arr[], int candidate_to_eliminate);
+void clear_votes(candidate candidate_arr[]);
 //
 //
 // Rated functions
