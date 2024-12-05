@@ -11,7 +11,8 @@
 #define INCOME 3
 #define AGES 5
 #define MAX_NAME_LENGTH 21
-#define VARIANCE 30
+#define VARIANCE 10
+
 #define POPULATION 250947173 // VIRKER MED POPULATION + 173 (250947000 + 173) DETTE ER MINDSTE GRÆNSEN
                              // STOPPER VED GET_DISTANCE FUNKTIONEN (SOM TAGER POPULATION SOM INPUT)
 //
@@ -63,10 +64,10 @@ typedef struct {
 //
 // Initalization functions
 void init_state(state state_arr[]); //DONE
-void init_voters(state state_arr[], voter voters_arr[], state cur_state, int current_i_voter);
 void init_candidates(candidate candidate_arr[]); //DONE
-void init_attributes(int state_population, voter voter_arr[], int attribute_amount, double calc_percent[][5],
-                     int distribution[], int attribute_type, int fordelingspolitik[][5], int værdipolitik[][5], int current_i_voter);
+void init_voters(state state_arr[], voter voter_arr[], state cur_state, int current_i_voter, int state, double calc_percent[STATES][4][5]);
+void init_attributes(int state_population, voter voter_arr[], int attribute_amount, double calc_percent[STATES][4][5], int distribution[],
+                     int attribute_type, int fordelingspolitik[][5], int værdipolitik[][5], int current_i_voter, int state);
 //
 //
 // Voting system functions
@@ -126,8 +127,10 @@ void start_fptp_voting(state state_arr[], voter voters_arr[], candidate candidat
 //
 //
 // Misc.
-void print_percent(double calc_percent[][5], int state_population);
+void print_percent(double calc_percent[][4][5], int state_population, int state);
 void get_distance(voter voters_arr[], candidate candidate_arr[], int population);
+int variance();
+void prompt_stats(state state_arr[], double calc_percent[][4][5]);
 
 //
 //
