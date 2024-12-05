@@ -11,9 +11,6 @@ void init_state(state state_arr[]) {
         printf("Error: couldn't open file 'state_data.txt'");
         exit(EXIT_FAILURE);
     }
-    for(int i = 0; i < 5; i++) {
-
-    }
 
     for (int s = 0; s < STATES; s++) {
         for(int i = 0; i < 5; i++) {

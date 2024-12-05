@@ -6,7 +6,7 @@
 int main() {
 
     srand(time(NULL));
-
+    //Erklæring af arrays
     candidate candidate_arr[CANDIDATES];
     voter *voter_arr = malloc(sizeof(voter) * POPULATION);
     state *state_arr = malloc(sizeof(state) * STATES);
@@ -14,10 +14,14 @@ int main() {
         printf("Error allocating memory\n");
         exit(EXIT_FAILURE);
     }
+
     printf("Initializing the voter array...\n");
     init_state(state_arr);
+
     printf("Initializing the candidate array...\n");
     init_candidates(candidate_arr);
+
+    //Initialisering af voters fra hver stat
     int current_i_voter = 0;
     for (int i = 0; i < STATES; i++) {
         printf("Initializing the voter array for %s...\n", state_arr[i].name);
