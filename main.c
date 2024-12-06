@@ -43,13 +43,14 @@ int main() {
         int fptp_winner = first_past_the_post(voter_arr, candidate_arr, state_arr[i].population, current_i_voter);
         candidate_arr[fptp_winner].votes_fptp += state_arr[i].electoral_votes;
 
-        //ranked_choice_voting();
-        //rated_voting();
+        //voting_ranked(state_arr[i], voter_arr, candidate_arr);
+
+        int rated_winner = voting_rated(voter_arr, candidate_arr, state_arr[i].population);
+        candidate_arr[rated_winner].votes_rated += state_arr[i].electoral_votes;
 
         // STAR VOTING
         int star_winner = voting_star(state_arr[i].population, voter_arr, candidate_arr, current_i_voter);
         candidate_arr[star_winner].mandates_star += state_arr[i].electoral_votes;
-
 
         current_i_voter += state_arr[i].population;
     }
@@ -58,6 +59,8 @@ int main() {
         printf("\n%s (%d) got \n", candidate_arr[i].name, i + 1);
         printf("FPTP mandates: %d\n", candidate_arr[i].votes_fptp);
         printf("STAR mandates: %d\n", candidate_arr[i].mandates_star);
+        printf("RATED mandates: %d\n", candidate_arr[i].votes_rated);
+        printf("RANKED mandates: %d\n", candidate_arr[i].votes_rcv);
     }
 
     //print_winners();

@@ -11,10 +11,15 @@
 #define INCOME 3
 #define AGES 5
 #define MAX_NAME_LENGTH 21
-#define VARIANCE 20
+#define VARIANCE 10
 
-#define POPULATION 250947173 // VIRKER MED POPULATION + 173 (250947000 + 173) DETTE ER MINDSTE GRÆNSEN
+#define POPULATION 250947173 // VIRKER MED POPULATION + X ANTAL EKSTRA
                              // STOPPER VED GET_DISTANCE FUNKTIONEN (SOM TAGER POPULATION SOM INPUT)
+                             // + 173 FOR 1 KANDIDAT
+                             // + 173 FOR 2 KANDIDATER
+                             // + 173 FOR 3 KANDIDATER
+                             // + 174 FOR 5 KANDIDATER
+                             // + 174 FOR 6 KANDIDATER
 //
 //
 // ENUMS
@@ -36,6 +41,7 @@ typedef struct {
     int værdipolitik_v;
     int fordelingspolitik_v;
     double distance_to_[CANDIDATES]; // Rangering af kandidater (ranked)
+    int ratings[CANDIDATES];
 } voter;
 
 typedef struct {
@@ -72,16 +78,7 @@ void init_attributes(int state_population, voter voter_arr[], int attribute_amou
 //
 // Voting system functions
 int first_past_the_post(voter voter_arr[], candidate candidate_arr[], int total_voters, int current_i_voter);
-void voting_rated(state state_arr[], voter voters_arr[], candidate candidate_arr[]);
 void voting_rcv(state state_arr[], voter voters_arr[], candidate candidate_arr[]);
-
-//
-//
-// Winner functions
-candidate find_winner_fptp();
-candidate find_winner_star();
-candidate find_winner_rated();
-candidate find_winner_rcv();
 
 //
 //
@@ -91,7 +88,7 @@ void print_winners();
 //
 //
 // Ranked functions
-void start_ranked_voting(candidate candidate_arr[], voter voters_arr[], int total_voters, int eliminated_candidate);
+void voting_ranked(state current_state, voter voter_arr[], candidate candidate_arr[]);
 int check_majority(candidate candidate_arr[], int total_voters);
 int find_lowest_votes(candidate candidate_arr[]);
 void redistribute_votes(voter voters_arr[], candidate candidate_arr[], int eliminated_candidate);
@@ -100,21 +97,7 @@ void reset_votes(candidate candidate_arr[]);
 //
 //
 // Rated functions
-typedef struct {
-    int total;
-    int trump[10];
-    int harris[10];
-} votes_rated;
-
-typedef struct {
-    int mandates;
-    votes_rated v;
-} state_rated;
-
-void get_votes(FILE *f, votes_rated *v);
-void results(votes_rated *v);
-//double median(int votes[], int size);
-double average(int votes[], int size);
+int voting_rated(voter voter_arr[], candidate candidate_arr[], int population);
 
 //
 //

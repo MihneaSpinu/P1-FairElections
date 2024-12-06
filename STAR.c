@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include "functions.h"
 
 int voting_star(int current_state_population, voter voter_arr[], candidate candidate_arr[], int current_i_voter) {
