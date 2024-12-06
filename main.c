@@ -5,7 +5,6 @@
 #include "functions.h"
 
 int main() {
-
     srand(time(NULL));
     //Erklæring af arrays
     candidate candidate_arr[CANDIDATES];
@@ -43,6 +42,9 @@ int main() {
 
     current_i_voter = 0;
     for(int i = 0; i < STATES; i++) {
+        printf("Calculating winners for voter %s...\n", state_arr[i].name);
+        int rated_winner = voting_rated(voter_arr, candidate_arr, state_arr[i].population);
+        candidate_arr[rated_winner].votes_rated += state_arr[i].electoral_votes;
         printf("Calculating winners for %s...\n", state_arr[i].name);
 
         // FIRST PAST THE POST
@@ -69,6 +71,8 @@ int main() {
         printf("FPTP mandates: %d\n", candidate_arr[i].votes_fptp);
         printf("STAR mandates: %d\n", candidate_arr[i].mandates_star);
         printf("Candidate %d: %s\n", i, candidate_arr[i].name);
+        //printf("FPTP mandates: %d\n", candidate_arr[i].votes_fptp);
+        printf("Rated mandates: %d\n", candidate_arr[i].votes_rated);
         printf("FPTP mandates: %d\n", candidate_arr[i].mandates_fptp);
         printf("Star Voting mandates: %d\n", candidate_arr[i].mandates_star);
     }
