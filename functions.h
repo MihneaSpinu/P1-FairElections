@@ -5,14 +5,17 @@
 //
 // DEFINES
 #define STATES 51
-#define POPULATION 331526990
+#define POPULATION 331526900
 #define CANDIDATES 3
 #define RACES 5
 #define GENDERS 2
 #define INCOME 3
 #define AGES 5
-#define MAX_NAME_LENGTH 20
+#define MAX_NAME_LENGTH 21
+#define VARIANCE 20
 
+#define POPULATION 250947173 // VIRKER MED POPULATION + 173 (250947000 + 173) DETTE ER MINDSTE GRÆNSEN
+                             // STOPPER VED GET_DISTANCE FUNKTIONEN (SOM TAGER POPULATION SOM INPUT)
 //
 //
 // ENUMS
@@ -34,14 +37,19 @@ typedef struct {
     int værdipolitik_v;
     int fordelingspolitik_v;
     double distance_to_[CANDIDATES]; // Rangering af kandidater (ranked)
+    int ratings[CANDIDATES]; // Rated
 } voter;
 
 typedef struct {
     char name[MAX_NAME_LENGTH];
     int værdipolitik_c;
     int fordelingspolitik_c;
-    int votes_fptp;
+    int mandates_fptp;
     int votes_star;
+    int mandates_star;
+    int mandates_rated;
+    int mandates_rcv;
+    int mandates_star;
     int votes_rated;
     int votes_rcv;
     int eliminated; // Flag for elimineret kandidat (ranked)
@@ -61,17 +69,16 @@ typedef struct {
 //
 // Initalization functions
 void init_state(state state_arr[]); //DONE
-void init_voters(state state_arr[], voter voters_arr[], state cur_state, int current_i_voter);
 void init_candidates(candidate candidate_arr[]); //DONE
-void init_attributes(int state_population, voter voter_arr[], int attribute_amount, double calc_percent[][5],
-                     int distribution[], int attribute_type, int fordelingspolitik[][5], int værdipolitik[][5], int current_i_voter);
-
+void init_voters(state state_arr[], voter voter_arr[], state cur_state, int current_i_voter, int state, double calc_percent[STATES][4][5]);
+void init_attributes(int state_population, voter voter_arr[], int attribute_amount, double calc_percent[STATES][4][5], int distribution[],
+                     int attribute_type, int fordelingspolitik[][5], int værdipolitik[][5], int current_i_voter, int state);
 //
 //
 // Voting system functions
 int first_past_the_post(voter voter_arr[], candidate candidate_arr[], int total_voters, int current_i_voter);
 void voting_star(state state_arr[], voter voters_arr[], candidate candidate_arr[]);
-void voting_rated(state state_arr[], voter voters_arr[], candidate candidate_arr[]);
+int voting_rated(voter voter_arr[], candidate candidate_arr[], int population);
 void voting_rcv(state state_arr[], voter voters_arr[], candidate candidate_arr[]);
 
 //
@@ -90,12 +97,12 @@ void print_winners();
 //
 //
 // Ranked functions
-void start_ranked_voting(candidate candidate_arr[], voter voters_arr[], int total_voters, int eliminated_candidate);
-int check_majority(candidate candidate_arr[], int total_voters);
+void start_ranked_voting(state state_arr[], voter voter_arr[], candidate candidate_arr[], int index);
 int find_lowest_votes(candidate candidate_arr[]);
-void redistribute_votes(voter voters_arr[], candidate candidate_arr[], int eliminated_candidate);
-void reset_votes(candidate candidate_arr[]);
-
+void redistribute_votes(voter voter_arr[], candidate candidate_arr[], int total_voters);
+int check_majority(candidate candidate_arr[], int total_voters);
+void eliminate_candidate(candidate candidate_arr[], int candidate_to_eliminate);
+void clear_votes(candidate candidate_arr[]);
 //
 //
 // Rated functions
@@ -126,12 +133,15 @@ void start_fptp_voting(state state_arr[], voter voters_arr[], candidate candidat
 //
 //
 // Misc.
-void print_percent(double calc_percent[][5], int state_population);
+void print_percent(double calc_percent[][4][5], int state_population, int state);
 void get_distance(voter voters_arr[], candidate candidate_arr[], int population);
+//void get_distance_and_rate(voter voter_arr[], candidate candidate_arr[], int population);
 
 //
 //
+// // STAR functions
+// int voting_star(state state_arr[], voter voters_arr[], candidate candidate_arr[], int current_i_voter);
 // STAR functions
-void voting_star(state state_arr[], voter voters_arr[], candidate candidate_arr[]);
+int voting_star(int current_state_population, voter voter_arr[], candidate candidate_arr[], int current_i_voter);
 
 #endif //FUNCTIONS_H
