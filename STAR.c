@@ -47,15 +47,7 @@ int voting_star(int current_state_population, voter voter_arr[], candidate candi
     print_results(winner);
     return winner_index;
 }
-    //print_results(winner);
-    return winner_index;
 
-// void star_voting(state state_arr[], voter voters_arr[], candidate candidate_arr[]) {
-//     for (int i = 0; i < STATES; i++) {
-//         voting_star(state_arr, voters_arr, candidate_arr);
-//     }
-// }
-}
 
 void print_results(candidate winner) {
     printf("The winner is: %s\n", winner.name);

@@ -31,7 +31,7 @@ void init_state(state state_arr[]) {
             fscanf(f, "%d,", &state_arr[i].income_distribution[j]);
         }
         for(int i = 0; i < INCOME; i++) {
-            fscanf(f, "%d,", &state_arr[s].income_distribution[i]);
+            fscanf(f, "%d,", &state_arr[i].income_distribution[i]);
         }
         fscanf(f, "\n");
     }
@@ -109,14 +109,11 @@ void init_voters(state state_arr[], voter voter_arr[], state cur_state, int curr
                     cur_state.income_distribution, income, fordelingspolitik, værdipolitik, current_i_voter, state);
 
     init_attributes(cur_state.population, voter_arr, AGES, calc_percent,
-                    cur_state.age_distribution, age, fordelingspolitik, værdipolitik, current_i_voter);
-    //print_percent(calc_percent, cur_state.population);
                     cur_state.age_distribution, age, fordelingspolitik, værdipolitik, current_i_voter, state);
+    //print_percent(calc_percent, cur_state.population);
 }
 
 // funktion til at initialisere attributterne for vælgerne
-void init_attributes(int state_population, voter voter_arr[], int attribute_amount, double calc_percent[][5],
-                     int distribution[], int attribute_type, int fordelingspolitik[][5], int værdipolitik[][5], int current_i_voter) {
 void init_attributes(int state_population, voter voter_arr[], int attribute_amount, double calc_percent[][4][5],
                      int attribute_distribution[], int category, int fordelingspolitik[][5], int værdipolitik[][5], int current_i_voter, int state) {
 
@@ -141,6 +138,10 @@ void init_attributes(int state_population, voter voter_arr[], int attribute_amou
             }
         }
     }
+}
+
+int variance() {
+    return (rand() % VARIANCE + 1) - (VARIANCE / 2);
 }
 
 // funktion til at printe fordeling af vælgerne
@@ -231,4 +232,30 @@ void get_distance(voter voter_arr[], candidate candidate_arr[], int population) 
         }
     }
 }
+void init_percent(double calc_percent[][4][5]) {
+    for(int state = 0; state < STATES; state++) {
+        for(int category = 0; category < 4; category++) {
+            for(int attribute = 0; attribute < 5; attribute++) {
+                calc_percent[state][category][attribute] = 0;
+            }
+        }
+    }
+}
+void prompt_stats(state state_arr[], double calc_percent[][4][5]) {
 
+    char input[MAX_NAME_LENGTH];
+
+    do {
+        printf("\nSee data for state:\n");
+        scanf("%s", &input);
+        for(int i = 0; i < STATES + 1; i++) {
+            if(strcmp(input, state_arr[i].name) == 0) {
+                printf("Population: %d\n", state_arr[i].population);
+                printf("Electoral votes: %d\n", state_arr[i].electoral_votes);
+                print_percent(calc_percent, state_arr[i].population, i);
+                break;
+            }
+        }
+    } while(strcmp(input, "q") != 0);
+
+}

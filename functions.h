@@ -5,7 +5,6 @@
 //
 // DEFINES
 #define STATES 51
-#define POPULATION 331526900
 #define CANDIDATES 3
 #define RACES 5
 #define GENDERS 2
@@ -49,7 +48,6 @@ typedef struct {
     int mandates_star;
     int mandates_rated;
     int mandates_rcv;
-    int mandates_star;
     int votes_rated;
     int votes_rcv;
     int eliminated; // Flag for elimineret kandidat (ranked)
@@ -77,7 +75,7 @@ void init_attributes(int state_population, voter voter_arr[], int attribute_amou
 //
 // Voting system functions
 int first_past_the_post(voter voter_arr[], candidate candidate_arr[], int total_voters, int current_i_voter);
-void voting_star(state state_arr[], voter voters_arr[], candidate candidate_arr[]);
+int voting_star(int current_state_population, voter voter_arr[], candidate candidate_arr[], int current_i_voter);
 int voting_rated(voter voter_arr[], candidate candidate_arr[], int population);
 void voting_rcv(state state_arr[], voter voters_arr[], candidate candidate_arr[]);
 
@@ -136,12 +134,14 @@ void start_fptp_voting(state state_arr[], voter voters_arr[], candidate candidat
 void print_percent(double calc_percent[][4][5], int state_population, int state);
 void get_distance(voter voters_arr[], candidate candidate_arr[], int population);
 //void get_distance_and_rate(voter voter_arr[], candidate candidate_arr[], int population);
+int variance();
+void init_percent(double calc_percent[][4][5]);
+void prompt_stats(state state_arr[], double calc_percent[][4][5]);
 
 //
 //
 // // STAR functions
 // int voting_star(state state_arr[], voter voters_arr[], candidate candidate_arr[], int current_i_voter);
 // STAR functions
-int voting_star(int current_state_population, voter voter_arr[], candidate candidate_arr[], int current_i_voter);
 
 #endif //FUNCTIONS_H

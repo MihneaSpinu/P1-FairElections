@@ -3,8 +3,6 @@
 #include "functions.h"
 int voting_rated(voter voter_arr[], candidate candidate_arr[], int population) {
     int votes_can[CANDIDATES] = {0};
-#include <stdio.h>
-#include <stdlib.h>
 
     for (int i = 0; i < population; i++) {
         for (int j = 0; j < CANDIDATES; j++) {
