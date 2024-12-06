@@ -43,9 +43,17 @@ int voting_star(int current_state_population, voter voter_arr[], candidate candi
     int winner_index = (votes_top1 > votes_top2) ? top1 : top2;
     candidate winner = candidate_arr[winner_index];
     winner.votes_star = (votes_top1 > votes_top2) ? votes_top1 : votes_top2;
+    print_results(winner);
+    return winner_index;
+}
     //print_results(winner);
     return winner_index;
 
+// void star_voting(state state_arr[], voter voters_arr[], candidate candidate_arr[]) {
+//     for (int i = 0; i < STATES; i++) {
+//         voting_star(state_arr, voters_arr, candidate_arr);
+//     }
+// }
 }
 
 void print_results(candidate winner) {
