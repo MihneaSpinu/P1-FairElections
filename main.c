@@ -38,21 +38,23 @@ int main() {
     current_i_voter = 0;
     for(int i = 0; i < STATES; i++) {
         printf("Calculating winners for voter %s...\n", state_arr[i].name);
+        state *current_state = &state_arr[i];
 
         // RATED
-        int rated_winner = voting_rated(voter_arr, candidate_arr, state_arr[i].population);
+        int rated_winner = voting_rated(voter_arr, candidate_arr, state_arr[i].population, current_state);
         candidate_arr[rated_winner].mandates_rated += state_arr[i].electoral_votes;
 
         // FIRST PAST THE POST
-        int fptp_winner = first_past_the_post(voter_arr, candidate_arr, state_arr[i].population, current_i_voter, &state_arr[i]);
+        int fptp_winner = first_past_the_post(voter_arr, candidate_arr, state_arr[i].population, current_i_voter, current_state);
         candidate_arr[fptp_winner].mandates_fptp += state_arr[i].electoral_votes;
 
 
         //rcv_voting();
 
         // STAR VOTING
-        int star_winner = voting_star(state_arr[i].population, voter_arr, candidate_arr, current_i_voter);
+        int star_winner = voting_star(state_arr[i].population, voter_arr, candidate_arr, current_i_voter, current_state);
         candidate_arr[star_winner].mandates_star += state_arr[i].electoral_votes;
+        printf("Star votes for first candidate %d\n", state_arr[i].candidate_votes_star[0]);
         current_i_voter += state_arr[i].population;
     }
 
@@ -67,7 +69,7 @@ int main() {
     //print_winners();
     //determine_fairness();
 
-    prompt_stats(state_arr, calc_percent);
+    prompt_stats(state_arr, calc_percent, candidate_arr);
 
 
     free(voter_arr);

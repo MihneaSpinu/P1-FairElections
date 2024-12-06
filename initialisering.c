@@ -36,28 +36,10 @@ void init_state(state state_arr[]) {
         fscanf(f, "\n");
         for(int j = 0; j < CANDIDATES; j++) {
             state_arr[i].candidate_votes_fptp[j] = 0;
+            state_arr[i].candidate_votes_star[j] = 0;
+            state_arr[i].candidate_votes_rated[j] = 0;
         }
     }
-
-    /*
-    for (int s = 0; s < STATES; s++) {
-        printf("%s %d %d ", state_arr[s].name, state_arr[s].population,
-                                           state_arr[s].electoral_votes);
-        for(int r = 0; r < RACES; r++) {
-            printf("%d ", state_arr[s].race_distribution[r]);
-        }
-        for(int g = 0; g < GENDERS; g++) {
-            printf("%d ", state_arr[s].gender_distribution[g]);
-        }
-        for(int a = 0; a < AGES; a++) {
-            printf("%d ", state_arr[s].age_distribution[a]);
-        }
-        for(int i = 0; i < INCOME; i++) {
-            printf("%d ", state_arr[s].income_distribution[i]);
-        }
-        //State,Pop,Mandates,WHITE,BLACK,HISPANIC,ASIAN,OTHER,MALE,FEMALE,18-25,26-34,35-54,55-64,65+,LOWER,MIDDLE,HIGHER
-    }
-    */
 
     fclose(f);
 }
@@ -203,25 +185,25 @@ void get_distance(voter voter_arr[], candidate candidate_arr[], int population) 
 
 
             // Assign ratings based on distance
-            if (voter_arr[i].distance_to_[j] <= 10) {
+            if (voter_arr[i].distance_to_[j] <= 25) {
                 voter_arr[i].ratings[j] = 10;
-            } else if (voter_arr[i].distance_to_[j] <= 20) {
-                voter_arr[i].ratings[j] = 9;
-            } else if (voter_arr[i].distance_to_[j] <= 30) {
-                voter_arr[i].ratings[j] = 8;
-            } else if (voter_arr[i].distance_to_[j] <= 40) {
-                voter_arr[i].ratings[j] = 7;
             } else if (voter_arr[i].distance_to_[j] <= 50) {
-                voter_arr[i].ratings[j] = 6;
-            }else if (voter_arr[i].distance_to_[j] <= 60) {
-                voter_arr[i].ratings[j] = 5;
-            } else if (voter_arr[i].distance_to_[j] <= 70) {
-                voter_arr[i].ratings[j] = 4;
-            } else if (voter_arr[i].distance_to_[j] <= 80) {
-                voter_arr[i].ratings[j] = 3;
-            } else if (voter_arr[i].distance_to_[j] <= 90) {
-                voter_arr[i].ratings[j] = 2;
+                voter_arr[i].ratings[j] = 9;
+            } else if (voter_arr[i].distance_to_[j] <= 75) {
+                voter_arr[i].ratings[j] = 8;
             } else if (voter_arr[i].distance_to_[j] <= 100) {
+                voter_arr[i].ratings[j] = 7;
+            } else if (voter_arr[i].distance_to_[j] <= 125) {
+                voter_arr[i].ratings[j] = 6;
+            }else if (voter_arr[i].distance_to_[j] <= 150) {
+                voter_arr[i].ratings[j] = 5;
+            } else if (voter_arr[i].distance_to_[j] <= 175) {
+                voter_arr[i].ratings[j] = 4;
+            } else if (voter_arr[i].distance_to_[j] <= 200) {
+                voter_arr[i].ratings[j] = 3;
+            } else if (voter_arr[i].distance_to_[j] <= 225) {
+                voter_arr[i].ratings[j] = 2;
+            } else if (voter_arr[i].distance_to_[j] <= 250) {
                 voter_arr[i].ratings[j] = 1;
             } else {
                 voter_arr[i].ratings[j] = 0;
@@ -244,7 +226,7 @@ void init_percent(double calc_percent[][4][5]) {
         }
     }
 }
-void prompt_stats(state state_arr[], double calc_percent[][4][5]) {
+void prompt_stats(state state_arr[], double calc_percent[][4][5], candidate candidate_arr[]) {
 
     char input[MAX_NAME_LENGTH];
 
@@ -256,7 +238,9 @@ void prompt_stats(state state_arr[], double calc_percent[][4][5]) {
                 printf("Population: %d\n", state_arr[i].population);
                 printf("Electoral votes: %d\n", state_arr[i].electoral_votes);
                 for(int j = 0; j < CANDIDATES; j++) {
-                    printf("Candidate %d has %d fptp votes\n", j,state_arr[i].candidate_votes_fptp[j]);
+                    printf("%s has %d fptp votes\n", candidate_arr[j].name ,state_arr[i].candidate_votes_fptp[j]);
+                    printf("%s has %d rated votes\n", candidate_arr[j].name, state_arr[i].candidate_votes_rated[j]);
+                    printf("%s has %d star votes\n", candidate_arr[j].name ,state_arr[i].candidate_votes_star[j]);
                 }
                 print_percent(calc_percent, state_arr[i].population, i);
                 break;

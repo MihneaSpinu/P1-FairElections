@@ -29,12 +29,13 @@ int first_past_the_post(voter voter_arr[], candidate candidate_arr[], int total_
             // Increment the votes for the candidate
             if (candidate_index != -1) {
                 votes_can[candidate_index]++;
-                current_state->candidate_votes_fptp[candidate_index]++;
+                // current_state->candidate_votes_fptp[candidate_index]++;
             }
         }
     }
     int winner = 0;
     for (int i = 0; i < CANDIDATES; i++) {
+        current_state->candidate_votes_fptp[i] = votes_can[i];
         //printf("Candidate %s has %d votes\n", candidate_arr[i].name, votes_can[i]);
         //printf("Candidate %s has %d votes\n", candidate_arr[winner].name, votes_can[winner]);
         if(votes_can[i] > votes_can[winner]) {
