@@ -30,10 +30,13 @@ void init_state(state state_arr[]) {
         for(int j = 0; j < INCOME; j++) {
             fscanf(f, "%d,", &state_arr[i].income_distribution[j]);
         }
-        for(int i = 0; i < INCOME; i++) {
+        for(int j = 0; j < INCOME; j++) {
             fscanf(f, "%d,", &state_arr[i].income_distribution[i]);
         }
         fscanf(f, "\n");
+        for(int j = 0; j < CANDIDATES; j++) {
+            state_arr[i].candidate_votes_fptp[j] = 0;
+        }
     }
 
     /*
@@ -63,8 +66,8 @@ void init_state(state state_arr[]) {
 void init_candidates(candidate candidate_arr[]) {
 
     const char* names[60] = {"Donald Trump", "Kamala Harris", "Robert F. Kennedy"};
-    int værdipolitik_c[CANDIDATES] = {20, -60, 100000};
-    int fordelingspolitik_c[CANDIDATES] = {60, -30, 1000000};
+    int værdipolitik_c[CANDIDATES] = {50, -50, -50};
+    int fordelingspolitik_c[CANDIDATES] = {-50, 50, -50};
 
     for (int i = 0; i < CANDIDATES; i++) {
         strcpy(candidate_arr[i].name, names[i]);
@@ -252,6 +255,9 @@ void prompt_stats(state state_arr[], double calc_percent[][4][5]) {
             if(strcmp(input, state_arr[i].name) == 0) {
                 printf("Population: %d\n", state_arr[i].population);
                 printf("Electoral votes: %d\n", state_arr[i].electoral_votes);
+                for(int j = 0; j < CANDIDATES; j++) {
+                    printf("Candidate %d has %d fptp votes\n", j,state_arr[i].candidate_votes_fptp[j]);
+                }
                 print_percent(calc_percent, state_arr[i].population, i);
                 break;
             }

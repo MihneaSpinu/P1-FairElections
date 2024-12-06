@@ -3,7 +3,7 @@
 #include "functions.h"
 
 // Run the first past the post voting system
-int first_past_the_post(voter voter_arr[], candidate candidate_arr[], int total_voters, int current_i_voter) {
+int first_past_the_post(voter voter_arr[], candidate candidate_arr[], int total_voters, int current_i_voter, state *current_state) {
     int votes_can[CANDIDATES];
     for (int i = 0; i < CANDIDATES; i++) {
         votes_can[i] = 0;
@@ -29,6 +29,7 @@ int first_past_the_post(voter voter_arr[], candidate candidate_arr[], int total_
             // Increment the votes for the candidate
             if (candidate_index != -1) {
                 votes_can[candidate_index]++;
+                current_state->candidate_votes_fptp[candidate_index]++;
             }
         }
     }

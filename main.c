@@ -44,8 +44,9 @@ int main() {
         candidate_arr[rated_winner].mandates_rated += state_arr[i].electoral_votes;
 
         // FIRST PAST THE POST
-        int fptp_winner = first_past_the_post(voter_arr, candidate_arr, state_arr[i].population, current_i_voter);
+        int fptp_winner = first_past_the_post(voter_arr, candidate_arr, state_arr[i].population, current_i_voter, &state_arr[i]);
         candidate_arr[fptp_winner].mandates_fptp += state_arr[i].electoral_votes;
+
 
         //rcv_voting();
 

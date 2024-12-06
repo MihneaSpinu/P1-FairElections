@@ -61,6 +61,7 @@ typedef struct {
     int age_distribution[AGES];
     int population;
     int electoral_votes;
+    int candidate_votes_fptp[CANDIDATES];
 } state;
 
 //
@@ -74,7 +75,7 @@ void init_attributes(int state_population, voter voter_arr[], int attribute_amou
 //
 //
 // Voting system functions
-int first_past_the_post(voter voter_arr[], candidate candidate_arr[], int total_voters, int current_i_voter);
+int first_past_the_post(voter voter_arr[], candidate candidate_arr[], int total_voters, int current_i_voter, state *current_state);
 int voting_star(int current_state_population, voter voter_arr[], candidate candidate_arr[], int current_i_voter);
 int voting_rated(voter voter_arr[], candidate candidate_arr[], int population);
 void voting_rcv(state state_arr[], voter voters_arr[], candidate candidate_arr[]);
