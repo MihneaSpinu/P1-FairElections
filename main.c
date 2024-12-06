@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <time.h>
 #include "functions.h"
 
@@ -16,8 +15,19 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-    double calc_percent[STATES][4][5];
-    init_percent(calc_percent);
+    int fordelingspolitik[4][5] = {
+        {50, -50, -50, -30, 0}, // RACE
+        {30, -30},              // GENDER
+        {-60, 0, 40},           // INCOME
+        {-50, -25, 0, 25, 50}}; // AGE
+
+    int værdipolitik[4][5] = {
+        {50, -50, -50, -30, 0}, // RACE
+        {30, -30},              // GENDER
+        {-60, 0, 40},           // INCOME
+        {-50, -25, 0, 25, 50}}; // AGE
+
+    double calc_percent[STATES][4][5] = {0};
 
     printf("Initializing the states...\n");
     init_state(state_arr);
@@ -25,34 +35,36 @@ int main() {
     printf("\nInitializing the candidates...\n\n");
     init_candidates(candidate_arr);
 
-    int current_i_voter = 0;
+    // START INDEX - inddeler vælgerne på de korrekte pladser i voter arrayet
+    int cumulative_state_population = 0,
+        start_index[STATES];
+    init_index(cumulative_state_population, start_index, state_arr);
+
     for (int i = 0; i < STATES; i++) {
         printf("Generating voters for %s...\n", state_arr[i].name);
-        init_voters(state_arr, voter_arr, state_arr[i], current_i_voter, i, calc_percent);
-        current_i_voter += state_arr[i].population;
+        init_voters(voter_arr, state_arr[i], start_index[i], i, calc_percent, fordelingspolitik, værdipolitik);
     }
 
     printf("\nCalculating voter preference...\n");
     get_distance(voter_arr, candidate_arr, POPULATION);
+    printf("\n");
 
-    current_i_voter = 0;
     for(int i = 0; i < STATES; i++) {
         printf("Calculating winners for %s...\n", state_arr[i].name);
 
         // FIRST PAST THE POST
-        int fptp_winner = first_past_the_post(voter_arr, candidate_arr, state_arr[i].population, current_i_voter);
+        int fptp_winner = first_past_the_post(voter_arr, candidate_arr, state_arr[i].population, start_index[i]);
         candidate_arr[fptp_winner].votes_fptp += state_arr[i].electoral_votes;
 
         //voting_ranked(state_arr[i], voter_arr, candidate_arr);
 
+        // RATED VOTING
         int rated_winner = voting_rated(voter_arr, candidate_arr, state_arr[i].population);
         candidate_arr[rated_winner].votes_rated += state_arr[i].electoral_votes;
 
         // STAR VOTING
-        int star_winner = voting_star(state_arr[i].population, voter_arr, candidate_arr, current_i_voter);
+        int star_winner = voting_star(state_arr[i].population, voter_arr, candidate_arr, start_index[i]);
         candidate_arr[star_winner].mandates_star += state_arr[i].electoral_votes;
-
-        current_i_voter += state_arr[i].population;
     }
 
     for (int i = 0; i < CANDIDATES; i++) {

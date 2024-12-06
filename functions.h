@@ -11,15 +11,9 @@
 #define INCOME 3
 #define AGES 5
 #define MAX_NAME_LENGTH 21
-#define VARIANCE 10
+#define VARIANCE 100
+#define POPULATION 250947200
 
-#define POPULATION 250947173 // VIRKER MED POPULATION + X ANTAL EKSTRA
-                             // STOPPER VED GET_DISTANCE FUNKTIONEN (SOM TAGER POPULATION SOM INPUT)
-                             // + 173 FOR 1 KANDIDAT
-                             // + 173 FOR 2 KANDIDATER
-                             // + 173 FOR 3 KANDIDATER
-                             // + 174 FOR 5 KANDIDATER
-                             // + 174 FOR 6 KANDIDATER
 //
 //
 // ENUMS
@@ -40,7 +34,7 @@ typedef struct {
     int is_voting;
     int værdipolitik_v;
     int fordelingspolitik_v;
-    double distance_to_[CANDIDATES]; // Rangering af kandidater (ranked)
+    double distance_to[CANDIDATES]; // Rangering af kandidater (ranked)
     int ratings[CANDIDATES];
 } voter;
 
@@ -71,13 +65,17 @@ typedef struct {
 // Initalization functions
 void init_state(state state_arr[]); //DONE
 void init_candidates(candidate candidate_arr[]); //DONE
-void init_voters(state state_arr[], voter voter_arr[], state cur_state, int current_i_voter, int state, double calc_percent[STATES][4][5]);
-void init_attributes(int state_population, voter voter_arr[], int attribute_amount, double calc_percent[STATES][4][5], int distribution[],
-                     int attribute_type, int fordelingspolitik[][5], int værdipolitik[][5], int current_i_voter, int state);
+void init_voters(voter voter_arr[], state current_state, int start_index, int state,
+                 double calc_percent[][4][5], int fordelingspolitik[][5], int værdipolitik[][5]);
+void init_attributes(int distribution[], int attribute_amount, int category, int start_index,
+                     int state, voter voter_arr[], int state_population, double calc_percent[][4][5],
+                     int fordelingspolitik[][5], int værdipolitik[][5]);
+void init_index(int cumulative_state_population, int start_index[], state state_arr[]);
+
 //
 //
 // Voting system functions
-int first_past_the_post(voter voter_arr[], candidate candidate_arr[], int total_voters, int current_i_voter);
+int first_past_the_post(voter voter_arr[], candidate candidate_arr[], int total_voters, int start_index);
 void voting_rcv(state state_arr[], voter voters_arr[], candidate candidate_arr[]);
 
 //
@@ -109,16 +107,16 @@ void start_fptp_voting(state state_arr[], voter voters_arr[], candidate candidat
 
 //
 //
+// STAR functions
+int voting_star(int current_state_population, voter voter_arr[], candidate candidate_arr[], int start_index);
+
+//
+//
 // Misc.
 void print_percent(double calc_percent[][4][5], int state_population, int state);
 void get_distance(voter voters_arr[], candidate candidate_arr[], int population);
 int variance();
 void prompt_stats(state state_arr[], double calc_percent[][4][5]);
-void init_percent(double calc_percent[][4][5]);
 
-//
-//
-// STAR functions
-int voting_star(int current_state_population, voter voter_arr[], candidate candidate_arr[], int current_i_voter);
 
 #endif //FUNCTIONS_H

@@ -1,12 +1,13 @@
 #include "functions.h"
 
-int voting_rated(voter voter_arr[], candidate candidate_arr[], int population) {
+int voting_rated(voter voter_arr[], candidate candidate_arr[], int state_population) {
+
     int votes_can[CANDIDATES];
     for(int i = 0; i < CANDIDATES; i++) {
         votes_can[i] = 0;
     }
 
-    for (int i = 0; i < population; i++) {
+    for (int i = 0; i < state_population; i++) {
         for (int j = 0; j < CANDIDATES; j++) {
             votes_can[j] += voter_arr[i].ratings[j];
         }

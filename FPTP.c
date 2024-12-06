@@ -19,9 +19,9 @@ int first_past_the_post(voter voter_arr[], candidate candidate_arr[], int total_
             // Loop through all candidates
             for (int j = 0; j < CANDIDATES; j++) {
                 // Check if the candidate is eliminated
-                if (voter_arr[i].distance_to_[j] < min_distance) {
+                if (voter_arr[i].distance_to[j] < min_distance) {
                     // Update the candidate with the smallest distance
-                    min_distance = voter_arr[i].distance_to_[j];
+                    min_distance = voter_arr[i].distance_to[j];
                     candidate_index = j;
                 }
             }

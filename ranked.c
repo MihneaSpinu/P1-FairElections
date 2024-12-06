@@ -20,12 +20,12 @@ void voting_ranked(state current_state, voter voter_arr[], candidate candidate_a
         for (int i = 0; i < total_voters; i++) {
             if (voter_arr[i].is_voting) {
                 int closest_candidate = 0;
-                double min_distance = voter_arr[i].distance_to_[0];
+                double min_distance = voter_arr[i].distance_to[0];
 
                 for (int j = 1; j < CANDIDATES; j++) {
-                    if (voter_arr[i].distance_to_[j] < min_distance) {
+                    if (voter_arr[i].distance_to[j] < min_distance) {
                         closest_candidate = j;
-                        min_distance = voter_arr[i].distance_to_[j];
+                        min_distance = voter_arr[i].distance_to[j];
                     }
                 }
 
@@ -100,7 +100,7 @@ void redistribute_votes(voter voter_arr[], candidate candidate_arr[], int elimin
     for (int i = 0; i < POPULATION; i++) {
         if (voter_arr[i].is_voting) {
             for (int j = 0; j < CANDIDATES; j++) {
-                int ranked_candidate = voter_arr[i].distance_to_[j];
+                int ranked_candidate = voter_arr[i].distance_to[j];
                 if (ranked_candidate != eliminated_candidate && !candidate_arr[ranked_candidate].eliminated) {
                     candidate_arr[ranked_candidate].votes_rcv++;
                     break;
