@@ -33,9 +33,9 @@ int first_past_the_post(voter voter_arr[], candidate candidate_arr[], int total_
         }
     }
     int winner = 0;
-    for (int i = 1; i < CANDIDATES; i++) {
-        printf("Candidate %s has %d votes", candidate_arr[i].name, votes_can[i]);
-        printf("Candidate %s has %d votes", candidate_arr[winner].name, votes_can[winner]);
+    for (int i = 0; i < CANDIDATES; i++) {
+        //printf("Candidate %s has %d votes\n", candidate_arr[i].name, votes_can[i]);
+        //printf("Candidate %s has %d votes\n", candidate_arr[winner].name, votes_can[winner]);
         if(votes_can[i] > votes_can[winner]) {
             winner = i;
         }
