@@ -2,9 +2,8 @@
 #include <stdlib.h>
 #include "functions.h"
 
-void voting_ranked(state current_state, voter voter_arr[], candidate candidate_arr[]) {
+int voting_ranked(state current_state, voter voter_arr[], candidate candidate_arr[]) {
     int total_voters = current_state.population;
-    int winner;
 
     // Beregn politisk afstand for vælgerne til kandidaterne
     get_distance(voter_arr, candidate_arr, total_voters);
@@ -34,10 +33,9 @@ void voting_ranked(state current_state, voter voter_arr[], candidate candidate_a
         }
 
         // Tjek om der er en flertalsvinder
-        winner = check_majority(candidate_arr, total_voters);
+        int winner = check_majority(candidate_arr, total_voters);
         if (winner != -1) {
-            printf("Winner of Ranked Voting: %s\n", candidate_arr[winner].name);
-            break;
+            return winner; // Returnér vinderens indeks
         }
 
         // Find kandidaten med færrest stemmer og eliminér den
@@ -50,26 +48,25 @@ void voting_ranked(state current_state, voter voter_arr[], candidate candidate_a
 
         // Tjek om der kun er én kandidat tilbage
         int remaining_candidates = 0;
+        int last_candidate_index = -1;
+
         for (int i = 0; i < CANDIDATES; i++) {
             if (!candidate_arr[i].eliminated) {
                 remaining_candidates++;
+                last_candidate_index = i;
             }
         }
+
         if (remaining_candidates == 1) {
-            for (int i = 0; i < CANDIDATES; i++) {
-                if (!candidate_arr[i].eliminated) {
-                    printf("Winner of Ranked Voting: %s\n", candidate_arr[i].name);
-                    break;
-                }
-            }
-            break;
+            return last_candidate_index; // Returnér indekset for den sidste kandidat
         }
     }
 }
 
-void ranked_voting(state state_arr[], voter voters_arr[], candidate candidate_arr[]) {
+void ranked_voting(state state_arr[], voter voter_arr[], candidate candidate_arr[]) {
     for (int i = 0; i < STATES; i++) {
-        voting_ranked(state_arr[i], voters_arr, candidate_arr);
+        int winner_index = voting_ranked(state_arr[i], voter_arr, candidate_arr);
+        printf("Winner of Ranked Voting in State %d: %s\n", i + 1, candidate_arr[winner_index].name);
     }
 }
 
