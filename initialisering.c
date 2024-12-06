@@ -66,8 +66,8 @@ void init_state(state state_arr[]) {
 void init_candidates(candidate candidate_arr[]) {
 
     const char* names[60] = {"Donald Trump", "Kamala Harris", "Robert F. Kennedy"};
-    int værdipolitik_c[CANDIDATES] = {7, -5, 3};
-    int fordelingspolitik_c[CANDIDATES] = {7, -5, 3};
+    int værdipolitik_c[CANDIDATES] = {20, -60, 100000};
+    int fordelingspolitik_c[CANDIDATES] = {60, -30, 1000000};
 
     for (int i = 0; i < CANDIDATES; i++) {
         strcpy(candidate_arr[i].name, names[i]);
@@ -97,16 +97,16 @@ void init_voters(state state_arr[], voter voter_arr[], state cur_state, int curr
     calc_percent[1][2] = '\0'; // stopper gender fra at fylde mere end 2 pladser
 
     int fordelingspolitik[4][5] = {
-        {-2, -1, 0, 1, 2},  // RACE
-        {-2, 2, '\0'},     // GENDER
-        {-2, -1, 0, 1, 2},  // INCOME
-        {-2, -1, 0, 1, 2}}; // AGE
+        {-50, -25, 0, 25, 50},  // RACE
+        {-10, 10},     // GENDER
+        {-25, 0, 25},  // INCOME
+        {-50, -25, 0, 25, 50}}; // AGE
 
     int værdipolitik[4][5] = {
-        {-2, -1, 0, 1, 2},  // RACE
-        {-2, 2, '\0'},     // GENDER
-        {-2, -1, 0, 1, 2},  // INCOME
-        {-2, -1, 0, 1, 2}}; // AGE
+       {-50, -25, 0, 25, 50},  // RACE
+       {-10, 10},     // GENDER
+       {-25, 0, 25},  // INCOME
+       {-50, -25, 0, 25, 50}}; // AGE
 
     init_attributes(cur_state.population, voter_arr, RACES, calc_percent,
                     cur_state.race_distribution, race, fordelingspolitik, værdipolitik, current_i_voter);
@@ -171,6 +171,26 @@ void print_percent(double calc_percent[][5], int state_population) {
         }
     }
 }
+/*
+void get_distance_and_rate(voter voter_arr[], candidate candidate_arr[], int population) {
+    for(int i = 0; i < population; i++) {
+        int x_1 = voter_arr[i].fordelingspolitik_v;
+        int y_1 = voter_arr[i].værdipolitik_v;
+
+        for(int j = 0; j < CANDIDATES; j++) {
+            int x_2 = candidate_arr[j].fordelingspolitik_c;
+            int y_2 = candidate_arr[j].værdipolitik_c;
+
+            // Distance = sqrt((x_2 - x_1)^2 + (y_2 - y_1)^2))
+            voter_arr[i].distance_to_[j] = sqrt(pow(x_2 - x_1, 2) + pow(y_2 - y_1, 2));
+
+        }
+        if(i % 1000000 == 0) {
+            printf("%d voters calculated\n", i);
+        }
+    }
+}
+*/
 
 void get_distance(voter voter_arr[], candidate candidate_arr[], int population) {
 
@@ -184,9 +204,39 @@ void get_distance(voter voter_arr[], candidate candidate_arr[], int population) 
 
             // Distance = sqrt((x_2 - x_1)^2 + (y_2 - y_1)^2))
             voter_arr[i].distance_to_[j] = sqrt(pow(x_2 - x_1, 2) + pow(y_2 - y_1, 2));
+
+
+            // Assign ratings based on distance
+            if (voter_arr[i].distance_to_[j] <= 10) {
+                voter_arr[i].ratings[j] = 10;
+            } else if (voter_arr[i].distance_to_[j] <= 20) {
+                voter_arr[i].ratings[j] = 9;
+            } else if (voter_arr[i].distance_to_[j] <= 30) {
+                voter_arr[i].ratings[j] = 8;
+            } else if (voter_arr[i].distance_to_[j] <= 40) {
+                voter_arr[i].ratings[j] = 7;
+            } else if (voter_arr[i].distance_to_[j] <= 50) {
+                voter_arr[i].ratings[j] = 6;
+            }else if (voter_arr[i].distance_to_[j] <= 60) {
+                voter_arr[i].ratings[j] = 5;
+            } else if (voter_arr[i].distance_to_[j] <= 70) {
+                voter_arr[i].ratings[j] = 4;
+            } else if (voter_arr[i].distance_to_[j] <= 80) {
+                voter_arr[i].ratings[j] = 3;
+            } else if (voter_arr[i].distance_to_[j] <= 90) {
+                voter_arr[i].ratings[j] = 2;
+            } else if (voter_arr[i].distance_to_[j] <= 100) {
+                voter_arr[i].ratings[j] = 1;
+            } else {
+                voter_arr[i].ratings[j] = 0;
+            }
+           // printf("Voter %d, Candidate %d, Distance: %.2f, Rating: %d\n", i, j, voter_arr[i].distance_to_[j], voter_arr[i].ratings[j]);
+
         }
+
         if(i % 1000000 == 0) {
-            printf("%d voters calculated\n");
+            printf("%d voters calculated\n", i);
         }
     }
 }
+

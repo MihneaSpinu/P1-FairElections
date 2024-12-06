@@ -4,7 +4,6 @@
 #include "functions.h"
 
 int main() {
-
     srand(time(NULL));
 
     candidate candidate_arr[CANDIDATES];
@@ -31,20 +30,15 @@ int main() {
     printf("Calculate winners for each state..\n");
     for(int i = 0; i < STATES; i++) {
         printf("Calculating winners for voter %s...\n", state_arr[i].name);
-        int fptp_winner = first_past_the_post(voter_arr, candidate_arr, state_arr[i].population, current_i_voter);
-        candidate_arr[fptp_winner].votes_fptp += state_arr[i].electoral_votes;
-        //ranked_choice_voting();
-        //rated_voting();
-        //voting_star(state_arr, voter_arr, candidate_arr);
+        int rated_winner = voting_rated(voter_arr, candidate_arr, state_arr[i].population);
+        candidate_arr[rated_winner].votes_rated += state_arr[i].electoral_votes;
         current_i_voter += state_arr[i].population;
     }
     for (int i = 0; i < CANDIDATES; i++) {
         printf("Candidate %d: %s\n", i, candidate_arr[i].name);
-        printf("FPTP mandates: %d\n", candidate_arr[i].votes_fptp);
+        //printf("FPTP mandates: %d\n", candidate_arr[i].votes_fptp);
+        printf("Rated mandates: %d\n", candidate_arr[i].votes_rated);
     }
-
-    //print_winners();
-    //determine_fairness();
 
     free(voter_arr);
     free(state_arr);

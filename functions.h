@@ -34,6 +34,7 @@ typedef struct {
     int værdipolitik_v;
     int fordelingspolitik_v;
     double distance_to_[CANDIDATES]; // Rangering af kandidater (ranked)
+    int ratings[CANDIDATES]; // Rated
 } voter;
 
 typedef struct {
@@ -71,7 +72,7 @@ void init_attributes(int state_population, voter voter_arr[], int attribute_amou
 // Voting system functions
 int first_past_the_post(voter voter_arr[], candidate candidate_arr[], int total_voters, int current_i_voter);
 void voting_star(state state_arr[], voter voters_arr[], candidate candidate_arr[]);
-void voting_rated(state state_arr[], voter voters_arr[], candidate candidate_arr[]);
+int voting_rated(voter voter_arr[], candidate candidate_arr[], int population);
 void voting_rcv(state state_arr[], voter voters_arr[], candidate candidate_arr[]);
 
 //
@@ -128,6 +129,7 @@ void start_fptp_voting(state state_arr[], voter voters_arr[], candidate candidat
 // Misc.
 void print_percent(double calc_percent[][5], int state_population);
 void get_distance(voter voters_arr[], candidate candidate_arr[], int population);
+//void get_distance_and_rate(voter voter_arr[], candidate candidate_arr[], int population);
 
 //
 //
