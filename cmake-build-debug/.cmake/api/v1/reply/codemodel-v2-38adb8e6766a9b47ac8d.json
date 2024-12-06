@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/Jacob/Documents/GitHub/P1-FairElections/cmake-build-debug",
-		"source" : "C:/Users/Jacob/Documents/GitHub/P1-FairElections"
+		"build" : "C:/Users/nikla/CLionProjects/P1-FairElections/cmake-build-debug",
+		"source" : "C:/Users/nikla/CLionProjects/P1-FairElections"
 	},
 	"version" : 
 	{
