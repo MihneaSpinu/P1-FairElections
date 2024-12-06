@@ -47,52 +47,17 @@ int voting_star(int current_state_population, voter voter_arr[], candidate candi
     print_results(winner);
     return winner_index;
 }
+    //print_results(winner);
+    return winner_index;
 
 // void star_voting(state state_arr[], voter voters_arr[], candidate candidate_arr[]) {
 //     for (int i = 0; i < STATES; i++) {
 //         voting_star(state_arr, voters_arr, candidate_arr);
 //     }
 // }
+}
 
 void print_results(candidate winner) {
     printf("The winner is: %s\n", winner.name);
     printf("Votes: %d\n", winner.votes_star);
 }
-
-
-/*
-int main() {
-    srand(time(NULL)); // Seed the random number generator
-
-    // Define the number of voters and candidates
-    int total_voters = 10000;
-    int total_candidates = CANDIDATES;
-
-    // Initialize voters
-    voter voters_arr[total_voters];
-    for (int i = 0; i < total_voters; i++) {
-        voters_arr[i].is_voting = 1; // All voters are voting
-        for (int j = 0; j < total_candidates; j++) {
-            voters_arr[i].distance_to_[j] = rand() % 11; // Random distances between 0 and 10
-        }
-    }
-
-    // Initialize candidates
-    candidate candidate_arr[total_candidates];
-    for (int i = 0; i < total_candidates; i++) {
-        snprintf(candidate_arr[i].name, sizeof(candidate_arr[i].name), "Candidate %d", i + 1);
-        candidate_arr[i].votes_star = 0;
-    }
-
-    // Initialize states
-    state state_arr[STATES];
-    for (int i = 0; i < STATES; i++) {
-        state_arr[i].population = total_voters;
-    }
-
-    // Run the STAR voting system
-    voting_star(*state_arr, voters_arr, candidate_arr);
-
-    return 0;
-}
-*/
