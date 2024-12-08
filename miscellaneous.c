@@ -18,8 +18,8 @@ void print_percent(double calc_percent[][4][5], int state_population, int state)
         for (int attribute = 0; attribute < 5; attribute++) {
             if(calc_percent[state][category][attribute] != 0) {
                 printf("%s: %.2lf%% (%d)\n", voter_attributes[category][attribute],
-                                            calc_percent[state][category][attribute] / state_population * 100,
-                                            (int)calc_percent[state][category][attribute]);
+                                             calc_percent[state][category][attribute] / state_population * 100,
+                                             (int)calc_percent[state][category][attribute]);
             }
         }
     }
@@ -72,7 +72,7 @@ void get_distance(voter voter_arr[], candidate candidate_arr[], int population) 
     }
 }
 
-// returnere en range centreret omkring 0 ud fra VARIANCE
+// Returnere en range med størrelse VARIANCE centreret omkring 0
 int variance() {
     return (rand() % (VARIANCE + 1)) - (VARIANCE / 2);
 }
@@ -94,5 +94,15 @@ void prompt_stats(state state_arr[], double calc_percent[][4][5]) {
             }
         }
     } while(strcmp(input, "q") != 0);
+
+}
+
+void print_winners(char winner[], int mandates[], char *runner_up[]) {
+
+    printf("%s wins with %d electoral votes\n", winner, mandates[0]);
+    printf("\nRunners up:\n");
+    for(int i = 0; i < CANDIDATES - 1; i++) {
+        printf("%s with %d electoral votes\n", runner_up[i], mandates[i+1]);
+    }
 
 }

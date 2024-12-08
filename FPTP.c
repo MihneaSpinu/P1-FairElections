@@ -3,15 +3,15 @@
 #include "functions.h"
 
 // Run the first past the post voting system
-int first_past_the_post(voter voter_arr[], candidate candidate_arr[], int total_voters, int current_i_voter) {
+int first_past_the_post(voter voter_arr[], int state_population, int start_index) {
     int votes_can[CANDIDATES];
     for (int i = 0; i < CANDIDATES; i++) {
         votes_can[i] = 0;
     }
     // Loop through all voters
-    for (int i = current_i_voter; i < total_voters + current_i_voter; i++) {
+    for (int i = start_index; i < state_population + start_index; i++) {
         // Check if the voter is voting
-        if (voter_arr[i].is_voting) {
+
             // Find the candidate with the smallest distance to the voter
             int min_distance = INT_MAX;
             int candidate_index = -1;
@@ -30,8 +30,8 @@ int first_past_the_post(voter voter_arr[], candidate candidate_arr[], int total_
             if (candidate_index != -1) {
                 votes_can[candidate_index]++;
             }
-        }
     }
+
     int winner = 0;
     for (int i = 0; i < CANDIDATES; i++) {
         //printf("Candidate %s has %d votes\n", candidate_arr[i].name, votes_can[i]);

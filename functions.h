@@ -5,13 +5,13 @@
 //
 // DEFINES
 #define STATES 51
-#define CANDIDATES 3
+#define CANDIDATES 5
 #define RACES 5
 #define GENDERS 2
 #define INCOME 3
 #define AGES 5
 #define MAX_NAME_LENGTH 21
-#define VARIANCE 100
+#define VARIANCE 10
 #define POPULATION 250947200
 
 //
@@ -31,7 +31,6 @@ typedef struct {
     gender_e gender_v;
     race_e race_v;
     income_e income_v;
-    int is_voting;
     int værdipolitik_v;
     int fordelingspolitik_v;
     double distance_to[CANDIDATES]; // Rangering af kandidater (ranked)
@@ -44,10 +43,12 @@ typedef struct {
     int fordelingspolitik_c;
     int votes_fptp;
     int votes_star;
-    int mandates_star;
     int votes_rated;
     int votes_rcv;
+    int star_mandates;
+    int rcv_mandates;
     int eliminated; // Flag for elimineret kandidat (ranked)
+
 } candidate;
 
 typedef struct {
@@ -75,7 +76,7 @@ void init_index(int cumulative_state_population, int start_index[], state state_
 //
 //
 // Voting system functions
-int first_past_the_post(voter voter_arr[], candidate candidate_arr[], int total_voters, int start_index);
+int first_past_the_post(voter voter_arr[], int state_population, int start_index);
 void voting_rcv(state state_arr[], voter voters_arr[], candidate candidate_arr[]);
 
 //
@@ -86,16 +87,17 @@ void print_winners();
 //
 //
 // Ranked functions
-void voting_ranked(state current_state, voter voter_arr[], candidate candidate_arr[]);
-int check_majority(candidate candidate_arr[], int total_voters);
+int ranked_choice_voting(int state_population, voter voter_arr[], candidate candidate_arr[], int start_index);
+int check_majority(candidate candidate_arr[], int state_population);
 int find_lowest_votes(candidate candidate_arr[]);
-void redistribute_votes(voter voters_arr[], candidate candidate_arr[], int eliminated_candidate);
+void redistribute_votes(voter voter_arr[], candidate candidate_arr[],
+                        int eliminated_candidate, int state_population, int start_index);
 void reset_votes(candidate candidate_arr[]);
 
 //
 //
 // Rated functions
-int voting_rated(voter voter_arr[], candidate candidate_arr[], int population);
+int voting_rated(voter voter_arr[], int population, int start_index);
 
 //
 //

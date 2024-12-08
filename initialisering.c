@@ -36,9 +36,9 @@ void init_state(state state_arr[]) {
 // funktion til at initialisere kandidaterne
 void init_candidates(candidate candidate_arr[]) {
 
-    const char *names[5] = {"Donald Trump", "Kamala Harris", "Robert F. Kennedy"};
-    int værdipolitik_c[CANDIDATES] = {75, -50, 60};
-    int fordelingspolitik_c[CANDIDATES] = {70, -90, 90};
+    const char *names[CANDIDATES] = {"Donald Trump", "Kamala Harris", "Robert F. Kennedy", "Jill Stein", "Chase Oliver"};
+    int værdipolitik_c[CANDIDATES] = {40, -13, 21, -19, -31};
+    int fordelingspolitik_c[CANDIDATES] = {-25, 71, -21, 8, -4};
 
     for (int i = 0; i < CANDIDATES; i++) {
         strcpy(candidate_arr[i].name, names[i]);
@@ -48,7 +48,8 @@ void init_candidates(candidate candidate_arr[]) {
         candidate_arr[i].votes_star = 0;
         candidate_arr[i].votes_rated = 0;
         candidate_arr[i].votes_rcv = 0;
-        candidate_arr[i].mandates_star = 0;
+        candidate_arr[i].star_mandates = 0;
+        candidate_arr[i].rcv_mandates = 0;
     }
 }
 
@@ -59,7 +60,6 @@ void init_voters(voter voter_arr[], state current_state, int start_index, int st
     for(int i = start_index; i < current_state.population + start_index; i++) {
         voter_arr[i].fordelingspolitik_v = 0;
         voter_arr[i].værdipolitik_v = 0;
-        voter_arr[i].is_voting = 1;
     }
 
     init_attributes(current_state.race_distribution, RACES, race, start_index, state, voter_arr,
