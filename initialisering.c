@@ -37,8 +37,9 @@ void init_state(state state_arr[]) {
 void init_candidates(candidate candidate_arr[]) {
 
     const char *names[CANDIDATES] = {"Donald Trump", "Kamala Harris", "Robert F. Kennedy", "Jill Stein", "Chase Oliver"};
-    int værdipolitik_c[CANDIDATES] = {50, -50, -50, 50, 75};
-    int fordelingspolitik_c[CANDIDATES] = {50, -50, 50, -50, -25};
+
+    int værdipolitik_c[CANDIDATES] = {-25, 25, 0, 25, -25};
+    int fordelingspolitik_c[CANDIDATES] = {-25, 25, 0, -25, 25};
 
     for (int i = 0; i < CANDIDATES; i++) {
         strcpy(candidate_arr[i].name, names[i]);

@@ -11,7 +11,7 @@
 #define INCOME 3
 #define AGES 5
 #define MAX_NAME_LENGTH 21
-#define VARIANCE 10
+#define VARIANCE 0
 #define POPULATION 250947200
 
 //
