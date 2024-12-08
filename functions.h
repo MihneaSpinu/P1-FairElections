@@ -90,8 +90,7 @@ void print_winners();
 int ranked_choice_voting(int state_population, voter voter_arr[], candidate candidate_arr[], int start_index);
 int check_majority(candidate candidate_arr[], int state_population);
 int find_lowest_votes(candidate candidate_arr[]);
-void redistribute_votes(voter voter_arr[], candidate candidate_arr[],
-                        int eliminated_candidate, int state_population, int start_index);
+void distribute_votes(voter voter_arr[], candidate candidate_arr[], int state_population, int start_index);
 void reset_votes(candidate candidate_arr[]);
 
 //

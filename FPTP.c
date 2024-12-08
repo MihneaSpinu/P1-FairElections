@@ -4,10 +4,8 @@
 
 // Run the first past the post voting system
 int first_past_the_post(voter voter_arr[], int state_population, int start_index) {
-    int votes_can[CANDIDATES];
-    for (int i = 0; i < CANDIDATES; i++) {
-        votes_can[i] = 0;
-    }
+
+    int votes_can[CANDIDATES] = {0};
     // Loop through all voters
     for (int i = start_index; i < state_population + start_index; i++) {
         // Check if the voter is voting
@@ -34,8 +32,6 @@ int first_past_the_post(voter voter_arr[], int state_population, int start_index
 
     int winner = 0;
     for (int i = 0; i < CANDIDATES; i++) {
-        //printf("Candidate %s has %d votes\n", candidate_arr[i].name, votes_can[i]);
-        //printf("Candidate %s has %d votes\n", candidate_arr[winner].name, votes_can[winner]);
         if(votes_can[i] > votes_can[winner]) {
             winner = i;
         }

@@ -4,32 +4,14 @@
 
 int ranked_choice_voting(int state_population, voter voter_arr[], candidate candidate_arr[], int start_index) {
 
-    // MULIGVIS FJERN
+    // Første runde: Tæl førstevalgstemmer baseret på mindste afstand
     for(int i = 0; i < CANDIDATES; i++) {
         candidate_arr[i].eliminated = 0;
     }
+    distribute_votes(voter_arr, candidate_arr, state_population, start_index);
 
-    // Loop indtil der er en vinder
+    // Loop indtil der er fundet en vinder
     while (1) {
-        // Nulstil stemmetælling
-        for (int i = 0; i < CANDIDATES; i++) {
-            candidate_arr[i].votes_rcv = 0;
-        }
-
-        // Første runde: Tæl førstevalgstemmer baseret på mindste afstand
-        for (int i = start_index; i < state_population + start_index; i++) {
-                int closest_candidate = 0;
-                double min_distance = voter_arr[i].distance_to[0];
-
-                for (int j = 1; j < CANDIDATES; j++) {
-                    if (voter_arr[i].distance_to[j] < min_distance) {
-                        closest_candidate = j;
-                        min_distance = voter_arr[i].distance_to[j];
-                    }
-                }
-
-                candidate_arr[closest_candidate].votes_rcv++;
-        }
 
         // Tjek om der er en flertalsvinder
         int winner = check_majority(candidate_arr, state_population);
@@ -42,7 +24,7 @@ int ranked_choice_voting(int state_population, voter voter_arr[], candidate cand
         candidate_arr[eliminated_candidate].eliminated = 1;
 
         // Redistribuer stemmer fra eliminerede kandidater
-        redistribute_votes(voter_arr, candidate_arr, eliminated_candidate, state_population, start_index);
+        distribute_votes(voter_arr, candidate_arr, state_population, start_index);
 
         // Tjek om der kun er én kandidat tilbage
         int remaining_candidates = CANDIDATES;
@@ -55,8 +37,7 @@ int ranked_choice_voting(int state_population, voter voter_arr[], candidate cand
         if (remaining_candidates == 1) {
             for (int i = 0; i < CANDIDATES; i++) {
                 if (!candidate_arr[i].eliminated) {
-                    winner = i;
-                    return winner;
+                    return i;
                 }
             }
         }
@@ -86,16 +67,24 @@ int find_lowest_votes(candidate candidate_arr[]) {
     return candidate_to_eliminate;
 }
 
-void redistribute_votes(voter voter_arr[], candidate candidate_arr[],
-                        int eliminated_candidate, int state_population, int start_index) {
+void distribute_votes(voter voter_arr[], candidate candidate_arr[], int state_population, int start_index) {
+
+    for(int i = 0; i < CANDIDATES; i++) {
+        if(!candidate_arr[i].eliminated) {
+            candidate_arr[i].votes_rcv = 0;
+        }
+    }
 
     for (int i = start_index; i < state_population + start_index; i++) {
+        int closest_candidate;
+        double min_distance = INT_MAX;
+
         for (int j = 0; j < CANDIDATES; j++) {
-            int ranked_candidate = voter_arr[i].distance_to[j];
-            if (ranked_candidate != eliminated_candidate && !candidate_arr[ranked_candidate].eliminated) {
-                candidate_arr[ranked_candidate].votes_rcv++;
-                break;
+            if (!candidate_arr[j].eliminated && voter_arr[i].distance_to[j] < min_distance) {
+                closest_candidate = j;
+                min_distance = voter_arr[i].distance_to[j];
             }
         }
+        candidate_arr[closest_candidate].votes_rcv++;
     }
 }

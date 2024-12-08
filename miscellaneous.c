@@ -85,7 +85,7 @@ void prompt_stats(state state_arr[], double calc_percent[][4][5]) {
     do {
         printf("\nSee data for state:\n");
         scanf("%s", &input);
-        for(int i = 0; i < STATES + 1; i++) {
+        for(int i = 0; i < STATES; i++) {
             if(strcmp(input, state_arr[i].name) == 0) {
                 printf("Population: %d\n", state_arr[i].population);
                 printf("Electoral votes: %d\n", state_arr[i].electoral_votes);
@@ -97,6 +97,7 @@ void prompt_stats(state state_arr[], double calc_percent[][4][5]) {
 
 }
 
+/*
 void print_winners(char winner[], int mandates[], char *runner_up[]) {
 
     printf("%s wins with %d electoral votes\n", winner, mandates[0]);
@@ -104,5 +105,5 @@ void print_winners(char winner[], int mandates[], char *runner_up[]) {
     for(int i = 0; i < CANDIDATES - 1; i++) {
         printf("%s with %d electoral votes\n", runner_up[i], mandates[i+1]);
     }
-
 }
+*/
