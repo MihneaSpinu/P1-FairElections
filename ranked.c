@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <stdlib.h>
+#include <limits.h>
 #include "functions.h"
 
 int ranked_choice_voting(int state_population, voter voter_arr[], candidate candidate_arr[], int start_index) {
@@ -46,7 +46,7 @@ int find_lowest_votes(candidate candidate_arr[]) {
 void distribute_votes(voter voter_arr[], candidate candidate_arr[], int state_population, int start_index) {
 
     int closest_candidate;
-    double min_distance = INT_MAX;
+    double min_distance;
 
     for(int i = 0; i < CANDIDATES; i++) {
         if(!candidate_arr[i].eliminated) {
@@ -55,6 +55,7 @@ void distribute_votes(voter voter_arr[], candidate candidate_arr[], int state_po
     }
 
     for (int i = start_index; i < state_population + start_index; i++) {
+        min_distance = INT_MAX;
         for (int j = 0; j < CANDIDATES; j++) {
             if (!candidate_arr[j].eliminated && voter_arr[i].distance_to[j] < min_distance) {
                 closest_candidate = j;
