@@ -67,7 +67,7 @@ int variance() {
 }
 
 // Printer dataene fra en givet stat
-void prompt_stats(state state_arr[], double calc_percent[][4][5]) {
+void prompt_stats(state state_arr[], double calc_percent[][4][5], candidate candidate_arr[]) {
 
     char input[MAX_NAME_LENGTH];
 
@@ -78,6 +78,13 @@ void prompt_stats(state state_arr[], double calc_percent[][4][5]) {
             if(strcmp(input, state_arr[i].name) == 0) {
                 printf("Population: %d\n", state_arr[i].population);
                 printf("Electoral votes: %d\n", state_arr[i].electoral_votes);
+                for(int j = 0; j < CANDIDATES; j++) {
+                    printf("Candidate %s has:\n", candidate_arr[j].name);
+                    printf("%d FPTP votes\n", state_arr[i].candidate_votes_fptp[j]);
+                    printf("%d STAR votes\n", state_arr[i].candidate_votes_star[j]);
+                    printf("%d Rated votes\n", state_arr[i].candidate_votes_rated[j]);
+                    printf("%d RC votes\n", state_arr[i].candidate_votes_ranked[j]);
+                }
                 print_percent(calc_percent, state_arr[i].population, i);
                 break;
             }

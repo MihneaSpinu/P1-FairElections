@@ -28,6 +28,12 @@ void init_state(state state_arr[]) {
             fscanf(f, "%d,", &state_arr[i].income_distribution[j]);
         }
         fscanf(f, "\n");
+        for(int j = 0; j < CANDIDATES; j++) {
+            state_arr[i].candidate_votes_fptp[j] = 0;
+            state_arr[i].candidate_votes_star[j] = 0;
+            state_arr[i].candidate_votes_rated[j] = 0;
+            state_arr[i].candidate_votes_ranked[j] = 0;
+        }
     }
 
     fclose(f);
@@ -51,6 +57,8 @@ void init_candidates(candidate candidate_arr[]) {
         candidate_arr[i].votes_rcv = 0;
         candidate_arr[i].star_mandates = 0;
         candidate_arr[i].rcv_mandates = 0;
+        candidate_arr[i].fptp_mandates = 0;
+        candidate_arr[i].rated_mandates = 0;
     }
 }
 
