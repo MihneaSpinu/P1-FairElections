@@ -1,17 +1,15 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include "functions.h"
 
-int voting_star(int current_state_population, voter voter_arr[], candidate candidate_arr[], int current_i_voter, state *current_state) {
+int voting_star(int current_state_population, voter voter_arr[], candidate candidate_arr[], int start_index) {
 
     // Initialize scores for each candidate
     int scores[CANDIDATES] = {0};
 
     // Calculate scores based on distances
-    for (int i = current_i_voter; i < current_state_population + current_i_voter; i++) {
+    for (int i = start_index; i < current_state_population + start_index; i++) {
         for (int j = 0; j < CANDIDATES; j++) {
             scores[j] += voter_arr[i].ratings[j];
-            //scores[j] += (10 * (250 - voter_arr[i].distance_to_[j]) /250); // Assuming distance is from 0 to 250
         }
     }
 
@@ -33,8 +31,8 @@ int voting_star(int current_state_population, voter voter_arr[], candidate candi
 
     // Runoff between top two candidates
     int votes_top1 = 0, votes_top2 = 0;
-    for (int i = current_i_voter; i < current_i_voter + current_state_population; i++) {
-        if (voter_arr[i].distance_to_[top1] < voter_arr[i].distance_to_[top2]) {
+    for (int i = start_index; i < start_index + current_state_population; i++) {
+        if (voter_arr[i].distance_to[top1] < voter_arr[i].distance_to[top2]) {
             votes_top1++;
         } else {
             votes_top2++;
@@ -44,14 +42,6 @@ int voting_star(int current_state_population, voter voter_arr[], candidate candi
     int winner_index = (votes_top1 > votes_top2) ? top1 : top2;
     candidate winner = candidate_arr[winner_index];
     winner.votes_star = (votes_top1 > votes_top2) ? votes_top1 : votes_top2;
-    current_state->candidate_votes_star[top1] = votes_top1;
-    current_state->candidate_votes_star[top2] = votes_top2;
-    print_results(winner);
+
     return winner_index;
-}
-
-
-void print_results(candidate winner) {
-    printf("The winner is: %s\n", winner.name);
-    printf("Votes: %d\n", winner.votes_star);
 }
