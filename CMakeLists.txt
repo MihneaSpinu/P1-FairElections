@@ -10,4 +10,5 @@ add_executable(P1_Projekt main.c
         initialisering.c
         functions.h
         STAR.c
+        miscellaneous.c
 )
