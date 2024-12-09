@@ -1,14 +1,14 @@
 #include <stdio.h>
-#include <stdlib.h>
+#include <limits.h>
 #include "functions.h"
 
-int ranked_choice_voting(int state_population, voter voter_arr[], candidate candidate_arr[], int start_index) {
+int ranked_choice_voting(int state_population, voter voter_arr[], candidate candidate_arr[], int start_index, state *current_state) {
 
     int remaining_candidates = CANDIDATES;
     for(int i = 0; i < CANDIDATES; i++) {
         candidate_arr[i].eliminated = 0;
     }
-    distribute_votes(voter_arr, candidate_arr, state_population, start_index);
+    distribute_votes(voter_arr, candidate_arr, state_population, start_index, current_state);
 
     while (remaining_candidates > 1) {
 
@@ -18,7 +18,7 @@ int ranked_choice_voting(int state_population, voter voter_arr[], candidate cand
         remaining_candidates--;
 
         // Redistribuer stemmer fra eliminerede kandidater
-        distribute_votes(voter_arr, candidate_arr, state_population, start_index);
+        distribute_votes(voter_arr, candidate_arr, state_population, start_index, current_state);
     }
 
     for (int i = 0; i < CANDIDATES; i++) {
@@ -43,10 +43,10 @@ int find_lowest_votes(candidate candidate_arr[]) {
     return candidate_to_eliminate;
 }
 
-void distribute_votes(voter voter_arr[], candidate candidate_arr[], int state_population, int start_index) {
+void distribute_votes(voter voter_arr[], candidate candidate_arr[], int state_population, int start_index, state *current_state) {
 
     int closest_candidate;
-    double min_distance = INT_MAX;
+    double min_distance;
 
     for(int i = 0; i < CANDIDATES; i++) {
         if(!candidate_arr[i].eliminated) {
@@ -55,6 +55,7 @@ void distribute_votes(voter voter_arr[], candidate candidate_arr[], int state_po
     }
 
     for (int i = start_index; i < state_population + start_index; i++) {
+        min_distance = INT_MAX;
         for (int j = 0; j < CANDIDATES; j++) {
             if (!candidate_arr[j].eliminated && voter_arr[i].distance_to[j] < min_distance) {
                 closest_candidate = j;
@@ -62,5 +63,6 @@ void distribute_votes(voter voter_arr[], candidate candidate_arr[], int state_po
             }
         }
         candidate_arr[closest_candidate].votes_rcv++;
+        current_state->candidate_votes_ranked[closest_candidate]++;
     }
 }
