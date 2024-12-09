@@ -83,7 +83,7 @@ void prompt_stats(state state_arr[], double calc_percent[][4][5], candidate cand
                     printf("%d FPTP votes\n", state_arr[i].candidate_votes_fptp[j]);
                     printf("%d STAR votes\n", state_arr[i].candidate_votes_star[j]);
                     printf("%d Rated votes\n", state_arr[i].candidate_votes_rated[j]);
-                    printf("%d RC votes\n", state_arr[i].candidate_votes_ranked[j]);
+                    printf("%d RCV votes\n", state_arr[i].candidate_votes_ranked[j]);
                 }
                 print_percent(calc_percent, state_arr[i].population, i);
                 break;
