@@ -53,34 +53,34 @@ int main() {
         printf("Calculating winners for %s...\n", state_arr[i].name);
 
             // FIRST PAST THE POST
-            int fptp_winner = first_past_the_post(voter_arr, state_arr[i].population, start_index[i]);
-            candidate_arr[fptp_winner].votes_fptp += state_arr[i].electoral_votes;
+            int fptp_winner = first_past_the_post(voter_arr, state_arr[i].population, start_index[i], &state_arr[i]);
+            candidate_arr[fptp_winner].fptp_mandates += state_arr[i].electoral_votes;
 
             // RANKED VOTING
-            int rcv_winner = ranked_choice_voting(state_arr[i].population, voter_arr, candidate_arr, start_index[i]);
+            int rcv_winner = ranked_choice_voting(state_arr[i].population, voter_arr, candidate_arr, start_index[i], &state_arr[i]);
             candidate_arr[rcv_winner].rcv_mandates += state_arr[i].electoral_votes;
 
             // RATED VOTING
-            int rated_winner = voting_rated(voter_arr, state_arr[i].population, start_index[i]);
-            candidate_arr[rated_winner].votes_rated += state_arr[i].electoral_votes;
+            int rated_winner = voting_rated(voter_arr, state_arr[i].population, start_index[i], &state_arr[i]);
+            candidate_arr[rated_winner].rated_mandates += state_arr[i].electoral_votes;
 
             // STAR VOTING
-            int star_winner = voting_star(state_arr[i].population, voter_arr, candidate_arr, start_index[i]);
+            int star_winner = voting_star(state_arr[i].population, voter_arr, candidate_arr, start_index[i], &state_arr[i]);
             candidate_arr[star_winner].star_mandates += state_arr[i].electoral_votes;
         }
 
     for (int i = 0; i < CANDIDATES; i++) {
         printf("\n%s (%d) got \n", candidate_arr[i].name, i + 1);
-        printf("FPTP mandates: %d\n", candidate_arr[i].votes_fptp);
+        printf("FPTP mandates: %d\n", candidate_arr[i].fptp_mandates);
         printf("STAR mandates: %d\n", candidate_arr[i].star_mandates);
-        printf("RATED mandates: %d\n", candidate_arr[i].votes_rated);
+        printf("RATED mandates: %d\n", candidate_arr[i].rated_mandates);
         printf("RANKED mandates: %d\n", candidate_arr[i].rcv_mandates);
     }
 
     //print_winners();
     //determine_fairness();
 
-    prompt_stats(state_arr, calc_percent);
+    prompt_stats(state_arr, calc_percent, candidate_arr);
 
     free(voter_arr);
     free(state_arr);
