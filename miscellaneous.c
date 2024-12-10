@@ -62,8 +62,20 @@ void get_distance(voter voter_arr[], candidate candidate_arr[], int population) 
 }
 
 // Returnere en range med størrelse VARIANCE centreret omkring 0
-int variance() {
-    return (rand() % (VARIANCE + 1)) - (VARIANCE / 2);
+double normal_distribution() {
+    double x, y, z;
+    do {
+        x = ((double) rand() / RAND_MAX) * 2 - 1;
+        y = ((double) rand() / RAND_MAX) * 2 - 1;
+        z = x * x + y * y;
+    } while (z == 0 || z > 1);
+
+    double h = sqrt(-2 * log(z) / z);
+    return x * h;
+}
+
+double variance() {
+    return normal_distribution() * 50; // tallet kan ændres for at skifte variansen
 }
 
 // Printer dataene fra en givet stat
