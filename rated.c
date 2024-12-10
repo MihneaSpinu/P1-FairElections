@@ -9,10 +9,18 @@ int voting_rated(voter voter_arr[], int state_population, int start_index) {
 
     for (int i = start_index; i < state_population + start_index; i++) {
         for (int j = 0; j < CANDIDATES; j++) {
-            votes_can[j] += voter_arr[i].ratings[j];
-            current_state->candidate_votes_rated[j] += voter_arr[i].ratings[j];
+            get_ratings(voter_arr, i, j);
         }
     }
+
+    for (int i = start_index; i < state_population + start_index; i++) {
+        for (int j = 0; j < CANDIDATES; j++) {
+            votes_can[j] += voter_arr[i].ratings[j];
+
+        }
+    }
+
+
 
     int winner = 0;
     for (int i = 0; i < CANDIDATES; i++) {
