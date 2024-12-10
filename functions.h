@@ -97,6 +97,7 @@ void reset_votes(candidate candidate_arr[]);
 //
 // Rated functions
 int voting_rated(voter voter_arr[], int population, int start_index);
+void get_ratings (voter voter_arr[], int i, int j);
 
 //
 //

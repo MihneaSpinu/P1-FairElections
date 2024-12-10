@@ -39,19 +39,6 @@ void get_distance(voter voter_arr[], candidate candidate_arr[], int population) 
             // Distance = sqrt((x_2 - x_1)^2 + (y_2 - y_1)^2))
             voter_arr[i].distance_to[j] = sqrt(pow(x_2 - x_1, 2) + pow(y_2 - y_1, 2));
 
-            // RATED
-            int distance_rating[] = {20, 40, 60, 80, 100, 120, 140, 160, 180, 200};
-            int ratings[] = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
-            int k;
-            for (k = 0; k < sizeof(distance_rating) / sizeof(distance_rating[0]); k++) {
-                if (voter_arr[i].distance_to[j] <= distance_rating[k]) {
-                    voter_arr[i].ratings[j] = ratings[k];
-                    break;
-                }
-            }
-            if (k == sizeof(distance_rating) / sizeof(distance_rating[0])) {
-                voter_arr[i].ratings[j] = ratings[k];
-            }
         }
 
         if((i+1) % (population / 10) == 0 && i != 0) {
@@ -84,6 +71,22 @@ void prompt_stats(state state_arr[], double calc_percent[][4][5]) {
         }
     } while(strcmp(input, "q") != 0);
 
+}
+
+void get_ratings (voter voter_arr[], int i, int j) {
+    int distance_rating[] = {20, 40, 60, 80, 100, 120, 140, 160, 180, 200};
+    int ratings[] = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
+
+    int k;
+    for (k = 0; k < sizeof(distance_rating) / sizeof(distance_rating[0]); k++) {
+        if (voter_arr[i].distance_to[j] <= distance_rating[k]) {
+            voter_arr[i].ratings[j] = ratings[k];
+            return;
+        }
+    }
+    if (k == sizeof(distance_rating) / sizeof(distance_rating[0])) {
+        voter_arr[i].ratings[j] = ratings[k];
+    }
 }
 
 /*
