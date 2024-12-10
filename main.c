@@ -11,7 +11,7 @@ int main() {
 
     int candidates;
     int simulation_choice;
-    char electoral_choice;
+    char electoral_choice[2];
     char candidate_name[5][MAX_NAME_LENGTH];
     char name[MAX_NAME_LENGTH];
     int værdi[5];
@@ -76,7 +76,7 @@ int main() {
     get_distance(voter_arr, candidate_arr, POPULATION);
     printf("\n");
 
-    if(simulation_choice == 1 && strcmp((char*)electoral_choice, "y") == 0) {
+    if(simulation_choice == 1 && strcmp(electoral_choice, "y") == 0) {
         for(int i = 0; i < STATES; i++) {
             printf("Calculating winners for %s...\n", state_arr[i].name);
             if(i == 19 || i == 27) { // MAINE & NEBRASKA
