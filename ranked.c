@@ -1,40 +1,86 @@
-#include <limits.h>
+ /*
 #include <stdio.h>
-#include <limits.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
 #include "functions.h"
 
-int ranked_choice_voting(int state_population, voter voter_arr[], candidate candidate_arr[], int start_index) {
+// Reset stemmer for kandidater
+ void reset_votes(candidate candidate_arr[])
+ {
+     for (int i = 0; i < CANDIDATES; i++)
+     {
+         candidate_arr[i].votes_rcv = 0;
+     }
+ }
 
-    int remaining_candidates = CANDIDATES;
-    for(int i = 0; i < CANDIDATES; i++) {
-        candidate_arr[i].eliminated = 0;
-    }
-    distribute_votes(voter_arr, candidate_arr, state_population, start_index);
+ void redistribute_votes(voter * voter, candidate * candidate, int state_population);
 
-    while (remaining_candidates > 1) {
+// Ranked Choice Voting (RCV) funktion
+ void voting_rcv(state state_arr[], voter voter_arr[], candidate candidate_arr[]) {
 
-        // Find kandidaten med færrest stemmer og eliminér den
-        int eliminated_candidate = find_lowest_votes(candidate_arr);
-        candidate_arr[eliminated_candidate].eliminated = 1;
-        remaining_candidates--;
+     int total_voters = state_arr[i].population; // kan kaldes med population
+     int winner;
 
-        // Redistribuer stemmer fra eliminerede kandidater
-        distribute_votes(voter_arr, candidate_arr, state_population, start_index);
-    }
+     // Loop indtil der er en vinder
+     while (1) {
+         reset_votes(candidate_arr);
 
-    for (int i = 0; i < CANDIDATES; i++) {
-        if (!candidate_arr[i].eliminated) {
-            return i;
+         // Første runde: Tæl første valgstemmer
+         for (int i = 0; i < total_voters; i++) {
+             if (voter_arr[i].is_voting == 1) {
+                 int first_choice = voter_arr[i].distance_to_[0]; // Første valg
+                 candidate_arr[first_choice].votes_rcv++;
+             }
+         }
+
+         // Tjek om der er en flertalsvinder
+         winner = check_majority(candidate_arr, total_voters);
+         if (winner != -1) {
+             printf("Winner of RCV: %s\n", candidate_arr[winner].name);
+             break;
+         }
+
+         // Find kandidaten med mindst stemmer og eliminér den
+         int eliminated_candidate = find_lowest_votes(candidate_arr);
+         candidate_arr[eliminated_candidate].eliminated = 1;
+         printf("Eliminating %s\n", candidate_arr[eliminated_candidate].name);
+
+         // Redistribuer stemmer fra eliminerede kandidate
+         redistribute_votes(voter_arr, candidate_arr, eliminated_candidate);
+
+       // Tjek om der kun er én kandidat tilbage
+       int remaining_candidates = 0;
+       for (int i = 0; i < CANDIDATES; i++) {
+           if (!candidate_arr[i].eliminated) {
+                remaining_candidates++;
+            }
+        }
+        if (remaining_candidates == 1) {
+            for (int i = 0; i < CANDIDATES; i++) {
+                if (!candidate_arr[i].eliminated) {
+                    printf("Winner of RCV: %s\n", candidate_arr[i].name);
+                    break;
+                }
+            }
+            break;
         }
     }
+ }
+// Tjek om der er en flertalsvinder
+int check_majority(candidate candidate_arr[], int total_voters) {
+    for (int i = 0; i < CANDIDATES; i++) {
+        if (candidate_arr[i].votes_rcv > total_voters / 2) {
+            return i; // Vinderen fundet
+        }
+    }
+    return -1; // Ingen vinder endnu
 }
-
-// Hjælpefunktioner
-int find_lowest_votes(candidate candidate_arr[]) {
+// Find kandidat med færrest stemmer
+ int find_lowest_votes(candidate candidate_arr[]) {
 
     int min_votes = INT_MAX;
-    int candidate_to_eliminate;
-
+    int candidate_to_eliminate = -1;
     for (int i = 0; i < CANDIDATES; i++) {
         if (!candidate_arr[i].eliminated && candidate_arr[i].votes_rcv < min_votes) {
             min_votes = candidate_arr[i].votes_rcv;
@@ -44,25 +90,25 @@ int find_lowest_votes(candidate candidate_arr[]) {
     return candidate_to_eliminate;
 }
 
-void distribute_votes(voter voter_arr[], candidate candidate_arr[], int state_population, int start_index) {
-
-    int closest_candidate;
-    double min_distance;
-
-    for(int i = 0; i < CANDIDATES; i++) {
-        if(!candidate_arr[i].eliminated) {
-            candidate_arr[i].votes_rcv = 0;
-        }
-    }
-
-    for (int i = start_index; i < state_population + start_index; i++) {
-        min_distance = INT_MAX;
-        for (int j = 0; j < CANDIDATES; j++) {
-            if (!candidate_arr[j].eliminated && voter_arr[i].distance_to[j] < min_distance) {
-                closest_candidate = j;
-                min_distance = voter_arr[i].distance_to[j];
+// Redistribuer stemmer fra eliminerede kandidater
+ void redistribute_votes(voter voter_arr[], candidate candidate_arr[], int eliminated_candidate) {
+     for (int i = 0; i < POPULATION; i++) {
+        if (voter_arr[i].is_voting == 1) {
+            for (int j = 0; j < CANDIDATES; j++) {
+                int ranked_candidate = voter_arr[i].distance_to_[j];
+                if (ranked_candidate != eliminated_candidate && !candidate_arr[ranked_candidate].eliminated) {
+                    candidate_arr[ranked_candidate].votes_rcv++;
+                    break;
+                }
             }
         }
-        candidate_arr[closest_candidate].votes_rcv++;
     }
 }
+//Funktionen for at starte ranked choice voting
+void start_ranked_voting(candidate candidate_arr[], voter voter_arr[], int total_voters, int eliminated_candidate) {
+
+     check_majority(candidate_arr, total_voters);
+     find_lowest_votes(candidate_arr);
+     redistribute_votes(voter_arr, candidate_arr, eliminated_candidate);
+     reset_votes(candidate_arr);
+ } */
