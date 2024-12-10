@@ -4,7 +4,7 @@
 #include "functions.h"
 
 // funktion til at initialisere staterne
-void init_state(state state_arr[]) {
+void init_state(state state_arr[], int num_of_candidate) {
     FILE* f = fopen("state_data.txt", "r");
     if (f == NULL) {
         printf("Error: couldn't open file 'state_data.txt'");
@@ -12,7 +12,12 @@ void init_state(state state_arr[]) {
     }
 
     for (int i = 0; i < STATES; i++) {
-
+        for(int j = 0; j < num_of_candidate; j++) {
+            state_arr[i].candidate_votes_fptp[j] = 0;
+            state_arr[i].candidate_votes_star[j] = 0;
+            state_arr[i].candidate_votes_rated[j] = 0;
+            state_arr[i].candidate_votes_ranked[j] = 0;
+        }
         fscanf(f, "%[^,],%d,%d,", state_arr[i].name, &state_arr[i].population,
                                            &state_arr[i].electoral_votes);
         for(int j = 0; j < RACES; j++) {
@@ -34,29 +39,44 @@ void init_state(state state_arr[]) {
 }
 
 // funktion til at initialisere kandidaterne
-void init_candidates(candidate candidate_arr[]) {
+void init_candidates(candidate candidate_arr[], int num_of_candidates, char candidate_names[][MAX_NAME_LENGTH], int værdi[], int fordeling[]) {
+    //
+    // const char *names[] = {"Donald Trump", "Kamala Harris"};
+    //
+    // int værdipolitik_c[] = {25, 30};
+    // int fordelingspolitik_c[] = {25, 20};
 
-    const char *names[CANDIDATES] = {"Donald Trump", "Kamala Harris", "Robert F. Kennedy", "Jill Stein", "Chase Oliver"};
-
-    int værdipolitik_c[CANDIDATES] = {-25, 25, 0, 25, -25};
-    int fordelingspolitik_c[CANDIDATES] = {-25, 25, 0, -25, 25};
-
-    for (int i = 0; i < CANDIDATES; i++) {
-        strcpy(candidate_arr[i].name, names[i]);
-        candidate_arr[i].værdipolitik_c = værdipolitik_c[i];
-        candidate_arr[i].fordelingspolitik_c = fordelingspolitik_c[i];
+    for (int i = 0; i < num_of_candidates; i++) {
+        strcpy(candidate_arr[i].name, candidate_names[i]);
+        printf("%s", candidate_arr[i].name);
+        candidate_arr[i].værdipolitik_c = værdi[i];
+        candidate_arr[i].fordelingspolitik_c = fordeling[i];
         candidate_arr[i].votes_fptp = 0;
         candidate_arr[i].votes_star = 0;
         candidate_arr[i].votes_rated = 0;
         candidate_arr[i].votes_rcv = 0;
         candidate_arr[i].star_mandates = 0;
         candidate_arr[i].rcv_mandates = 0;
+        candidate_arr[i].fptp_mandates = 0;
+        candidate_arr[i].rated_mandates = 0;
+        candidate_arr[i].total_mandates = 0;
     }
 }
 
 // funktion til at initialisere vælgerne
-void init_voters(voter voter_arr[], state current_state, int start_index, int state,
-                 double calc_percent[][4][5], int fordelingspolitik[][5], int værdipolitik[][5]) {
+void init_voters(voter voter_arr[], state current_state, int start_index, int state, double calc_percent[][4][5]) {
+
+    int fordelingspolitik[4][5] = {
+        {50, -50, -50, -50, -50}, // RACE
+        {30, -30},               // GENDER
+        {-40, 20, 40},           // INCOME
+        {-50, -25, 20, 30, 50}}; // AGE
+
+    int værdipolitik[4][5] = {
+        {50, -50, -50, -50, -50}, // RACE
+        {30, -30},               // GENDER
+        {-40, 20, 40},           // INCOME
+        {-50, -25, 20, 30, 50}}; // AGE
 
     for(int i = start_index; i < current_state.population + start_index; i++) {
         voter_arr[i].fordelingspolitik_v = 0;
