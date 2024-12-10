@@ -4,7 +4,7 @@
 #include "functions.h"
 
 // funktion til at initialisere staterne
-void init_state(state state_arr[]) {
+void init_state(state state_arr[], int num_of_candidate) {
     FILE* f = fopen("state_data.txt", "r");
     if (f == NULL) {
         printf("Error: couldn't open file 'state_data.txt'");
@@ -12,7 +12,12 @@ void init_state(state state_arr[]) {
     }
 
     for (int i = 0; i < STATES; i++) {
-
+        for(int j = 0; j < num_of_candidate; j++) {
+            state_arr[i].candidate_votes_fptp[j] = 0;
+            state_arr[i].candidate_votes_star[j] = 0;
+            state_arr[i].candidate_votes_rated[j] = 0;
+            state_arr[i].candidate_votes_ranked[j] = 0;
+        }
         fscanf(f, "%[^,],%d,%d,", state_arr[i].name, &state_arr[i].population,
                                            &state_arr[i].electoral_votes);
         for(int j = 0; j < RACES; j++) {
@@ -28,29 +33,26 @@ void init_state(state state_arr[]) {
             fscanf(f, "%d,", &state_arr[i].income_distribution[j]);
         }
         fscanf(f, "\n");
-        for(int j = 0; j < CANDIDATES; j++) {
-            state_arr[i].candidate_votes_fptp[j] = 0;
-            state_arr[i].candidate_votes_star[j] = 0;
-            state_arr[i].candidate_votes_rated[j] = 0;
-            state_arr[i].candidate_votes_ranked[j] = 0;
-        }
+
+        printf("%s %d\n",state_arr[i].name,state_arr[i].population);
     }
 
     fclose(f);
 }
 
 // funktion til at initialisere kandidaterne
-void init_candidates(candidate candidate_arr[]) {
+void init_candidates(candidate candidate_arr[], int num_of_candidates, char candidate_names[][MAX_NAME_LENGTH], int værdi[], int fordeling[]) {
+    //
+    // const char *names[] = {"Donald Trump", "Kamala Harris"};
+    //
+    // int værdipolitik_c[] = {25, 30};
+    // int fordelingspolitik_c[] = {25, 20};
 
-    const char *names[] = {"Donald Trump", "Kamala Harris"};
-
-    int værdipolitik_c[] = {25, 30};
-    int fordelingspolitik_c[] = {25, 20};
-
-    for (int i = 0; i < CANDIDATES; i++) {
-        strcpy(candidate_arr[i].name, names[i]);
-        candidate_arr[i].værdipolitik_c = værdipolitik_c[i];
-        candidate_arr[i].fordelingspolitik_c = fordelingspolitik_c[i];
+    for (int i = 0; i < num_of_candidates; i++) {
+        strcpy(candidate_arr[i].name, candidate_names[i]);
+        printf("%s", candidate_arr[i].name);
+        candidate_arr[i].værdipolitik_c = værdi[i];
+        candidate_arr[i].fordelingspolitik_c = fordeling[i];
         candidate_arr[i].votes_fptp = 0;
         candidate_arr[i].votes_star = 0;
         candidate_arr[i].votes_rated = 0;

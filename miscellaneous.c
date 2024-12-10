@@ -26,13 +26,13 @@ void print_percent(double calc_percent[][4][5], int state_population, int state)
 }
 
 // Beregner afstanden fra en givet vælger til hver kandidat
-void get_distance(voter voter_arr[], candidate candidate_arr[], int population) {
+void get_distance(voter voter_arr[], candidate candidate_arr[], int population, int num_of_candidates) {
 
     for(int i = 0; i < population; i++) {
         int x_1 = voter_arr[i].fordelingspolitik_v;
         int y_1 = voter_arr[i].værdipolitik_v;
 
-        for(int j = 0; j < CANDIDATES; j++) {
+        for(int j = 0; j < num_of_candidates; j++) {
             int x_2 = candidate_arr[j].fordelingspolitik_c;
             int y_2 = candidate_arr[j].værdipolitik_c;
 
@@ -67,7 +67,7 @@ int variance() {
 }
 
 // Printer dataene fra en givet stat
-void prompt_stats(state state_arr[], double calc_percent[][4][5], candidate candidate_arr[]) {
+void prompt_stats(state state_arr[], double calc_percent[][4][5], candidate candidate_arr[], int num_of_candidates) {
 
     char input[MAX_NAME_LENGTH];
 
@@ -78,7 +78,7 @@ void prompt_stats(state state_arr[], double calc_percent[][4][5], candidate cand
             if(strcmp(input, state_arr[i].name) == 0) {
                 printf("Population: %d\n", state_arr[i].population);
                 printf("Electoral votes: %d\n", state_arr[i].electoral_votes);
-                for(int j = 0; j < CANDIDATES; j++) {
+                for(int j = 0; j < num_of_candidates; j++) {
                     printf("Candidate %s has:\n", candidate_arr[j].name);
                     printf("%d FPTP votes\n", state_arr[i].candidate_votes_fptp[j]);
                     printf("%d STAR votes\n", state_arr[i].candidate_votes_star[j]);
