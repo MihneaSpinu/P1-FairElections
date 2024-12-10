@@ -75,7 +75,7 @@ double normal_distribution() {
 }
 
 double variance() {
-    return normal_distribution() * 10; // 10 kan ændres for at få støre variance
+    return normal_distribution() * 50; // tallet kan ændres for at skifte variansen
 }
 
 // Printer dataene fra en givet stat
