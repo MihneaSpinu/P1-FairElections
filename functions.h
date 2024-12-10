@@ -112,8 +112,11 @@ int voting_star(int current_state_population, voter voter_arr[], candidate candi
 // Misc.
 void print_percent(double calc_percent[][4][5], int state_population, int state);
 void get_distance(voter voters_arr[], candidate candidate_arr[], int population, int num_of_candidates);
-int variance();
 void prompt_stats(state state_arr[], double calc_percent[][4][5], candidate candidate_arr[], int num_of_candidates);
 void election_2024();
+void get_ratings (voter voter_arr[], int i, int j);
+double normal_distribution();
+double variance();
+
 
 #endif //FUNCTIONS_H

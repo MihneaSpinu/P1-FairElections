@@ -33,8 +33,6 @@ void init_state(state state_arr[], int num_of_candidate) {
             fscanf(f, "%d,", &state_arr[i].income_distribution[j]);
         }
         fscanf(f, "\n");
-
-        printf("%s %d\n",state_arr[i].name,state_arr[i].population);
     }
 
     fclose(f);

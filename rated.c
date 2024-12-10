@@ -8,6 +8,11 @@ int voting_rated(voter voter_arr[], int state_population, int start_index, state
     for(int i = 0; i < num_of_candidates; i++) {
         votes_can[i] = 0;
     }
+    for (int i = start_index; i < state_population + start_index; i++) {
+        for (int j = 0; j < CANDIDATES; j++) {
+            get_ratings(voter_arr, i, j);
+        }
+    }
 
     for (int i = start_index; i < state_population + start_index; i++) {
         for (int j = 0; j < num_of_candidates; j++) {

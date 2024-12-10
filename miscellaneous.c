@@ -40,18 +40,18 @@ void get_distance(voter voter_arr[], candidate candidate_arr[], int population, 
             voter_arr[i].distance_to[j] = sqrt(pow(x_2 - x_1, 2) + pow(y_2 - y_1, 2));
 
             // RATED
-            int distance_rating[] = {20, 40, 60, 80, 100, 120, 140, 160, 180, 200};
-            int ratings[] = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
-            int k;
-            for (k = 0; k < sizeof(distance_rating) / sizeof(distance_rating[0]); k++) {
-                if (voter_arr[i].distance_to[j] <= distance_rating[k]) {
-                    voter_arr[i].ratings[j] = ratings[k];
-                    break;
-                }
-            }
-            if (k == sizeof(distance_rating) / sizeof(distance_rating[0])) {
-                voter_arr[i].ratings[j] = ratings[k];
-            }
+            // int distance_rating[] = {20, 40, 60, 80, 100, 120, 140, 160, 180, 200};
+            // int ratings[] = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
+            // int k;
+            // for (k = 0; k < sizeof(distance_rating) / sizeof(distance_rating[0]); k++) {
+            //     if (voter_arr[i].distance_to[j] <= distance_rating[k]) {
+            //         voter_arr[i].ratings[j] = ratings[k];
+            //         break;
+            //     }
+            // }
+            // if (k == sizeof(distance_rating) / sizeof(distance_rating[0])) {
+            //     voter_arr[i].ratings[j] = ratings[k];
+            // }
         }
 
         if((i+1) % (population / 10) == 0 && i != 0) {
@@ -62,8 +62,20 @@ void get_distance(voter voter_arr[], candidate candidate_arr[], int population, 
 }
 
 // Returnere en range med størrelse VARIANCE centreret omkring 0
-int variance() {
-    return (rand() % (VARIANCE + 1)) - (VARIANCE / 2);
+double normal_distribution() {
+    double x, y, z;
+    do {
+        x = ((double) rand() / RAND_MAX) * 2 - 1;
+        y = ((double) rand() / RAND_MAX) * 2 - 1;
+        z = x * x + y * y;
+    } while (z == 0 || z > 1);
+
+    double h = sqrt(-2 * log(z) / z);
+    return x * h;
+}
+
+double variance() {
+    return normal_distribution() * VARIANCE; // tallet kan ændres for at skifte variansen
 }
 
 // Printer dataene fra en givet stat
@@ -92,7 +104,21 @@ void prompt_stats(state state_arr[], double calc_percent[][4][5], candidate cand
     } while(strcmp(input, "q") != 0);
 
 }
+void get_ratings (voter voter_arr[], int i, int j) {
+    int distance_rating[] = {20, 40, 60, 80, 100, 120, 140, 160, 180, 200};
+    int ratings[] = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
 
+    int k;
+    for (k = 0; k < sizeof(distance_rating) / sizeof(distance_rating[0]); k++) {
+        if (voter_arr[i].distance_to[j] <= distance_rating[k]) {
+            voter_arr[i].ratings[j] = ratings[k];
+            return;
+        }
+    }
+    if (k == sizeof(distance_rating) / sizeof(distance_rating[0])) {
+        voter_arr[i].ratings[j] = ratings[k];
+    }
+}
 /*
 void print_winners(char winner[], int mandates[], char *runner_up[]) {
 
