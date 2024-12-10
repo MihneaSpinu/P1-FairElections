@@ -66,6 +66,9 @@ typedef struct {
     int candidate_votes_ranked[CANDIDATES];
     int population;
     int electoral_votes;
+    int candidate_votes_fptp[CANDIDATES];
+    int candidate_votes_star[CANDIDATES];
+    int candidate_votes_rated[CANDIDATES];
 } state;
 
 //
