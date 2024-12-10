@@ -40,28 +40,17 @@ void get_distance(voter voter_arr[], candidate candidate_arr[], int population) 
             voter_arr[i].distance_to[j] = sqrt(pow(x_2 - x_1, 2) + pow(y_2 - y_1, 2));
 
             // RATED
-            if (voter_arr[i].distance_to[j] <= 25) {
-                voter_arr[i].ratings[j] = 10;
-            } else if (voter_arr[i].distance_to[j] <= 50) {
-                voter_arr[i].ratings[j] = 9;
-            } else if (voter_arr[i].distance_to[j] <= 75) {
-                voter_arr[i].ratings[j] = 8;
-            } else if (voter_arr[i].distance_to[j] <= 100) {
-                voter_arr[i].ratings[j] = 7;
-            } else if (voter_arr[i].distance_to[j] <= 125) {
-                voter_arr[i].ratings[j] = 6;
-            }else if (voter_arr[i].distance_to[j] <= 150) {
-                voter_arr[i].ratings[j] = 5;
-            } else if (voter_arr[i].distance_to[j] <= 175) {
-                voter_arr[i].ratings[j] = 4;
-            } else if (voter_arr[i].distance_to[j] <= 200) {
-                voter_arr[i].ratings[j] = 3;
-            } else if (voter_arr[i].distance_to[j] <= 225) {
-                voter_arr[i].ratings[j] = 2;
-            } else if (voter_arr[i].distance_to[j] <= 250) {
-                voter_arr[i].ratings[j] = 1;
-            } else {
-                voter_arr[i].ratings[j] = 0;
+            int distance_rating[] = {20, 40, 60, 80, 100, 120, 140, 160, 180, 200};
+            int ratings[] = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
+            int k;
+            for (k = 0; k < sizeof(distance_rating) / sizeof(distance_rating[0]); k++) {
+                if (voter_arr[i].distance_to[j] <= distance_rating[k]) {
+                    voter_arr[i].ratings[j] = ratings[k];
+                    break;
+                }
+            }
+            if (k == sizeof(distance_rating) / sizeof(distance_rating[0])) {
+                voter_arr[i].ratings[j] = ratings[k];
             }
         }
 
@@ -78,7 +67,7 @@ int variance() {
 }
 
 // Printer dataene fra en givet stat
-void prompt_stats(state state_arr[], double calc_percent[][4][5]) {
+void prompt_stats(state state_arr[], double calc_percent[][4][5], candidate candidate_arr[]) {
 
     char input[MAX_NAME_LENGTH];
 
@@ -89,6 +78,13 @@ void prompt_stats(state state_arr[], double calc_percent[][4][5]) {
             if(strcmp(input, state_arr[i].name) == 0) {
                 printf("Population: %d\n", state_arr[i].population);
                 printf("Electoral votes: %d\n", state_arr[i].electoral_votes);
+                for(int j = 0; j < CANDIDATES; j++) {
+                    printf("Candidate %s has:\n", candidate_arr[j].name);
+                    printf("%d FPTP votes\n", state_arr[i].candidate_votes_fptp[j]);
+                    printf("%d STAR votes\n", state_arr[i].candidate_votes_star[j]);
+                    printf("%d Rated votes\n", state_arr[i].candidate_votes_rated[j]);
+                    printf("%d RCV votes\n", state_arr[i].candidate_votes_ranked[j]);
+                }
                 print_percent(calc_percent, state_arr[i].population, i);
                 break;
             }
