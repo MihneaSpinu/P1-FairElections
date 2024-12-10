@@ -21,6 +21,8 @@ int voting_rated(voter voter_arr[], int state_population, int start_index, state
         }
     }
 
+
+
     int winner = 0;
     for (int i = 0; i < num_of_candidates; i++) {
         if (votes_can[i] > votes_can[winner]) {
