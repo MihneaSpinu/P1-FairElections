@@ -9,7 +9,7 @@ int voting_rated(voter voter_arr[], int state_population, int start_index, state
         votes_can[i] = 0;
     }
     for (int i = start_index; i < state_population + start_index; i++) {
-        for (int j = 0; j < CANDIDATES; j++) {
+        for (int j = 0; j < num_of_candidates; j++) {
             get_ratings(voter_arr, i, j);
         }
     }
@@ -29,5 +29,6 @@ int voting_rated(voter voter_arr[], int state_population, int start_index, state
             winner = i;
         }
     }
+    free(votes_can);
     return winner;
 }
