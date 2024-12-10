@@ -7,26 +7,15 @@
 int main() {
 
     srand(time(NULL));
-    int fordelingspolitik[4][5] = {
-        {50, -50, -50, -50, -50}, // RACE
-        {30, -30},               // GENDER
-        {-40, 20, 40},           // INCOME
-        {-50, -25, 20, 30, 50}}; // AGE
-
-    int værdipolitik[4][5] = {
-        {50, -50, -50, -50, -50}, // RACE
-        {30, -30},               // GENDER
-        {-40, 20, 40},           // INCOME
-        {-50, -25, 20, 30, 50}}; // AGE
-
     double calc_percent[STATES][4][5] = {0};
-
-
-
 
     int candidates;
     int simulation_choice;
-    char electoral_choice[1];
+    char electoral_choice;
+    char candidate_name[5][MAX_NAME_LENGTH];
+    char name[MAX_NAME_LENGTH];
+    int værdi[5];
+    int fordeling[5];
 
     printf("1) Simulate 2024 election\n");
     printf("2) Use preset candidates\n");
@@ -39,7 +28,7 @@ int main() {
     } else if(simulation_choice == 2) {
         candidates = 5;
     } else if(simulation_choice == 3) {
-        /*
+
         for(candidates = 0; candidates < 5; candidates++) {
             printf("Choose candidate name and position on political compass: (-100,100)\n");
             scanf("%s", &name);
@@ -47,18 +36,17 @@ int main() {
                 break;
             }
             strcpy(candidate_name[candidates], name);
-            scanf("%d %d", &VÆRDI[candidates], &FORDELING[candidates]);
+            scanf("%d %d", &værdi[candidates], &fordeling[candidates]);
         }
-        */
+
     } else {
         printf("Invalid input");
         exit(EXIT_FAILURE);
     }
-    printf("%d\n", simulation_choice);
+
     printf("Simulate with electoral college? (y/n)\n");
     scanf("%s", &electoral_choice);
     printf("%d\n", simulation_choice);
-    exit(-1);
 
     candidate *candidate_arr = malloc(sizeof(candidate) * CANDIDATES); // * candidates
     voter *voter_arr = malloc(sizeof(voter) * POPULATION);
@@ -73,9 +61,24 @@ int main() {
     int start_index[STATES];
     init_index(cumulative_state_population, start_index, state_arr);
 
-    if(simulation_choice == 1 && strcmp(electoral_choice, "y") == 0) {
+    printf("Initializing the states...\n");
+    init_state(state_arr);
+
+    printf("\nInitializing the candidates...\n\n");
+    init_candidates(candidate_arr);
+
+    for (int i = 0; i < STATES; i++) {
+        printf("Generating voters for %s...\n", state_arr[i].name);
+        init_voters(voter_arr, state_arr[i], start_index[i], i, calc_percent);
+    }
+
+    printf("\nCalculating voter preference...\n");
+    get_distance(voter_arr, candidate_arr, POPULATION);
+    printf("\n");
+
+    if(simulation_choice == 1 && strcmp((char*)electoral_choice, "y") == 0) {
         for(int i = 0; i < STATES; i++) {
-            printf("Calculating winners for %s...", state_arr[i].name);
+            printf("Calculating winners for %s...\n", state_arr[i].name);
             if(i == 19 || i == 27) { // MAINE & NEBRASKA
                 int rcv_winner = ranked_choice_voting(state_arr[i].population, voter_arr, candidate_arr, start_index[i], &state_arr[i]);
                 candidate_arr[rcv_winner].total_mandates += state_arr[i].electoral_votes;
@@ -85,29 +88,11 @@ int main() {
             }
         }
         char winner[MAX_NAME_LENGTH];
-        strcpy(winner, candidate_arr[0].total_mandates > candidate_arr[1].total_mandates ?  candidate_arr[0].name : candidate_arr[1].name);
-        printf("\n%s wins\n", winner);
+        strcpy(winner, candidate_arr[0].total_mandates > candidate_arr[1].total_mandates ? candidate_arr[0].name : candidate_arr[1].name);
+        printf("\n%s wins with %d mandates \n", winner, candidate_arr[0].total_mandates > candidate_arr[1].total_mandates ? candidate_arr[0].total_mandates : candidate_arr[1].total_mandates);
     }
-    printf("%d %s", simulation_choice, electoral_choice);
+
     exit(EXIT_SUCCESS);
-
-
-
-
-    printf("Initializing the states...\n");
-    init_state(state_arr);
-
-    printf("\nInitializing the candidates...\n\n");
-    init_candidates(candidate_arr);
-
-    for (int i = 0; i < STATES; i++) {
-        printf("Generating voters for %s...\n", state_arr[i].name);
-        init_voters(voter_arr, state_arr[i], start_index[i], i, calc_percent, fordelingspolitik, værdipolitik);
-    }
-
-    printf("\nCalculating voter preference...\n");
-    get_distance(voter_arr, candidate_arr, POPULATION);
-    printf("\n");
 
     for(int i = 0; i < STATES; i++) {
         printf("Calculating winners for %s...\n", state_arr[i].name);
