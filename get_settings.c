@@ -5,23 +5,25 @@
 #include "functions.h"
 
 void scan_election_settings(int *simulation_choice, int *electoral_choice, int *candidate_choice,
-                            int *voting_system_choice, int *candidates) {
+                            int *voting_system_choice, int *candidates, char candidate_name[][MAX_NAME_LENGTH],
+                            int værdi[MAX_CANDIDATES], int fordeling[MAX_CANDIDATES]) {
 
-    char candidate_name[MAX_CANDIDATES][MAX_NAME_LENGTH];
-    char name[MAX_NAME_LENGTH];
-    int værdi[MAX_CANDIDATES];
-    int fordeling[MAX_CANDIDATES];
 
     printf("1) Run 2024 election\n2) Run custom election\n");
     scanf("%d", simulation_choice);
     check_input_validity(*simulation_choice);
-    if(*simulation_choice == 1) {
-        return;
-    }
 
     printf("\n1) Determine winner by electoral college\n2) Determine winner by national popular vote\n");
     scanf("%d", electoral_choice);
     check_input_validity(*electoral_choice);
+    if(*simulation_choice == 1) {
+        *candidates = 2;
+        strcpy(candidate_name[0], "Donald Trump");
+        strcpy(candidate_name[1], "Kamala Harris");
+        værdi[0] = 25,      værdi[1] = -30;
+        fordeling[0] = 25,  fordeling[1] = -20;
+        return;
+    }
 
     printf("\n1) Use current US voting system\n2) Use different voting systems\n");
     scanf("%d", voting_system_choice);
@@ -33,19 +35,7 @@ void scan_election_settings(int *simulation_choice, int *electoral_choice, int *
     if(*candidate_choice == 2) {
         custom_candidates(candidates, candidate_name, værdi, fordeling);
     }
-    if(*candidates < 2) {
-        printf("There has to be at least 2 candidates");
-        exit(EXIT_FAILURE);
-    }
-
-
-    if(*simulation_choice == 1) {
-        *candidates = 2;
-        strcpy(candidate_name[0], "Donald Trump");
-        strcpy(candidate_name[1], "Kamala Harris");
-        værdi[0] = 25,      værdi[1] = 30;
-        fordeling[0] = 25,  fordeling[1] = 20;
-    } else if(*simulation_choice == 2) {
+    if(*candidate_choice == 1) {
         *candidates = 5;
         strcpy(candidate_name[0], "Donald Trump");
         strcpy(candidate_name[1], "Kamala Harris");
@@ -54,6 +44,10 @@ void scan_election_settings(int *simulation_choice, int *electoral_choice, int *
         strcpy(candidate_name[4], "Kanye West");
         værdi[0] = 25,      værdi[1] = 30,      værdi[2] = 0,       værdi[3] = 50,      værdi[4] = -20;
         fordeling[0] = 25,  fordeling[1] = 20,  fordeling[2] = 0,   fordeling[3] = 50,  fordeling[4] = -20;
+    }
+    if(*candidates < 2) {
+        printf("There has to be at least 2 candidates");
+        exit(EXIT_FAILURE);
     }
 }
 
@@ -69,7 +63,7 @@ void custom_candidates(int *candidates, char candidate_name[][MAX_NAME_LENGTH], 
 
     char name[MAX_NAME_LENGTH];
 
-    for(*candidates = 0; *candidates < 5; *candidates += 1) {
+    for(*candidates = 0; *candidates < 5; (*candidates)++) {
         printf("Choose candidate name and position on political compass: [-100,100]\n");
         scanf("%s", &name);
         if(strcmp(name, "exit") == 0) return;
