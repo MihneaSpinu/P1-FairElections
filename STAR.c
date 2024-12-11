@@ -1,18 +1,22 @@
 #include <stdio.h>
+#include <stdlib.h>
+
 #include "functions.h"
 
-int voting_star(int current_state_population, voter voter_arr[], candidate candidate_arr[], int start_index, state *current_state) {
+int voting_star(int current_state_population, voter voter_arr[], candidate candidate_arr[], int start_index, state *current_state, int num_of_candidates) {
 
     // Initialize scores for each candidate
-    int scores[CANDIDATES] = {0};
-
+    int *scores = calloc(num_of_candidates, sizeof(int));
+    if(scores == NULL) {
+        printf("Memory allocation failed");
+        exit(EXIT_FAILURE);
+    }
     // Calculate scores based on distances
     for (int i = start_index; i < current_state_population + start_index; i++) {
-        for (int j = 0; j < CANDIDATES; j++) {
+        for (int j = 0; j < num_of_candidates; j++) {
             scores[j] += voter_arr[i].ratings[j];
         }
     }
-
     // Find the top two candidates
     int top1 = 0, top2 = 1;
     if (scores[top2] > scores[top1]) {
@@ -20,7 +24,7 @@ int voting_star(int current_state_population, voter voter_arr[], candidate candi
         top2 = 0;
     }
 
-    for (int i = 2; i < CANDIDATES; i++) {
+    for (int i = 2; i < num_of_candidates; i++) {
         if (scores[i] > scores[top1]) {
             top2 = top1;
             top1 = i;
@@ -28,7 +32,6 @@ int voting_star(int current_state_population, voter voter_arr[], candidate candi
             top2 = i;
         }
     }
-
     // Runoff between top two candidates
     int votes_top1 = 0, votes_top2 = 0;
     for (int i = start_index; i < start_index + current_state_population; i++) {
@@ -40,11 +43,10 @@ int voting_star(int current_state_population, voter voter_arr[], candidate candi
             current_state->candidate_votes_star[top2]++;
         }
     }
-
     // Determine the winner
     int winner_index = (votes_top1 > votes_top2) ? top1 : top2;
     candidate winner = candidate_arr[winner_index];
     winner.votes_star = (votes_top1 > votes_top2) ? votes_top1 : votes_top2;
-
+    free(scores);
     return winner_index;
 }
