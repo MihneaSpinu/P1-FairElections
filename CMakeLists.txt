@@ -11,4 +11,5 @@ add_executable(P1_Projekt main.c
         functions.h
         STAR.c
         miscellaneous.c
+        get_settings.c
 )
