@@ -56,6 +56,7 @@ int variance() {
         z = x * x + y * y;
     } while (z == 0 || z > 1);
     double h = sqrt(-2 * log(z) / z);
+
     return x * h * VARIANCE;
 
 }
