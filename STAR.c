@@ -32,7 +32,7 @@ int voting_star(int current_state_population, voter voter_arr[], candidate candi
             top2 = i;
         }
     }
-    // Runoff between top two candidates
+    // Runoff between top two candidates (fptp)
     int votes_top1 = 0, votes_top2 = 0;
     for (int i = start_index; i < start_index + current_state_population; i++) {
         if (voter_arr[i].distance_to[top1] < voter_arr[i].distance_to[top2]) {
