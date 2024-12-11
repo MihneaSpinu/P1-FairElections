@@ -56,6 +56,7 @@ int variance() {
         z = x * x + y * y;
     } while (z == 0 || z > 1);
     double h = sqrt(-2 * log(z) / z);
+
     return x * h * VARIANCE;
 
 }
@@ -101,13 +102,44 @@ void get_ratings (voter voter_arr[], int i, int j) {
         voter_arr[i].ratings[j] = 10-k;
     }
 }
-/*
-void print_winners(char winner[], int mandates[], char *runner_up[]) {
 
-    printf("%s wins with %d electoral votes\n", winner, mandates[0]);
-    printf("\nRunners up:\n");
-    for(int i = 0; i < CANDIDATES - 1; i++) {
-        printf("%s with %d electoral votes\n", runner_up[i], mandates[i+1]);
+int print_winners(candidate candidate_arr[], int num_of_candidates, int voting_system) {
+    int winner = 0;
+    for(int i = 1; i < num_of_candidates; i++) {
+        switch(voting_system) {
+            case 0:
+                if(candidate_arr[winner].fptp_mandates < candidate_arr[i].fptp_mandates) {
+                    winner = i;
+                }
+                break;
+            case 1:
+                if(candidate_arr[winner].rcv_mandates < candidate_arr[i].rcv_mandates) {
+                    winner = i;
+                }
+                break;
+            case 2:
+                if(candidate_arr[winner].rated_mandates < candidate_arr[i].rated_mandates) {
+                    winner = i;
+                }
+                break;
+            case 3:
+                if(candidate_arr[winner].star_mandates < candidate_arr[i].star_mandates) {
+                    winner = i;
+                }
+                break;
+        }
     }
+    return winner;
 }
-*/
+
+double voters_satisfaction(voter current_voter, int winner_index) {
+    return 1 / (1 + current_voter.distance_to[winner_index]);
+}
+
+double calc_satisfaction(int winner_index, voter voters_arr[], int population) {
+    double total_satisfaction = 0;
+    for(int i = 0; i < population; i++) {
+        total_satisfaction += voters_satisfaction(voters_arr[i], winner_index);
+    }
+    return total_satisfaction / population * 100;
+}
