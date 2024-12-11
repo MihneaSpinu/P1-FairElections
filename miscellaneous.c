@@ -47,7 +47,7 @@ void get_distance(voter voter_arr[], candidate candidate_arr[], int population, 
     }
 }
 
-// Returnere en range med størrelse VARIANCE centreret omkring 0
+// Box Muller normal distribution funktion
 int variance() {
     double x, y, z;
     do {
@@ -57,8 +57,16 @@ int variance() {
     } while (z == 0 || z > 1);
     double h = sqrt(-2 * log(z) / z);
 
-    return x * h * VARIANCE;
 
+    int variance = x * h * STD_DEVIATION;
+
+    if(variance > STD_DEVIATION * 10) {
+        return STD_DEVIATION * 10;
+    }
+    if(variance < -(STD_DEVIATION * 10)) {
+        return STD_DEVIATION * 10;
+    }
+    return variance;
 }
 
 // Printer dataene fra en givet stat
@@ -87,6 +95,8 @@ void prompt_stats(state state_arr[], double calc_percent[][4][5], candidate cand
     } while(strcmp(input, "q") != 0);
 
 }
+
+
 void get_ratings (voter voter_arr[], int i, int j) {
 
     int distance_rating[] = {20, 40, 60, 80, 100, 120, 140, 160, 180, 200};
@@ -103,38 +113,36 @@ void get_ratings (voter voter_arr[], int i, int j) {
     }
 }
 
+
 int print_winners(candidate candidate_arr[], int num_of_candidates, int voting_system) {
     int winner = 0;
     for(int i = 1; i < num_of_candidates; i++) {
-        switch(voting_system) {
-            case 0:
-                if(candidate_arr[winner].fptp_mandates < candidate_arr[i].fptp_mandates) {
-                    winner = i;
-                }
-                break;
-            case 1:
-                if(candidate_arr[winner].rcv_mandates < candidate_arr[i].rcv_mandates) {
-                    winner = i;
-                }
-                break;
-            case 2:
-                if(candidate_arr[winner].rated_mandates < candidate_arr[i].rated_mandates) {
-                    winner = i;
-                }
-                break;
-            case 3:
-                if(candidate_arr[winner].star_mandates < candidate_arr[i].star_mandates) {
-                    winner = i;
-                }
-                break;
+        if(voting_system == FPTP) {
+            if(candidate_arr[winner].fptp_mandates < candidate_arr[i].fptp_mandates) {
+                winner = i;
+            }
+        } else if(voting_system == RCV) {
+            if(candidate_arr[winner].rcv_mandates < candidate_arr[i].rcv_mandates) {
+                winner = i;
+            }
+        } else if(voting_system == Rated) {
+            if(candidate_arr[winner].rcv_mandates < candidate_arr[i].rcv_mandates) {
+                winner = i;
+            }
+        } else if(voting_system == STAR) {
+            if(candidate_arr[winner].rcv_mandates < candidate_arr[i].rcv_mandates) {
+                winner = i;
+            }
         }
     }
     return winner;
 }
 
+
 double voters_satisfaction(voter current_voter, int winner_index) {
     return 1 / (1 + current_voter.distance_to[winner_index]);
 }
+
 
 double calc_satisfaction(int winner_index, voter voters_arr[], int population) {
     double total_satisfaction = 0;

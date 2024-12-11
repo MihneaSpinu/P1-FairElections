@@ -40,11 +40,6 @@ void init_state(state state_arr[], int num_of_candidate) {
 
 // funktion til at initialisere kandidaterne
 void init_candidates(candidate candidate_arr[], int num_of_candidates, char candidate_names[][MAX_NAME_LENGTH], int værdi[], int fordeling[]) {
-    //
-    // const char *names[] = {"Donald Trump", "Kamala Harris"};
-    //
-    // int værdipolitik_c[] = {25, 30};
-    // int fordelingspolitik_c[] = {25, 20};
 
     for (int i = 0; i < num_of_candidates; i++) {
         strcpy(candidate_arr[i].name, candidate_names[i]);
@@ -58,7 +53,7 @@ void init_candidates(candidate candidate_arr[], int num_of_candidates, char cand
         candidate_arr[i].rcv_mandates = 0;
         candidate_arr[i].fptp_mandates = 0;
         candidate_arr[i].rated_mandates = 0;
-        candidate_arr[i].total_mandates = 0;
+        candidate_arr[i].general_mandates = 0;
     }
 }
 
