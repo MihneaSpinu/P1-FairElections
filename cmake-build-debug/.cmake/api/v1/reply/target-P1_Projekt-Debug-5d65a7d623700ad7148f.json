@@ -2,10 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "P1_Projekt.exe"
-		},
-		{
-			"path" : "P1_Projekt.pdb"
+			"path" : "P1_Projekt"
 		}
 	],
 	"backtrace" : 1,
@@ -38,7 +35,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g -std=gnu11 -fdiagnostics-color=always"
+					"fragment" : "-g -std=gnu11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -mmacosx-version-min=14.3 -fcolor-diagnostics"
 				}
 			],
 			"language" : "C",
@@ -75,16 +72,12 @@
 			{
 				"fragment" : "",
 				"role" : "flags"
-			},
-			{
-				"fragment" : "-lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32",
-				"role" : "libraries"
 			}
 		],
 		"language" : "C"
 	},
 	"name" : "P1_Projekt",
-	"nameOnDisk" : "P1_Projekt.exe",
+	"nameOnDisk" : "P1_Projekt",
 	"paths" : 
 	{
 		"build" : ".",
