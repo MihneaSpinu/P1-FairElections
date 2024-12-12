@@ -61,16 +61,16 @@ void init_candidates(candidate candidate_arr[], int num_of_candidates, char cand
 void init_voters(voter voter_arr[], state current_state, int start_index, int state, double calc_percent[][4][5]) {
 
     int fordelingspolitik[4][5] = {
-        {40, -50, -50, -50, -50},// RACE
-        {30, -30},               // GENDER
-        {-40, 0, 40},            // INCOME
-        {-50, -25, 10, 20, 30}}; // AGE
+        {30, -30, -20, -20, -10},// RACE
+        {30, -30}, // GENDER
+        {-30, 10, 40}, // INCOME
+        {-30, -20, 0, 10, 40}}; // AGE
 
     int værdipolitik[4][5] = {
-        {40, -50, -50, -50, -50},// RACE
-        {30, -30},               // GENDER
-        {-40, 0, 40},            // INCOME
-        {-50, -25, 10, 20, 30}}; // AGE
+        {10, -20, -10, -10, 0},// RACE
+        {30, -30}, // GENDER
+        {-20, 0, 40}, // INCOME
+        {-30, -20, 0, 10, 40}}; // AGE
 
     for(int i = start_index; i < current_state.population + start_index; i++) {
         voter_arr[i].fordelingspolitik_v = 0;

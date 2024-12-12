@@ -23,10 +23,10 @@ void scan_election_settings(int *simulation_choice, int *electoral_choice, int *
             værdi[1] = -30, fordeling[1] = -30;
         } else if(*simulation_choice == 2) {
             strcpy(candidate_name[1], "Joe Biden");
-            værdi[1] = -20, fordeling[1] = -20;
+            værdi[1] = -20, fordeling[1] = -25;
         } else {
             strcpy(candidate_name[1], "Hillary Clinton");
-            værdi[1] = -15, fordeling[1] = -15;
+            værdi[1] = -35, fordeling[1] = -20;
         }
         return;
     }
@@ -56,8 +56,8 @@ void scan_election_settings(int *simulation_choice, int *electoral_choice, int *
         strcpy(candidate_name[2], "Joe Biden");
         strcpy(candidate_name[3], "John F. Kennedy");
         strcpy(candidate_name[4], "Richard Nixon");
-        værdi[0] = 25,      værdi[1] = 30,      værdi[2] = 0,       værdi[3] = 50,      værdi[4] = -20;
-        fordeling[0] = 25,  fordeling[1] = 20,  fordeling[2] = 0,   fordeling[3] = 50,  fordeling[4] = -20;
+        værdi[0] = 50,      værdi[1] = -30,      værdi[2] = -15,       værdi[3] = 20,      værdi[4] = 60;
+        fordeling[0] = 50,  fordeling[1] = -30,  fordeling[2] = -15,   fordeling[3] = 10,  fordeling[4] = 40;
     }
     if(*candidates < 2) {
         printf("There has to be at least 2 candidates");
