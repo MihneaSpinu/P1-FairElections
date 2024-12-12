@@ -64,7 +64,7 @@ int variance() {
         return STD_DEVIATION * 10;
     }
     if(variance < -(STD_DEVIATION * 10)) {
-        return STD_DEVIATION * 10;
+        return -(STD_DEVIATION * 10);
     }
     return variance;
 }

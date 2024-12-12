@@ -12,7 +12,7 @@
 #define AGES 5
 #define MAX_NAME_LENGTH 21
 #define STD_DEVIATION 5
-#define POPULATION 250947200
+#define POPULATION 2509472 // 250947200
 
 //
 //
@@ -34,7 +34,7 @@ typedef struct {
     income_e income_v;
     int værdipolitik_v;
     int fordelingspolitik_v;
-    double distance_to[MAX_CANDIDATES]; // Rangering af kandidater (ranked)
+    float distance_to[MAX_CANDIDATES]; // Rangering af kandidater (ranked)
     int ratings[MAX_CANDIDATES];
 } voter;
 

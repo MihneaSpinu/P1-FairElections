@@ -17,7 +17,7 @@ void scan_election_settings(int *simulation_choice, int *electoral_choice, int *
         *electoral_choice = 1;
         *voting_system_choice = 1;
         strcpy(candidate_name[0], "Donald Trump");
-        værdi[0] = 70, fordeling[0] = 70;
+        værdi[0] = 50, fordeling[0] = 50;
         if(*simulation_choice == 1) {
             strcpy(candidate_name[1], "Kamala Harris");
             værdi[1] = -30, fordeling[1] = -30;

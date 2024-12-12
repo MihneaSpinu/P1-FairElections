@@ -22,33 +22,6 @@ int main() {
                            &voting_system_choice, &candidates, candidate_name,
                            værdi, fordeling);
 
-    /*
-    printf("1) Simulate 2024 election\n");
-    printf("2) Use preset candidates\n");
-    printf("3) Add your own candidates\n");
-    scanf("%d", &simulation_choice);
-
-    if(simulation_choice == 1) {
-        candidates = 2;
-        strcpy(candidate_name[0], "Donald Trump");
-        strcpy(candidate_name[1], "Kamala Harris");
-        værdi[0] = 25,      værdi[1] = 30;
-        fordeling[0] = 25,  fordeling[1] = 20;
-    } else if(simulation_choice == 2) {
-        candidates = 5;
-        strcpy(candidate_name[0], "Donald Trump");
-        strcpy(candidate_name[1], "Kamala Harris");
-        strcpy(candidate_name[2], "Robert F. Kennedy");
-        strcpy(candidate_name[3], "Elon Musk");
-        strcpy(candidate_name[4], "Kanye West");
-        værdi[0] = 25,      værdi[1] = 30,      værdi[2] = 0,       værdi[3] = 50,      værdi[4] = -20;
-        fordeling[0] = 25,  fordeling[1] = 20,  fordeling[2] = 0,   fordeling[3] = 50,  fordeling[4] = -20;
-    } else {
-        printf("Invalid input");
-        exit(EXIT_FAILURE);
-    }
-    */
-
     candidate *candidate_arr = malloc(sizeof(candidate) * candidates);
     voter *voter_arr = malloc(sizeof(voter) * POPULATION);
     state *state_arr = malloc(sizeof(state) * STATES);
@@ -77,7 +50,7 @@ int main() {
     get_distance(voter_arr, candidate_arr, POPULATION, candidates);
     printf("\n");
 
-    if(simulation_choice != 4 && electoral_choice == 1) {
+    if(electoral_choice == 1) {
         for(int i = 0; i < STATES; i++) {
             printf("Calculating winners for %s...\n", state_arr[i].name);
             if(i == 1 || i == 19) { // Alaska & MAINE
@@ -97,15 +70,14 @@ int main() {
         printf("%s got %d mandates\n", loser, 538-winner_mandates);
     }
 
-    if(simulation_choice != 4 && electoral_choice == 2) {
+    if(electoral_choice == 2 && voting_system_choice == 2) {
         printf("Calculating voters");
         int fptp_winner = first_past_the_post(voter_arr, POPULATION, 0, &state_arr[0], candidates);
         printf("\n%s wins \n", candidate_arr[fptp_winner].name);
         for(int i = 0; i < candidates; i++) {
             printf("Candidate %s has %d votes\n", candidate_arr[i].name, state_arr[0].candidate_votes_fptp[i]);
-            printf("It would be %d mandates", (int)(((long long)state_arr[0].candidate_votes_fptp[i] * 538) / POPULATION));
+            printf("It would be %d mandates\n", (int)(((long long)state_arr[0].candidate_votes_fptp[i] * 538) / POPULATION));
         }
-
     }
 
     if(simulation_choice == 4 && electoral_choice == 1 && voting_system_choice == 2) {
