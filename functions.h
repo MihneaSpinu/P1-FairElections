@@ -11,13 +11,14 @@
 #define INCOME 3
 #define AGES 5
 #define MAX_NAME_LENGTH 21
-#define VARIANCE 10
-#define POPULATION 250947200
+#define STD_DEVIATION 5
+#define POPULATION 2509472 // 250947200
 #define MAX_DISTANCE 400
 
 //
 //
 // ENUMS
+typedef enum { FPTP, RCV, Rated, STAR} voting_system_e;
 typedef enum { race, gender, income, age } categories_e;
 typedef enum: unsigned char { white, black, hispanic, asian, other } race_e;
 typedef enum: unsigned char { male, female } gender_e;
@@ -51,7 +52,7 @@ typedef struct {
     int fptp_mandates;
     int rated_mandates;
     int eliminated; // Flag for elimineret kandidat (ranked)
-    int total_mandates;
+    int general_mandates;
 
 } candidate;
 
@@ -125,7 +126,7 @@ double calc_satisfaction(int winner_index, voter voters_arr[], int population);
 void scan_election_settings(int *simulation_choice, int *electoral_choice, int *candidate_choice,
                             int *voting_system_choice, int *candidates, char candidate_name[][MAX_NAME_LENGTH],
                             int værdi[MAX_CANDIDATES], int fordeling[MAX_CANDIDATES]);
-void check_input_validity(int user_input);
+void check_input_validity(int user_input, int choice_amount);
 void custom_candidates(int *candidates, char candidate_name[][MAX_NAME_LENGTH], int værdi[], int fordeling[]);
 
 #endif //FUNCTIONS_H
