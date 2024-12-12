@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:/Users/nikla/OneDrive/Dokumenter/GitHub/P1-FairElections/cmake-build-debug"
+			"value" : "c:/Users/Jacob/Documents/GitHub/P1-FairElections/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -79,7 +79,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "30"
+			"value" : "29"
 		},
 		{
 			"name" : "CMAKE_CACHE_PATCH_VERSION",
@@ -91,7 +91,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "5"
+			"value" : "6"
 		},
 		{
 			"name" : "CMAKE_COLOR_DIAGNOSTICS",
@@ -575,7 +575,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/nikla/OneDrive/Dokumenter/GitHub/P1-FairElections/cmake-build-debug/CMakeFiles/pkgRedirects"
+			"value" : "C:/Users/Jacob/Documents/GitHub/P1-FairElections/cmake-build-debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -647,7 +647,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Users/nikla/OneDrive/Dokumenter/GitHub/P1-FairElections"
+			"value" : "C:/Users/Jacob/Documents/GitHub/P1-FairElections"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -1031,7 +1031,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Program Files/JetBrains/CLion 2024.2.1/bin/cmake/win/x64/share/cmake-3.30"
+			"value" : "C:/Program Files/JetBrains/CLion 2024.2.1/bin/cmake/win/x64/share/cmake-3.29"
 		},
 		{
 			"name" : "CMAKE_SHARED_LINKER_FLAGS",
@@ -1283,7 +1283,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/nikla/OneDrive/Dokumenter/GitHub/P1-FairElections/cmake-build-debug"
+			"value" : "C:/Users/Jacob/Documents/GitHub/P1-FairElections/cmake-build-debug"
 		},
 		{
 			"name" : "P1_Projekt_IS_TOP_LEVEL",
@@ -1307,7 +1307,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/nikla/OneDrive/Dokumenter/GitHub/P1-FairElections"
+			"value" : "C:/Users/Jacob/Documents/GitHub/P1-FairElections"
 		},
 		{
 			"name" : "_CMAKE_LINKER_PUSHPOP_STATE_SUPPORTED",

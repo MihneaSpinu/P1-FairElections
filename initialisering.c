@@ -16,7 +16,7 @@ void init_state(state state_arr[], int num_of_candidate) {
             state_arr[i].candidate_votes_fptp[j] = 0;
             state_arr[i].candidate_votes_star[j] = 0;
             state_arr[i].candidate_votes_rated[j] = 0;
-            state_arr[i].candidate_votes_ranked[j] = 0;
+            state_arr[i].candidate_votes_rcv[j] = 0;
         }
         fscanf(f, "%[^,],%d,%d,", state_arr[i].name, &state_arr[i].population,
                                            &state_arr[i].electoral_votes);

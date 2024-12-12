@@ -40,10 +40,9 @@ void get_distance(voter voter_arr[], candidate candidate_arr[], int population, 
             voter_arr[i].distance_to[j] = sqrt(pow(x_2 - x_1, 2) + pow(y_2 - y_1, 2));
         }
 
-        // if((i+1) % (population / 10) == 0 && i != 0) {
-        //     printf("%.0f%% of voters calculated\n", (float)i / population * 100);
-        //
-        // }
+        if((i+1) % (population / 10) == 0 && i != 0) {
+            printf("%.0f%% of voters calculated\n", (float)i / population * 100);
+        }
     }
 }
 
@@ -86,7 +85,7 @@ void prompt_stats(state state_arr[], double calc_percent[][4][5], candidate cand
                     printf("%d FPTP votes\n", state_arr[i].candidate_votes_fptp[j]);
                     printf("%d STAR votes\n", state_arr[i].candidate_votes_star[j]);
                     printf("%d Rated votes\n", state_arr[i].candidate_votes_rated[j]);
-                    printf("%d RCV votes\n", state_arr[i].candidate_votes_ranked[j]);
+                    printf("%d RCV votes\n", state_arr[i].candidate_votes_rcv[j]);
                 }
                 print_percent(calc_percent, state_arr[i].population, i);
                 break;
@@ -114,32 +113,8 @@ void get_ratings (voter voter_arr[], int i, int j) {
 }
 
 
-int print_winners(candidate candidate_arr[], int num_of_candidates, int voting_system) {
-    int winner = 0;
-    for(int i = 1; i < num_of_candidates; i++) {
-        if(voting_system == FPTP) {
-            if(candidate_arr[winner].fptp_mandates < candidate_arr[i].fptp_mandates) {
-                winner = i;
-            }
-        } else if(voting_system == RCV) {
-            if(candidate_arr[winner].rcv_mandates < candidate_arr[i].rcv_mandates) {
-                winner = i;
-            }
-        } else if(voting_system == Rated) {
-            if(candidate_arr[winner].rcv_mandates < candidate_arr[i].rcv_mandates) {
-                winner = i;
-            }
-        } else if(voting_system == STAR) {
-            if(candidate_arr[winner].rcv_mandates < candidate_arr[i].rcv_mandates) {
-                winner = i;
-            }
-        }
-    }
-    return winner;
-}
-
-
 double voters_satisfaction(voter current_voter, int winner_index) {
+
     double normalized_distance = current_voter.distance_to[winner_index] / MAX_DISTANCE;
 
     // Clamp normalized_distance to [0, 1] to handle unexpected values
@@ -152,15 +127,50 @@ double voters_satisfaction(voter current_voter, int winner_index) {
 
 
 double calc_satisfaction(int winner_index, voter voters_arr[], int population) {
+
     double total_satisfaction = 0.0;
 
     for (int i = 0; i < population; i++) {
         double voter_satisfaction = voters_satisfaction(voters_arr[i], winner_index);
         total_satisfaction += voter_satisfaction;
-        if((i+1) % (population / 20) == 0 && i != 0) {
-            printf("%.0lf%% of voters calculated\n", (double)i / population * 100);
-        }
     }
     printf("Final average satisfaction: %.2lf\n", total_satisfaction);
     return (total_satisfaction / ((double)population)) * 100.0;
+}
+
+
+void print_winner(int num_of_candidates, char voting_system[], int mandates[],
+                  candidate candidate_arr[], char score_type[], int electoral_choice) {
+
+    int winner = 0;
+    for(int i = 0; i < num_of_candidates; i++) {
+        if(mandates[winner] < mandates[i]) {
+            winner = i;
+        }
+    }
+    if(electoral_choice == 1 && mandates[winner] < 270) {
+        contingent_election(num_of_candidates, mandates);
+    } else {
+        printf("\n%s wins %s with %d %s\n", candidate_arr[winner].name, voting_system, mandates[winner], score_type);
+        mandates[winner] = -1;
+        for(int i = 0; i < num_of_candidates-1; i++) {
+            if(mandates[i] != -1) {
+                printf("%s got %d %s\n", candidate_arr[i].name, mandates[i], score_type);
+            }
+        }
+    }
+}
+
+void contingent_election(int num_of_candidates, int mandates[]) {
+
+    int min_votes = INT_MAX;
+    for(int i = 0; num_of_candidates > 3; i++) {
+        if(mandates[i] != -1 && mandates[min_votes > mandates[i]]) {
+            mandates[min_votes] = -1;
+        }
+        num_of_candidates--;
+    }
+    // TOP 3 KANDIDATER ER TILBAGE
+    // PSEUDO TILFÆLDIG KODE DER VÆLGER VINDEREN, HÆLDER NOK MEST TIL TOP 1
+    printf("CONTINGFFENT ELECTION!!!\n");
 }

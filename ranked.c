@@ -63,6 +63,6 @@ void distribute_votes(voter voter_arr[], candidate candidate_arr[], int state_po
             }
         }
         candidate_arr[closest_candidate].votes_rcv++;
-        current_state->candidate_votes_ranked[closest_candidate]++;
+        current_state->candidate_votes_rcv[closest_candidate]++;
     }
 }

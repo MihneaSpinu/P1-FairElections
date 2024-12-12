@@ -18,7 +18,7 @@
 //
 //
 // ENUMS
-typedef enum { FPTP, RCV, Rated, STAR} voting_system_e;
+typedef enum { FPTP, RCV, rated, STAR, national} voting_system_e;
 typedef enum { race, gender, income, age } categories_e;
 typedef enum: unsigned char { white, black, hispanic, asian, other } race_e;
 typedef enum: unsigned char { male, female } gender_e;
@@ -65,7 +65,7 @@ typedef struct {
     int candidate_votes_fptp[MAX_CANDIDATES];
     int candidate_votes_star[MAX_CANDIDATES];
     int candidate_votes_rated[MAX_CANDIDATES];
-    int candidate_votes_ranked[MAX_CANDIDATES];
+    int candidate_votes_rcv[MAX_CANDIDATES];
     int population;
     int electoral_votes;
 } state;
@@ -86,14 +86,18 @@ void init_index(int cumulative_state_population, int start_index[], state state_
 //
 //
 // Result function
-int print_winners(candidate candidate_arr[], int num_of_candidates, int voting_system);
+void print_winner(int num_of_candidates, char voting_system[], int mandates[],
+                  candidate candidate_arr[], char vote_type[], int electoral_choice);
+void contingent_election(int num_of_candidates, int mandates[]);
 
 //
 //
 // Ranked functions
-int ranked_choice_voting(int state_population, voter voter_arr[], candidate candidate_arr[], int start_index, state *current_state, int num_of_candidates);
+int ranked_choice_voting(int state_population, voter voter_arr[], candidate candidate_arr[],
+                         int start_index, state *current_state, int num_of_candidates);
 int find_lowest_votes(candidate candidate_arr[], int num_of_candidates);
-void distribute_votes(voter voter_arr[], candidate candidate_arr[], int state_population, int start_index, state *current_state, int num_of_candidates);
+void distribute_votes(voter voter_arr[], candidate candidate_arr[], int state_population,
+                      int start_index, state *current_state, int num_of_candidates);
 
 //
 //
@@ -103,12 +107,14 @@ int voting_rated(voter voter_arr[], int population, int start_index, state *curr
 //
 //
 // FPTP functions
-int first_past_the_post(voter voter_arr[], int state_population, int start_index, state *current_state, int num_of_candidates);
+int first_past_the_post(voter voter_arr[], int state_population, int start_index,
+                        state *current_state, int num_of_candidates);
 
 //
 //
 // STAR functions
-int voting_star(int current_state_population, voter voter_arr[], candidate candidate_arr[], int start_index, state *current_state, int num_of_candidates);
+int voting_star(int current_state_population, voter voter_arr[], candidate candidate_arr[],
+                int start_index, state *current_state, int num_of_candidates);
 
 //
 //
