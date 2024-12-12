@@ -2,10 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "test/test_runner.exe"
-		},
-		{
-			"path" : "test/test_runner.pdb"
+			"path" : "test/test_runner"
 		}
 	],
 	"backtrace" : 1,
@@ -52,14 +49,18 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g -std=gnu11 -fdiagnostics-color=always"
+					"fragment" : "-g -std=gnu11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -mmacosx-version-min=14.3 -fcolor-diagnostics"
 				}
 			],
 			"includes" : 
 			[
 				{
 					"backtrace" : 3,
+<<<<<<<< HEAD:cmake-build-debug/.cmake/api/v1/reply/target-test_runner-Debug-3eb0aaca5416fcd5338b.json
 					"path" : "C:/Users/Jacob/Documents/GitHub/P1-FairElections/test/.."
+========
+					"path" : "/Users/anton/P1-FairElections/test/.."
+>>>>>>>> origin/Jacob:cmake-build-debug/.cmake/api/v1/reply/target-test_runner-Debug-188130f5074c1667658b.json
 				}
 			],
 			"language" : "C",
@@ -99,18 +100,14 @@
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "..\\libshared.a",
-				"role" : "libraries"
-			},
-			{
-				"fragment" : "-lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32",
+				"fragment" : "../libshared.a",
 				"role" : "libraries"
 			}
 		],
 		"language" : "C"
 	},
 	"name" : "test_runner",
-	"nameOnDisk" : "test_runner.exe",
+	"nameOnDisk" : "test_runner",
 	"paths" : 
 	{
 		"build" : "test",
