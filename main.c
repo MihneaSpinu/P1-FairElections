@@ -68,6 +68,7 @@ int main() {
         printf("\n%s wins with %d mandates \n", winner, winner_mandates);
         double satisfaction = calc_satisfaction(winner_index, voter_arr, POPULATION);
         printf("Satisfaction: %.2lf out of 100", satisfaction);
+
     }
 
     if(electoral_choice == 2) {
@@ -78,7 +79,12 @@ int main() {
             printf("Candidate %s has %d votes\n", candidate_arr[i].name, state_arr[0].candidate_votes_fptp[i]);
             printf("It would be %d mandates\n", (int)(((long long)state_arr[0].candidate_votes_fptp[i] * 538) / POPULATION));
         }
-
+        int condorcet_win_index = condorcet_winner(POPULATION, candidates, voter_arr);
+        if (condorcet_win_index == -1) {
+            printf("There are no cordorcet winner");
+        }else {
+            printf("The cordorcet winner is %s", candidate_arr[condorcet_win_index].name);
+        }
     }
 
     if(electoral_choice == 1 && voting_system_choice == 2) {
@@ -102,7 +108,7 @@ int main() {
             candidate_arr[star_winner].star_mandates += state_arr[i].electoral_votes;
         }
         char voting_system[][MAX_NAME_LENGTH] = {"FPTP", "RANKED", "RATED", "STAR"};
-        int previus_winner[candidates];
+        double previus_winner[candidates];
         for (int i = 0; i < candidates; i++) {
             previus_winner[i] = 0;
         }
@@ -117,6 +123,12 @@ int main() {
                 printf("%s previuosly calculated to %.2lf\n", candidate_arr[new_winner].name, previus_winner[new_winner]);
             }
         }
+        int cordorcet_win_index = condorcet_winner(POPULATION, candidates, voter_arr);
+        if (cordorcet_win_index == -1) {
+            printf("There are no cordorcet winner");
+        }else {
+            printf("The cordorcet winner is %s", candidate_arr[cordorcet_win_index].name);
+        }
         for (int i = 0; i < candidates; i++) {
             printf("\n%s (%d) got \n", candidate_arr[i].name, i + 1);
             printf("FPTP mandates: %d\n", candidate_arr[i].fptp_mandates);
@@ -125,6 +137,7 @@ int main() {
             printf("RANKED mandates: %d\n", candidate_arr[i].rcv_mandates);
         }
         //determine_fairness();
+
 
         prompt_stats(state_arr, calc_percent, candidate_arr, candidates);
     }

@@ -44,6 +44,8 @@ void test_1() {
     assert(winner_rated == 2);
     int winner_star = voting_star(5, voter_arr, candidate_arr, 0, &test_state, 3);
     assert(winner_star == 2);
+    int cordocet_win_index = condorcet_winner(5, 3, voter_arr);
+    printf("Index of cordocet winner %d", cordocet_win_index);
 }
 
 void init_test(voter voter_arr[], candidate candidate_arr[]) {

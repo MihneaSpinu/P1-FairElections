@@ -157,10 +157,38 @@ double calc_satisfaction(int winner_index, voter voters_arr[], int population) {
     for (int i = 0; i < population; i++) {
         double voter_satisfaction = voters_satisfaction(voters_arr[i], winner_index);
         total_satisfaction += voter_satisfaction;
-        if((i+1) % (population / 20) == 0 && i != 0) {
-            printf("%.0lf%% of voters calculated\n", (double)i / population * 100);
+    }
+    return (total_satisfaction / ((double)population)) * 100.0;
+}
+int condorcet_winner(int num_voters, int num_candidates, voter voter_arr[]) {
+    int pairwise[num_candidates][num_candidates];
+    for (int i = 0; i < num_candidates; i++) {
+        for (int j = 0; j < num_candidates; j++) {
+            pairwise[i][j] = 0;
         }
     }
-    printf("Final average satisfaction: %.2lf\n", total_satisfaction);
-    return (total_satisfaction / ((double)population)) * 100.0;
+    //see pairwise candidates
+    for (int i = 0; i < num_voters; i++) {
+        for (int j = 0; j < num_candidates; j++) {
+            for (int k = j + 1; k < num_candidates; k++) {
+                if (voter_arr[i].distance_to[j] < voter_arr[i].distance_to[k]) {
+                    pairwise[j][k]++;
+                } else {
+                    pairwise[k][j]++;
+                }
+            }
+        }
+    }
+    //check for cordocet winner
+    for (int i = 0; i < num_candidates; i++) {
+        int is_condorcet = 1;
+        for (int j = 0; j < num_candidates; j++) {
+            if (i != j && pairwise[i][j] <= pairwise[j][i]) {
+                is_condorcet = 0;
+                break;
+            }
+        }
+        if (is_condorcet) return i;
+    }
+    return -1; // No Condorcet winner
 }

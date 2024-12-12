@@ -13,7 +13,7 @@
 #define MAX_NAME_LENGTH 21
 #define STD_DEVIATION 5
 #define POPULATION 2509472 // 250947200
-#define MAX_DISTANCE 400
+#define MAX_DISTANCE 200
 
 //
 //
@@ -121,6 +121,7 @@ void get_ratings (voter voter_arr[], int i, int j);
 int variance();
 double voters_satisfaction(voter current_voter, int winner_index);
 double calc_satisfaction(int winner_index, voter voters_arr[], int population);
+int condorcet_winner(int num_voters, int num_candidates, voter voter_arr[]);
 
 // Election settings
 void scan_election_settings(int *simulation_choice, int *electoral_choice, int *candidate_choice,
