@@ -5,7 +5,7 @@
 
 // funktion til at initialisere staterne
 void init_state(state state_arr[], int num_of_candidate) {
-    FILE* f = fopen("state_data.txt", "r");
+    FILE* f = fopen("test_state_data.txt", "r"); // test_state_data for 100x mindre
     if (f == NULL) {
         printf("Error: couldn't open file 'state_data.txt'");
         exit(EXIT_FAILURE);
@@ -40,11 +40,6 @@ void init_state(state state_arr[], int num_of_candidate) {
 
 // funktion til at initialisere kandidaterne
 void init_candidates(candidate candidate_arr[], int num_of_candidates, char candidate_names[][MAX_NAME_LENGTH], int værdi[], int fordeling[]) {
-    //
-    // const char *names[] = {"Donald Trump", "Kamala Harris"};
-    //
-    // int værdipolitik_c[] = {25, 30};
-    // int fordelingspolitik_c[] = {25, 20};
 
     for (int i = 0; i < num_of_candidates; i++) {
         strcpy(candidate_arr[i].name, candidate_names[i]);
@@ -58,7 +53,7 @@ void init_candidates(candidate candidate_arr[], int num_of_candidates, char cand
         candidate_arr[i].rcv_mandates = 0;
         candidate_arr[i].fptp_mandates = 0;
         candidate_arr[i].rated_mandates = 0;
-        candidate_arr[i].total_mandates = 0;
+        candidate_arr[i].general_mandates = 0;
     }
 }
 
@@ -66,16 +61,16 @@ void init_candidates(candidate candidate_arr[], int num_of_candidates, char cand
 void init_voters(voter voter_arr[], state current_state, int start_index, int state, double calc_percent[][4][5]) {
 
     int fordelingspolitik[4][5] = {
-        {50, -50, -50, -50, -50}, // RACE
+        {40, -50, -50, -50, -50},// RACE
         {30, -30},               // GENDER
-        {-40, 20, 40},           // INCOME
-        {-50, -25, 20, 30, 50}}; // AGE
+        {-40, 0, 40},            // INCOME
+        {-50, -25, 10, 20, 30}}; // AGE
 
     int værdipolitik[4][5] = {
-        {50, -50, -50, -50, -50}, // RACE
+        {40, -50, -50, -50, -50},// RACE
         {30, -30},               // GENDER
-        {-40, 20, 40},           // INCOME
-        {-50, -25, 20, 30, 50}}; // AGE
+        {-40, 0, 40},            // INCOME
+        {-50, -25, 10, 20, 30}}; // AGE
 
     for(int i = start_index; i < current_state.population + start_index; i++) {
         voter_arr[i].fordelingspolitik_v = 0;
