@@ -40,10 +40,10 @@ void get_distance(voter voter_arr[], candidate candidate_arr[], int population, 
             voter_arr[i].distance_to[j] = sqrt(pow(x_2 - x_1, 2) + pow(y_2 - y_1, 2));
         }
 
-        if((i+1) % (population / 10) == 0 && i != 0) {
-            printf("%.0lf%% of voters calculated\n", (double)i / population * 100);
-
-        }
+        // if((i+1) % (population / 10) == 0 && i != 0) {
+        //     printf("%.0f%% of voters calculated\n", (float)i / population * 100);
+        //
+        // }
     }
 }
 
