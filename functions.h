@@ -11,12 +11,14 @@
 #define INCOME 3
 #define AGES 5
 #define MAX_NAME_LENGTH 21
-#define VARIANCE 0
-#define POPULATION 250947200
+#define STD_DEVIATION 5
+#define POPULATION 2509472 // 250947200
+#define MAX_DISTANCE 400
 
 //
 //
 // ENUMS
+typedef enum { FPTP, RCV, Rated, STAR} voting_system_e;
 typedef enum { race, gender, income, age } categories_e;
 typedef enum: unsigned char { white, black, hispanic, asian, other } race_e;
 typedef enum: unsigned char { male, female } gender_e;
@@ -27,14 +29,14 @@ typedef enum: unsigned char { young, adult, middle_aged, old, elderly } age_e;
 //
 // STRUCTS
 typedef struct {
+    float distance_to[MAX_CANDIDATES];
+    int værdipolitik_v;
+    int fordelingspolitik_v; // Rangering af kandidater (ranked)
+    int ratings[MAX_CANDIDATES];
     age_e age_v;
     gender_e gender_v;
     race_e race_v;
     income_e income_v;
-    int værdipolitik_v;
-    int fordelingspolitik_v;
-    double distance_to[MAX_CANDIDATES]; // Rangering af kandidater (ranked)
-    int ratings[MAX_CANDIDATES];
 } voter;
 
 typedef struct {
@@ -50,7 +52,7 @@ typedef struct {
     int fptp_mandates;
     int rated_mandates;
     int eliminated; // Flag for elimineret kandidat (ranked)
-    int total_mandates;
+    int general_mandates;
 
 } candidate;
 
@@ -84,7 +86,7 @@ void init_index(int cumulative_state_population, int start_index[], state state_
 //
 //
 // Result function
-void print_winners();
+int print_winners(candidate candidate_arr[], int num_of_candidates, int voting_system);
 
 //
 //
@@ -117,10 +119,14 @@ void prompt_stats(state state_arr[], double calc_percent[][4][5], candidate cand
 void election_2024();
 void get_ratings (voter voter_arr[], int i, int j);
 int variance();
+double voters_satisfaction(voter current_voter, int winner_index);
+double calc_satisfaction(int winner_index, voter voters_arr[], int population);
 
 // Election settings
-void scan_election_settings();
-void check_input_validity();
-void custom_candidates();
+void scan_election_settings(int *simulation_choice, int *electoral_choice, int *candidate_choice,
+                            int *voting_system_choice, int *candidates, char candidate_name[][MAX_NAME_LENGTH],
+                            int værdi[MAX_CANDIDATES], int fordeling[MAX_CANDIDATES]);
+void check_input_validity(int user_input, int choice_amount);
+void custom_candidates(int *candidates, char candidate_name[][MAX_NAME_LENGTH], int værdi[], int fordeling[]);
 
 #endif //FUNCTIONS_H

@@ -47,7 +47,7 @@ void get_distance(voter voter_arr[], candidate candidate_arr[], int population, 
     }
 }
 
-// Returnere en range med størrelse VARIANCE centreret omkring 0
+// Box Muller normal distribution funktion
 int variance() {
     double x, y, z;
     do {
@@ -57,8 +57,16 @@ int variance() {
     } while (z == 0 || z > 1);
     double h = sqrt(-2 * log(z) / z);
 
-    return x * h * VARIANCE;
 
+    int variance = x * h * STD_DEVIATION;
+
+    if(variance > STD_DEVIATION * 10) {
+        return STD_DEVIATION * 10;
+    }
+    if(variance < -(STD_DEVIATION * 10)) {
+        return -(STD_DEVIATION * 10);
+    }
+    return variance;
 }
 
 // Printer dataene fra en givet stat
@@ -87,6 +95,8 @@ void prompt_stats(state state_arr[], double calc_percent[][4][5], candidate cand
     } while(strcmp(input, "q") != 0);
 
 }
+
+
 void get_ratings (voter voter_arr[], int i, int j) {
 
     int distance_rating[] = {20, 40, 60, 80, 100, 120, 140, 160, 180, 200};
@@ -102,13 +112,55 @@ void get_ratings (voter voter_arr[], int i, int j) {
         voter_arr[i].ratings[j] = 10-k;
     }
 }
-/*
-void print_winners(char winner[], int mandates[], char *runner_up[]) {
 
-    printf("%s wins with %d electoral votes\n", winner, mandates[0]);
-    printf("\nRunners up:\n");
-    for(int i = 0; i < CANDIDATES - 1; i++) {
-        printf("%s with %d electoral votes\n", runner_up[i], mandates[i+1]);
+
+int print_winners(candidate candidate_arr[], int num_of_candidates, int voting_system) {
+    int winner = 0;
+    for(int i = 1; i < num_of_candidates; i++) {
+        if(voting_system == FPTP) {
+            if(candidate_arr[winner].fptp_mandates < candidate_arr[i].fptp_mandates) {
+                winner = i;
+            }
+        } else if(voting_system == RCV) {
+            if(candidate_arr[winner].rcv_mandates < candidate_arr[i].rcv_mandates) {
+                winner = i;
+            }
+        } else if(voting_system == Rated) {
+            if(candidate_arr[winner].rcv_mandates < candidate_arr[i].rcv_mandates) {
+                winner = i;
+            }
+        } else if(voting_system == STAR) {
+            if(candidate_arr[winner].rcv_mandates < candidate_arr[i].rcv_mandates) {
+                winner = i;
+            }
+        }
     }
+    return winner;
 }
-*/
+
+
+double voters_satisfaction(voter current_voter, int winner_index) {
+    double normalized_distance = current_voter.distance_to[winner_index] / MAX_DISTANCE;
+
+    // Clamp normalized_distance to [0, 1] to handle unexpected values
+    if (normalized_distance < 0.0) normalized_distance = 0.0;
+    if (normalized_distance > 1.0) normalized_distance = 1.0;
+
+    // Satisfaction decreases linearly with distance
+    return 1.0 - normalized_distance;
+}
+
+
+double calc_satisfaction(int winner_index, voter voters_arr[], int population) {
+    double total_satisfaction = 0.0;
+
+    for (int i = 0; i < population; i++) {
+        double voter_satisfaction = voters_satisfaction(voters_arr[i], winner_index);
+        total_satisfaction += voter_satisfaction;
+        if((i+1) % (population / 20) == 0 && i != 0) {
+            printf("%.0lf%% of voters calculated\n", (double)i / population * 100);
+        }
+    }
+    printf("Final average satisfaction: %.2lf\n", total_satisfaction);
+    return (total_satisfaction / ((double)population)) * 100.0;
+}
