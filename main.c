@@ -22,41 +22,14 @@ int main() {
                            &voting_system_choice, &candidates, candidate_name,
                            værdi, fordeling);
 
-    /*
-    printf("1) Simulate 2024 election\n");
-    printf("2) Use preset candidates\n");
-    printf("3) Add your own candidates\n");
-    scanf("%d", &simulation_choice);
-
-    if(simulation_choice == 1) {
-        candidates = 2;
-        strcpy(candidate_name[0], "Donald Trump");
-        strcpy(candidate_name[1], "Kamala Harris");
-        værdi[0] = 25,      værdi[1] = 30;
-        fordeling[0] = 25,  fordeling[1] = 20;
-    } else if(simulation_choice == 2) {
-        candidates = 5;
-        strcpy(candidate_name[0], "Donald Trump");
-        strcpy(candidate_name[1], "Kamala Harris");
-        strcpy(candidate_name[2], "Robert F. Kennedy");
-        strcpy(candidate_name[3], "Elon Musk");
-        strcpy(candidate_name[4], "Kanye West");
-        værdi[0] = 25,      værdi[1] = 30,      værdi[2] = 0,       værdi[3] = 50,      værdi[4] = -20;
-        fordeling[0] = 25,  fordeling[1] = 20,  fordeling[2] = 0,   fordeling[3] = 50,  fordeling[4] = -20;
-    } else {
-        printf("Invalid input");
-        exit(EXIT_FAILURE);
-    }
-    */
-
-    candidate *candidate_arr = malloc(sizeof(candidate) * candidates);
-    voter *voter_arr = malloc(sizeof(voter) * POPULATION);
-    state *state_arr = malloc(sizeof(state) * STATES);
+    printf("Allocating the arrays...\n");
+    candidate *candidate_arr = (candidate *)malloc(sizeof(candidate) * candidates);
+    voter *voter_arr = (voter *)malloc(sizeof(voter) * POPULATION);
+    state *state_arr = (state *)malloc(sizeof(state) * STATES);
     if(candidate_arr == NULL || voter_arr == NULL || state_arr == NULL) {
         printf("Error allocating memory\n");
         exit(EXIT_FAILURE);
     }
-
     printf("\nInitializing the candidates...\n\n");
     init_candidates(candidate_arr, candidates, candidate_name, værdi, fordeling);
 
@@ -90,8 +63,11 @@ int main() {
         }
         char winner[MAX_NAME_LENGTH];
         int winner_mandates = candidate_arr[0].total_mandates > candidate_arr[1].total_mandates ? candidate_arr[0].total_mandates : candidate_arr[1].total_mandates;
+        int winner_index = candidate_arr[0].total_mandates > candidate_arr[1].total_mandates ? 0 : 1;
         strcpy(winner, candidate_arr[0].total_mandates > candidate_arr[1].total_mandates ? candidate_arr[0].name : candidate_arr[1].name);
         printf("\n%s wins with %d mandates \n", winner, winner_mandates);
+        double satisfaction = calc_satisfaction(winner_index, voter_arr, POPULATION);
+        printf("Satisfaction: %.2lf out of 100", satisfaction);
     }
 
     if(simulation_choice == 1 && electoral_choice == 2) {
@@ -126,11 +102,20 @@ int main() {
             candidate_arr[star_winner].star_mandates += state_arr[i].electoral_votes;
         }
         char voting_system[][MAX_NAME_LENGTH] = {"FPTP", "RANKED", "RATED", "STAR"};
+        int previus_winner[candidates];
+        for (int i = 0; i < candidates; i++) {
+            previus_winner[i] = 0;
+        }
         for(int i = 0; i < 4; i++) {
-            int winner = print_winners(candidate_arr, candidates, i);
-            printf("Winner of %s is %s\n", voting_system[i], candidate_arr[winner].name);
-            int satisfaction = calc_satisfaction(winner, voter_arr, POPULATION);
-            printf("Satisfaction: %.2lf", satisfaction);
+            int new_winner = print_winners(candidate_arr, candidates, i);
+            printf("Winner of %s is %s\n", voting_system[i], candidate_arr[new_winner].name);
+            if (!previus_winner[new_winner]) {
+                double satisfaction = calc_satisfaction(new_winner, voter_arr, POPULATION);
+                printf("Satisfaction: %.2lf\n", satisfaction);
+                previus_winner[new_winner] = satisfaction;
+            }else {
+                printf("%s previuosly calculated to %.2lf\n", candidate_arr[new_winner].name, previus_winner[new_winner]);
+            }
         }
         for (int i = 0; i < candidates; i++) {
             printf("\n%s (%d) got \n", candidate_arr[i].name, i + 1);

@@ -13,6 +13,7 @@
 #define MAX_NAME_LENGTH 21
 #define VARIANCE 10
 #define POPULATION 250947200
+#define MAX_DISTANCE 400
 
 //
 //
@@ -27,14 +28,14 @@ typedef enum: unsigned char { young, adult, middle_aged, old, elderly } age_e;
 //
 // STRUCTS
 typedef struct {
+    float distance_to[MAX_CANDIDATES];
+    int værdipolitik_v;
+    int fordelingspolitik_v; // Rangering af kandidater (ranked)
+    int ratings[MAX_CANDIDATES];
     age_e age_v;
     gender_e gender_v;
     race_e race_v;
     income_e income_v;
-    int værdipolitik_v;
-    int fordelingspolitik_v;
-    double distance_to[MAX_CANDIDATES]; // Rangering af kandidater (ranked)
-    int ratings[MAX_CANDIDATES];
 } voter;
 
 typedef struct {

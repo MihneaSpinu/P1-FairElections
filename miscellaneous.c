@@ -133,13 +133,26 @@ int print_winners(candidate candidate_arr[], int num_of_candidates, int voting_s
 }
 
 double voters_satisfaction(voter current_voter, int winner_index) {
-    return 1 / (1 + current_voter.distance_to[winner_index]);
+    double normalized_distance = current_voter.distance_to[winner_index] / MAX_DISTANCE;
+
+    // Clamp normalized_distance to [0, 1] to handle unexpected values
+    if (normalized_distance < 0.0) normalized_distance = 0.0;
+    if (normalized_distance > 1.0) normalized_distance = 1.0;
+
+    // Satisfaction decreases linearly with distance
+    return 1.0 - normalized_distance;
 }
 
 double calc_satisfaction(int winner_index, voter voters_arr[], int population) {
-    double total_satisfaction = 0;
-    for(int i = 0; i < population; i++) {
-        total_satisfaction += voters_satisfaction(voters_arr[i], winner_index);
+    double total_satisfaction = 0.0;
+
+    for (int i = 0; i < population; i++) {
+        double voter_satisfaction = voters_satisfaction(voters_arr[i], winner_index);
+        total_satisfaction += voter_satisfaction;
+        if((i+1) % (population / 20) == 0 && i != 0) {
+            printf("%.0lf%% of voters calculated\n", (double)i / population * 100);
+        }
     }
-    return total_satisfaction / population * 100;
+    printf("Final average satisfaction: %.2lf\n", total_satisfaction);
+    return (total_satisfaction / ((double)population)) * 100.0;
 }
