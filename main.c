@@ -50,38 +50,38 @@ int main() {
     get_distance(voter_arr, candidate_arr, POPULATION, candidates);
     printf("\n");
 
-    if(simulation_choice == 1 && electoral_choice == 1) {
+    if(electoral_choice == 1 && voting_system_choice == 1) {
         for(int i = 0; i < STATES; i++) {
             printf("Calculating winners for %s...\n", state_arr[i].name);
             if(i == 1 || i == 19) { // Alaska & MAINE
                 int rcv_winner = ranked_choice_voting(state_arr[i].population, voter_arr, candidate_arr, start_index[i], &state_arr[i], candidates);
-                candidate_arr[rcv_winner].total_mandates += state_arr[i].electoral_votes;
+                candidate_arr[rcv_winner].general_mandates += state_arr[i].electoral_votes;
             } else {
                 int fptp_winner = first_past_the_post(voter_arr, state_arr[i].population, start_index[i], &state_arr[i], candidates);
-                candidate_arr[fptp_winner].total_mandates += state_arr[i].electoral_votes;
+                candidate_arr[fptp_winner].general_mandates += state_arr[i].electoral_votes;
             }
         }
         char winner[MAX_NAME_LENGTH];
-        int winner_mandates = candidate_arr[0].total_mandates > candidate_arr[1].total_mandates ? candidate_arr[0].total_mandates : candidate_arr[1].total_mandates;
-        int winner_index = candidate_arr[0].total_mandates > candidate_arr[1].total_mandates ? 0 : 1;
-        strcpy(winner, candidate_arr[0].total_mandates > candidate_arr[1].total_mandates ? candidate_arr[0].name : candidate_arr[1].name);
+        int winner_mandates = candidate_arr[0].general_mandates > candidate_arr[1].general_mandates ? candidate_arr[0].general_mandates : candidate_arr[1].general_mandates;
+        int winner_index = candidate_arr[0].general_mandates > candidate_arr[1].general_mandates ? 0 : 1;
+        strcpy(winner, candidate_arr[0].general_mandates > candidate_arr[1].general_mandates ? candidate_arr[0].name : candidate_arr[1].name);
         printf("\n%s wins with %d mandates \n", winner, winner_mandates);
         double satisfaction = calc_satisfaction(winner_index, voter_arr, POPULATION);
         printf("Satisfaction: %.2lf out of 100", satisfaction);
     }
 
-    if(simulation_choice == 1 && electoral_choice == 2) {
+    if(electoral_choice == 2) {
         printf("Calculating voters");
         int fptp_winner = first_past_the_post(voter_arr, POPULATION, 0, &state_arr[0], candidates);
         printf("\n%s wins \n", candidate_arr[fptp_winner].name);
         for(int i = 0; i < candidates; i++) {
             printf("Candidate %s has %d votes\n", candidate_arr[i].name, state_arr[0].candidate_votes_fptp[i]);
-            printf("It would be %d mandates", (int)(((long long)state_arr[0].candidate_votes_fptp[i] * 538) / POPULATION));
+            printf("It would be %d mandates\n", (int)(((long long)state_arr[0].candidate_votes_fptp[i] * 538) / POPULATION));
         }
 
     }
 
-    if(simulation_choice == 2 && electoral_choice == 1 && voting_system_choice == 2) {
+    if(electoral_choice == 1 && voting_system_choice == 2) {
         for(int i = 0; i < STATES; i++) {
             printf("Calculating winners for %s...\n", state_arr[i].name);
 
