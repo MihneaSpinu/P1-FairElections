@@ -41,13 +41,12 @@ void get_distance(voter voter_arr[], candidate candidate_arr[], int population, 
         }
 
         if((i+1) % (population / 10) == 0 && i != 0) {
-            printf("%.0lf%% of voters calculated\n", (double)i / population * 100);
-
+            printf("%.0f%% of voters calculated\n", (float)i / population * 100);
         }
     }
 }
 
-// Returnere en range med størrelse VARIANCE centreret omkring 0
+// Box Muller normal distribution funktion
 int variance() {
     double x, y, z;
     do {
@@ -57,8 +56,16 @@ int variance() {
     } while (z == 0 || z > 1);
     double h = sqrt(-2 * log(z) / z);
 
-    return x * h * VARIANCE;
 
+    int variance = x * h * STD_DEVIATION;
+
+    if(variance > STD_DEVIATION * 10) {
+        return STD_DEVIATION * 10;
+    }
+    if(variance < -(STD_DEVIATION * 10)) {
+        return -(STD_DEVIATION * 10);
+    }
+    return variance;
 }
 
 // Printer dataene fra en givet stat
@@ -78,7 +85,7 @@ void prompt_stats(state state_arr[], double calc_percent[][4][5], candidate cand
                     printf("%d FPTP votes\n", state_arr[i].candidate_votes_fptp[j]);
                     printf("%d STAR votes\n", state_arr[i].candidate_votes_star[j]);
                     printf("%d Rated votes\n", state_arr[i].candidate_votes_rated[j]);
-                    printf("%d RCV votes\n", state_arr[i].candidate_votes_ranked[j]);
+                    printf("%d RCV votes\n", state_arr[i].candidate_votes_rcv[j]);
                 }
                 print_percent(calc_percent, state_arr[i].population, i);
                 break;
@@ -87,6 +94,8 @@ void prompt_stats(state state_arr[], double calc_percent[][4][5], candidate cand
     } while(strcmp(input, "q") != 0);
 
 }
+
+
 void get_ratings (voter voter_arr[], int i, int j) {
 
     int distance_rating[] = {20, 40, 60, 80, 100, 120, 140, 160, 180, 200};
@@ -103,43 +112,140 @@ void get_ratings (voter voter_arr[], int i, int j) {
     }
 }
 
-int print_winners(candidate candidate_arr[], int num_of_candidates, int voting_system) {
+
+double voters_satisfaction(voter current_voter, int winner_index) {
+
+    double normalized_distance = current_voter.distance_to[winner_index] / MAX_DISTANCE;
+
+    // Clamp normalized_distance to [0, 1] to handle unexpected values
+    if (normalized_distance < 0.0) normalized_distance = 0.0;
+    if (normalized_distance > 1.0) normalized_distance = 1.0;
+
+    // Satisfaction decreases linearly with distance
+    return 1.0 - normalized_distance;
+}
+
+
+double calc_satisfaction(int winner_index, voter voters_arr[], int population) {
+
+    double total_satisfaction = 0.0;
+
+    for (int i = 0; i < population; i++) {
+        double voter_satisfaction = voters_satisfaction(voters_arr[i], winner_index);
+        total_satisfaction += voter_satisfaction;
+    }
+    return (total_satisfaction / ((double)population)) * 100.0;
+}
+
+
+int print_winner(int num_of_candidates, char voting_system[], int mandates[],
+                  candidate candidate_arr[], char score_type[], int electoral_choice) {
+
     int winner = 0;
-    for(int i = 1; i < num_of_candidates; i++) {
-        switch(voting_system) {
-            case 0:
-                if(candidate_arr[winner].fptp_mandates < candidate_arr[i].fptp_mandates) {
-                    winner = i;
-                }
-                break;
-            case 1:
-                if(candidate_arr[winner].rcv_mandates < candidate_arr[i].rcv_mandates) {
-                    winner = i;
-                }
-                break;
-            case 2:
-                if(candidate_arr[winner].rated_mandates < candidate_arr[i].rated_mandates) {
-                    winner = i;
-                }
-                break;
-            case 3:
-                if(candidate_arr[winner].star_mandates < candidate_arr[i].star_mandates) {
-                    winner = i;
-                }
-                break;
+    for(int i = 0; i < num_of_candidates; i++) {
+        if(mandates[winner] < mandates[i]) {
+            winner = i;
+        }
+    }
+
+    if(electoral_choice == 1 && mandates[winner] < 270) {
+        int temp_madates[num_of_candidates];
+        for (int i = 0; i < num_of_candidates; i++) {
+            temp_madates[i] = mandates[i];
+        }
+        winner = contingent_election(num_of_candidates, temp_madates, candidate_arr);
+    }
+    printf("\n%s wins %s with %d %s\n", candidate_arr[winner].name, voting_system, mandates[winner], score_type);
+    mandates[winner] = -1;
+    for(int i = 0; i < num_of_candidates; i++) {
+        if(mandates[i] != -1) {
+            printf("%s got %d %s\n", candidate_arr[i].name, mandates[i], score_type);
         }
     }
     return winner;
 }
 
-double voters_satisfaction(voter current_voter, int winner_index) {
-    return 1 / (1 + current_voter.distance_to[winner_index]);
+// void contingent_election(int num_of_candidates, int mandates[]) {
+//
+//     int min_votes = INT_MAX;
+//     for(int i = 0; num_of_candidates > 3; i++) {
+//         if(mandates[i] != -1 && mandates[min_votes > mandates[i]]) {
+//             mandates[min_votes] = -1;
+//         }
+//         num_of_candidates--;
+//     }
+//     // TOP 3 KANDIDATER ER TILBAGE
+//     // PSEUDO TILFÆLDIG KODE DER VÆLGER VINDEREN, HÆLDER NOK MEST TIL TOP 1
+//     printf("CONTINGFFENT ELECTION!!!\n");
+// }
+int contingent_election(int num_of_candidates, int mandates[], candidate candidate_arr[]) {
+    int start_num_of_candidates = num_of_candidates;
+    while (start_num_of_candidates > 3) {
+        int min_votes = INT_MAX;
+        int min_index = -1;
+
+        // Find kandidaten med færrest stemmer
+        for (int i = 0; i < start_num_of_candidates; i++) {
+            if (mandates[i] != -1 && mandates[i] < min_votes) {
+                min_votes = mandates[i];
+                min_index = i;
+            }
+        }
+
+        // Fjern kandidaten med færrest stemmer
+        if (min_index != -1) {
+            mandates[min_index] = -1; // Markér som elimineret
+            start_num_of_candidates--;
+        }
+    }
+
+    // Eksempel på at vælge en vinder (den med flest stemmer)
+    int max_votes = -1;
+    int winner_index = -1;
+    for (int i = 0; i < num_of_candidates; i++) {
+        if (mandates[i] != -1 && mandates[i] > max_votes) {
+            max_votes = mandates[i];
+            winner_index = i;
+        }
+    }
+
+    if (winner_index != -1) {
+        return winner_index;
+    } else {
+        printf("No winners found.\n");
+        return -1;
+    }
 }
 
-double calc_satisfaction(int winner_index, voter voters_arr[], int population) {
-    double total_satisfaction = 0;
-    for(int i = 0; i < population; i++) {
-        total_satisfaction += voters_satisfaction(voters_arr[i], winner_index);
+int condorcet_winner(int num_voters, int num_candidates, voter voter_arr[]) {
+    int pairwise[num_candidates][num_candidates];
+    for (int i = 0; i < num_candidates; i++) {
+        for (int j = 0; j < num_candidates; j++) {
+            pairwise[i][j] = 0;
+        }
     }
-    return total_satisfaction / population * 100;
+    //see pairwise candidates
+    for (int i = 0; i < num_voters; i++) {
+        for (int j = 0; j < num_candidates; j++) {
+            for (int k = j + 1; k < num_candidates; k++) {
+                if (voter_arr[i].distance_to[j] < voter_arr[i].distance_to[k]) {
+                    pairwise[j][k]++;
+                } else {
+                    pairwise[k][j]++;
+                }
+            }
+        }
+    }
+    //check for cordocet winner
+    for (int i = 0; i < num_candidates; i++) {
+        int is_condorcet = 1;
+        for (int j = 0; j < num_candidates; j++) {
+            if (i != j && pairwise[i][j] <= pairwise[j][i]) {
+                is_condorcet = 0;
+                break;
+            }
+        }
+        if (is_condorcet) return i;
+    }
+    return -1; // No Condorcet winner
 }
