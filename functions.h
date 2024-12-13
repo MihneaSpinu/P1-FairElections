@@ -12,7 +12,9 @@
 #define AGES 5
 #define MAX_NAME_LENGTH 21
 #define VARIANCE 10
-#define POPULATION 250947200
+#define POPULATION 2509472
+
+#define CONGRESSIONAL_DISTRICTS 5
 
 //
 //
@@ -52,6 +54,8 @@ typedef struct {
     int eliminated; // Flag for elimineret kandidat (ranked)
     int total_mandates;
 
+    int congressional_mandates;
+
 } candidate;
 
 typedef struct {
@@ -66,6 +70,10 @@ typedef struct {
     int candidate_votes_ranked[MAX_CANDIDATES];
     int population;
     int electoral_votes;
+
+    int district_votes[CONGRESSIONAL_DISTRICTS][MAX_CANDIDATES];
+    int state_votes[MAX_CANDIDATES];
+
 } state;
 
 //
@@ -126,5 +134,7 @@ void scan_election_settings(int *simulation_choice, int *electoral_choice, int *
                             int værdi[MAX_CANDIDATES], int fordeling[MAX_CANDIDATES]);
 void check_input_validity(int user_input);
 void custom_candidates(int *candidates, char candidate_name[][MAX_NAME_LENGTH], int værdi[], int fordeling[]);
+
+void maine_nebraska(state state_arr[], candidate candidate_arr[], int num_of_candidates);
 
 #endif //FUNCTIONS_H

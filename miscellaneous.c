@@ -143,3 +143,36 @@ double calc_satisfaction(int winner_index, voter voters_arr[], int population) {
     }
     return total_satisfaction / population * 100;
 }
+
+
+    void maine_nebraska(state state_arr[], candidate candidate_arr[], int num_of_candidates) {
+        for (int i = 0; i < STATES; i++) {
+            if (strcmp(state_arr[i].name, "Maine") == 0 || strcmp(state_arr[i].name, "Nebraska") == 0) {
+                int district_winners[CONGRESSIONAL_DISTRICTS] = {0};
+                int state_winner = 0;
+
+                for (int j = 0; j < CONGRESSIONAL_DISTRICTS; j++) {
+                    int congressional_votes = 0;
+                    for (int k = 0; k < num_of_candidates; k++) {
+                        if (state_arr[i].district_votes[j][k] > congressional_votes) {
+                            congressional_votes = state_arr[i].district_votes[j][k];
+                            district_winners[j] = k;
+                        }
+                    }
+                }
+
+                int max_votes = 0;
+                for (int k = 0; k < num_of_candidates; k++) {
+                    if (state_arr[i].state_votes[k] > max_votes) {
+                        max_votes = state_arr[i].state_votes[k];
+                        state_winner = k;
+                    }
+                }
+
+                for (int j = 0; j < CONGRESSIONAL_DISTRICTS; j++) {
+                    candidate_arr[district_winners[j]].congressional_mandates++;
+                }
+                candidate_arr[state_winner].congressional_mandates += 2;
+            }
+        }
+    }
