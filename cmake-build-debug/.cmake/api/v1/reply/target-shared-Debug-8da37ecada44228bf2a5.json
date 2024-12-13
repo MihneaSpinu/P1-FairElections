@@ -3,11 +3,7 @@
 	"artifacts" : 
 	[
 		{
-<<<<<<<< HEAD:cmake-build-debug/.cmake/api/v1/reply/target-shared-Debug-6f620bb2194021176155.json
 			"path" : "libshared.a"
-========
-			"path" : "P1_Projekt"
->>>>>>>> Anton:cmake-build-debug/.cmake/api/v1/reply/target-P1_Projekt-Debug-5d65a7d623700ad7148f.json
 		}
 	],
 	"backtrace" : 1,
@@ -40,7 +36,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g -std=gnu11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.4.sdk -mmacosx-version-min=14.3 -fcolor-diagnostics"
+					"fragment" : "-g -std=gnu11 -fdiagnostics-color=always"
 				}
 			],
 			"language" : "C",
@@ -64,30 +60,9 @@
 			]
 		}
 	],
-<<<<<<<< HEAD:cmake-build-debug/.cmake/api/v1/reply/target-shared-Debug-6f620bb2194021176155.json
 	"id" : "shared::@6890427a1f51a3e7e1df",
 	"name" : "shared",
 	"nameOnDisk" : "libshared.a",
-========
-	"id" : "P1_Projekt::@6890427a1f51a3e7e1df",
-	"link" : 
-	{
-		"commandFragments" : 
-		[
-			{
-				"fragment" : "-g",
-				"role" : "flags"
-			},
-			{
-				"fragment" : "",
-				"role" : "flags"
-			}
-		],
-		"language" : "C"
-	},
-	"name" : "P1_Projekt",
-	"nameOnDisk" : "P1_Projekt",
->>>>>>>> Anton:cmake-build-debug/.cmake/api/v1/reply/target-P1_Projekt-Debug-5d65a7d623700ad7148f.json
 	"paths" : 
 	{
 		"build" : ".",

@@ -39,12 +39,12 @@ void init_state(state state_arr[], int num_of_candidate) {
 }
 
 // funktion til at initialisere kandidaterne
-void init_candidates(candidate candidate_arr[], int num_of_candidates, char candidate_names[][MAX_NAME_LENGTH], int værdi[], int fordeling[]) {
+void init_candidates(candidate candidate_arr[], int num_of_candidates, char candidate_names[][MAX_NAME_LENGTH], int social[], int economic[]) {
 
     for (int i = 0; i < num_of_candidates; i++) {
         strcpy(candidate_arr[i].name, candidate_names[i]);
-        candidate_arr[i].værdipolitik_c = værdi[i];
-        candidate_arr[i].fordelingspolitik_c = fordeling[i];
+        candidate_arr[i].social_policy_c = social[i];
+        candidate_arr[i].economic_policy_c = economic[i];
         candidate_arr[i].votes_fptp = 0;
         candidate_arr[i].votes_star = 0;
         candidate_arr[i].votes_rated = 0;
@@ -60,40 +60,40 @@ void init_candidates(candidate candidate_arr[], int num_of_candidates, char cand
 // funktion til at initialisere vælgerne
 void init_voters(voter voter_arr[], state current_state, int start_index, int state, double calc_percent[][4][5]) {
 
-    int fordelingspolitik[4][5] = {
+    int socialpolicy[4][5] = {
         {30, -30, -20, -20, -10},// RACE
         {30, -30}, // GENDER
         {-30, 10, 40}, // INCOME
         {-30, -20, 0, 10, 40}}; // AGE
 
-    int værdipolitik[4][5] = {
+    int economicpolicy[4][5] = {
         {10, -20, -10, -10, 0},// RACE
         {30, -30}, // GENDER
         {-20, 0, 40}, // INCOME
         {-30, -20, 0, 10, 40}}; // AGE
 
     for(int i = start_index; i < current_state.population + start_index; i++) {
-        voter_arr[i].fordelingspolitik_v = 0;
-        voter_arr[i].værdipolitik_v = 0;
+        voter_arr[i].economic_policy_v = 0;
+        voter_arr[i].social_policy_v = 0;
     }
 
     init_attributes(current_state.race_distribution, RACES, race, start_index, state, voter_arr,
-                    current_state.population, calc_percent, fordelingspolitik, værdipolitik);
+                    current_state.population, calc_percent, socialpolicy, economicpolicy);
 
     init_attributes(current_state.gender_distribution, GENDERS, gender, start_index, state, voter_arr,
-                    current_state.population, calc_percent, fordelingspolitik, værdipolitik);
+                    current_state.population, calc_percent, socialpolicy, economicpolicy);
 
     init_attributes(current_state.income_distribution, INCOME, income, start_index, state, voter_arr,
-                    current_state.population, calc_percent, fordelingspolitik, værdipolitik);
+                    current_state.population, calc_percent, socialpolicy, economicpolicy);
 
     init_attributes(current_state.age_distribution, AGES, age, start_index, state, voter_arr,
-                    current_state.population, calc_percent, fordelingspolitik, værdipolitik);
+                    current_state.population, calc_percent, socialpolicy, economicpolicy);
 }
 
 // funktion til at initialisere attributterne for vælgerne
 void init_attributes(int distribution[], int attribute_amount, int category, int start_index, int state,
                      voter voter_arr[], int state_population, double calc_percent[][4][5],
-                     int fordelingspolitik[][5], int værdipolitik[][5]) {
+                     int economic_policy[][5], int social_policy[][5]) {
 
     for (int i = start_index; i < state_population + start_index; i++) {
         int random = rand() % 1000 + 1;
@@ -109,8 +109,8 @@ void init_attributes(int distribution[], int attribute_amount, int category, int
                     voter_arr[i].age_v = attribute;
                 }
 
-                voter_arr[i].fordelingspolitik_v += fordelingspolitik[category][attribute] + variance();
-                voter_arr[i].værdipolitik_v += værdipolitik[category][attribute] + variance();
+                voter_arr[i].economic_policy_v += economic_policy[category][attribute] + variance();
+                voter_arr[i].social_policy_v += social_policy[category][attribute] + variance();
                 calc_percent[state][category][attribute]++;
                 break;
             }

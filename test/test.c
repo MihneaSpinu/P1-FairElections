@@ -49,22 +49,22 @@ void test_1() {
 }
 
 void init_test(voter voter_arr[], candidate candidate_arr[]) {
-    voter_arr[0].værdipolitik_v = 12;
-    voter_arr[1].værdipolitik_v = 15;
-    voter_arr[2].værdipolitik_v = 30;
-    voter_arr[3].værdipolitik_v = -10;
-    voter_arr[4].værdipolitik_v = -15;
-    voter_arr[0].fordelingspolitik_v = 10;
-    voter_arr[1].fordelingspolitik_v = 15;
-    voter_arr[2].fordelingspolitik_v = -20;
-    voter_arr[3].fordelingspolitik_v = 10;
-    voter_arr[4].fordelingspolitik_v = -15;
-    candidate_arr[0].fordelingspolitik_c = 50;
-    candidate_arr[1].fordelingspolitik_c = -30;
-    candidate_arr[2].fordelingspolitik_c = 0;
-    candidate_arr[0].værdipolitik_c = 50;
-    candidate_arr[1].værdipolitik_c = -30;
-    candidate_arr[2].værdipolitik_c = 1;
+    voter_arr[0].social_policy_v = 12;
+    voter_arr[1].social_policy_v = 15;
+    voter_arr[2].social_policy_v = 30;
+    voter_arr[3].social_policy_v = -10;
+    voter_arr[4].social_policy_v = -15;
+    voter_arr[0].economic_policy_v = 10;
+    voter_arr[1].economic_policy_v = 15;
+    voter_arr[2].economic_policy_v = -20;
+    voter_arr[3].economic_policy_v = 10;
+    voter_arr[4].economic_policy_v = -15;
+    candidate_arr[0].economic_policy_c = 50;
+    candidate_arr[1].economic_policy_c = -30;
+    candidate_arr[2].economic_policy_c = 0;
+    candidate_arr[0].social_policy_c = 50;
+    candidate_arr[1].social_policy_c = -30;
+    candidate_arr[2].social_policy_c = 1;
 }
 int are_floats_equal(float a, float b) {
     // Compare the absolute difference with the threshold

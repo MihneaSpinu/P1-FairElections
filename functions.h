@@ -30,8 +30,8 @@ typedef enum: unsigned char { young, adult, middle_aged, old, elderly } age_e;
 // STRUCTS
 typedef struct {
     float distance_to[MAX_CANDIDATES];
-    int værdipolitik_v;
-    int fordelingspolitik_v; // Rangering af kandidater (ranked)
+    int social_policy_v;
+    int economic_policy_v; // Rangering af kandidater (ranked)
     int ratings[MAX_CANDIDATES];
     age_e age_v;
     gender_e gender_v;
@@ -41,8 +41,8 @@ typedef struct {
 
 typedef struct {
     char name[MAX_NAME_LENGTH];
-    int værdipolitik_c;
-    int fordelingspolitik_c;
+    int social_policy_c;
+    int economic_policy_c;
     int votes_fptp;
     int votes_star;
     int votes_rated;
@@ -75,11 +75,11 @@ typedef struct {
 // Initalization functions
 void init_state(state state_arr[], int num_of_candidate); //DONE
 void init_candidates(candidate candidate_arr[], int num_of_candidates, char candidate_name[][MAX_NAME_LENGTH],
-                     int værdi[], int fordeling[]); //DONE
+                     int social[], int economic[]); //DONE
 void init_voters(voter voter_arr[], state current_state, int start_index, int state, double calc_percent[][4][5]);
 void init_attributes(int distribution[], int attribute_amount, int category, int start_index,
                      int state, voter voter_arr[], int state_population, double calc_percent[][4][5],
-                     int fordelingspolitik[][5], int værdipolitik[][5]);
+                     int economic_policy[][5], int social_policy[][5]);
 void init_index(int cumulative_state_population, int start_index[], state state_arr[]);
 
 
@@ -123,7 +123,7 @@ void print_percent(double calc_percent[][4][5], int state_population, int state)
 void get_distance(voter voters_arr[], candidate candidate_arr[], int population, int num_of_candidates);
 void prompt_stats(state state_arr[], double calc_percent[][4][5], candidate candidate_arr[], int num_of_candidates);
 void election_2024();
-void get_ratings (voter voter_arr[], int i, int j);
+void get_ratings (voter voter_arr[], int num_of_candidates, int population);
 int variance();
 double voters_satisfaction(voter current_voter, int winner_index);
 double calc_satisfaction(int winner_index, voter voters_arr[], int population);
