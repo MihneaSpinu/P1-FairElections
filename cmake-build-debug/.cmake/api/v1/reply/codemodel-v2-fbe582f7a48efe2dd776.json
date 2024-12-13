@@ -6,7 +6,7 @@
 			[
 				{
 					"build" : ".",
-					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.29"
@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "P1_Projekt::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-P1_Projekt-Debug-a3ed78881a77ce0241ee.json",
+					"jsonFile" : "target-P1_Projekt-Debug-5d65a7d623700ad7148f.json",
 					"name" : "P1_Projekt",
 					"projectIndex" : 0
 				}
@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/nikla/OneDrive/Dokumenter/GitHub/P1-FairElections/cmake-build-debug",
-		"source" : "C:/Users/nikla/OneDrive/Dokumenter/GitHub/P1-FairElections"
+		"build" : "/Users/anton/P1-FairElections/cmake-build-debug",
+		"source" : "/Users/anton/P1-FairElections"
 	},
 	"version" : 
 	{
