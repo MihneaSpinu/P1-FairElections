@@ -86,9 +86,9 @@ void init_index(int cumulative_state_population, int start_index[], state state_
 //
 //
 // Result function
-void print_winner(int num_of_candidates, char voting_system[], int mandates[],
+int print_winner(int num_of_candidates, char voting_system[], int mandates[],
                   candidate candidate_arr[], char vote_type[], int electoral_choice);
-void contingent_election(int num_of_candidates, int mandates[]);
+int contingent_election(int num_of_candidates, int mandates[], candidate candidate_arr[]);
 
 //
 //

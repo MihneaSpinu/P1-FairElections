@@ -134,12 +134,11 @@ double calc_satisfaction(int winner_index, voter voters_arr[], int population) {
         double voter_satisfaction = voters_satisfaction(voters_arr[i], winner_index);
         total_satisfaction += voter_satisfaction;
     }
-    printf("Final average satisfaction: %.2lf\n", total_satisfaction);
     return (total_satisfaction / ((double)population)) * 100.0;
 }
 
 
-void print_winner(int num_of_candidates, char voting_system[], int mandates[],
+int print_winner(int num_of_candidates, char voting_system[], int mandates[],
                   candidate candidate_arr[], char score_type[], int electoral_choice) {
 
     int winner = 0;
@@ -148,29 +147,104 @@ void print_winner(int num_of_candidates, char voting_system[], int mandates[],
             winner = i;
         }
     }
+
     if(electoral_choice == 1 && mandates[winner] < 270) {
-        contingent_election(num_of_candidates, mandates);
-    } else {
-        printf("\n%s wins %s with %d %s\n", candidate_arr[winner].name, voting_system, mandates[winner], score_type);
-        mandates[winner] = -1;
-        for(int i = 0; i < num_of_candidates-1; i++) {
-            if(mandates[i] != -1) {
-                printf("%s got %d %s\n", candidate_arr[i].name, mandates[i], score_type);
+        int temp_madates[num_of_candidates];
+        for (int i = 0; i < num_of_candidates; i++) {
+            temp_madates[i] = mandates[i];
+        }
+        winner = contingent_election(num_of_candidates, temp_madates, candidate_arr);
+    }
+    printf("\n%s wins %s with %d %s\n", candidate_arr[winner].name, voting_system, mandates[winner], score_type);
+    mandates[winner] = -1;
+    for(int i = 0; i < num_of_candidates; i++) {
+        if(mandates[i] != -1) {
+            printf("%s got %d %s\n", candidate_arr[i].name, mandates[i], score_type);
+        }
+    }
+    return winner;
+}
+
+// void contingent_election(int num_of_candidates, int mandates[]) {
+//
+//     int min_votes = INT_MAX;
+//     for(int i = 0; num_of_candidates > 3; i++) {
+//         if(mandates[i] != -1 && mandates[min_votes > mandates[i]]) {
+//             mandates[min_votes] = -1;
+//         }
+//         num_of_candidates--;
+//     }
+//     // TOP 3 KANDIDATER ER TILBAGE
+//     // PSEUDO TILFÆLDIG KODE DER VÆLGER VINDEREN, HÆLDER NOK MEST TIL TOP 1
+//     printf("CONTINGFFENT ELECTION!!!\n");
+// }
+int contingent_election(int num_of_candidates, int mandates[], candidate candidate_arr[]) {
+    int start_num_of_candidates = num_of_candidates;
+    while (start_num_of_candidates > 3) {
+        int min_votes = INT_MAX;
+        int min_index = -1;
+
+        // Find kandidaten med færrest stemmer
+        for (int i = 0; i < start_num_of_candidates; i++) {
+            if (mandates[i] != -1 && mandates[i] < min_votes) {
+                min_votes = mandates[i];
+                min_index = i;
             }
         }
+
+        // Fjern kandidaten med færrest stemmer
+        if (min_index != -1) {
+            mandates[min_index] = -1; // Markér som elimineret
+            start_num_of_candidates--;
+        }
+    }
+
+    // Eksempel på at vælge en vinder (den med flest stemmer)
+    int max_votes = -1;
+    int winner_index = -1;
+    for (int i = 0; i < num_of_candidates; i++) {
+        if (mandates[i] != -1 && mandates[i] > max_votes) {
+            max_votes = mandates[i];
+            winner_index = i;
+        }
+    }
+
+    if (winner_index != -1) {
+        return winner_index;
+    } else {
+        printf("No winners found.\n");
     }
 }
 
-void contingent_election(int num_of_candidates, int mandates[]) {
-
-    int min_votes = INT_MAX;
-    for(int i = 0; num_of_candidates > 3; i++) {
-        if(mandates[i] != -1 && mandates[min_votes > mandates[i]]) {
-            mandates[min_votes] = -1;
+int condorcet_winner(int num_voters, int num_candidates, voter voter_arr[]) {
+    int pairwise[num_candidates][num_candidates];
+    for (int i = 0; i < num_candidates; i++) {
+        for (int j = 0; j < num_candidates; j++) {
+            pairwise[i][j] = 0;
         }
-        num_of_candidates--;
     }
-    // TOP 3 KANDIDATER ER TILBAGE
-    // PSEUDO TILFÆLDIG KODE DER VÆLGER VINDEREN, HÆLDER NOK MEST TIL TOP 1
-    printf("CONTINGFFENT ELECTION!!!\n");
+    //see pairwise candidates
+    for (int i = 0; i < num_voters; i++) {
+        for (int j = 0; j < num_candidates; j++) {
+            for (int k = j + 1; k < num_candidates; k++) {
+                if (voter_arr[i].distance_to[j] < voter_arr[i].distance_to[k]) {
+                    pairwise[j][k]++;
+                } else {
+                    pairwise[k][j]++;
+                }
+            }
+        }
+    }
+    //check for cordocet winner
+    for (int i = 0; i < num_candidates; i++) {
+        int is_condorcet = 1;
+        for (int j = 0; j < num_candidates; j++) {
+            if (i != j && pairwise[i][j] <= pairwise[j][i]) {
+                is_condorcet = 0;
+                break;
+            }
+        }
+        if (is_condorcet) return i;
+    }
+    return -1; // No Condorcet winner
 }
