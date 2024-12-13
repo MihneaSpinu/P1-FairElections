@@ -3,7 +3,7 @@
 #include "functions.h"
 
 int ranked_choice_voting(int state_population, voter voter_arr[], candidate candidate_arr[], int start_index, state *current_state, int num_of_candidates) {
-
+    
     int remaining_candidates = num_of_candidates;
     for(int i = 0; i < num_of_candidates; i++) {
         candidate_arr[i].eliminated = 0;

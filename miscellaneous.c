@@ -213,6 +213,7 @@ int contingent_election(int num_of_candidates, int mandates[], candidate candida
         return winner_index;
     } else {
         printf("No winners found.\n");
+        return -1;
     }
 }
 

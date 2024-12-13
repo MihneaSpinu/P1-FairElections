@@ -75,11 +75,6 @@ int main() {
         }
         print_winner(candidates, "the election", mandates, candidate_arr, "mandates", electoral_choice);
 
-        /*
-        int winner_index = candidate_arr[0].general_mandates > candidate_arr[1].general_mandates ? 0 : 1;
-        double satisfaction = calc_satisfaction(winner_index, voter_arr, POPULATION);
-        printf("Satisfaction: %.2lf out of 100", satisfaction);
-        */
 
     }
 
@@ -88,19 +83,19 @@ int main() {
         for(int i = 0; i < STATES; i++) {
             printf("Finding winners for %s...\n", state_arr[i].name);
 
-            // FPTP FPTP FPTP FPTP FPTP FPTP FPTP FPTP FPTP FPTP FPTP FPTP FPTP FPTP FPTP FPTP FPTP FPTP FPTP FPTP FPTP
+            // First Past The Post
             int fptp_winner = first_past_the_post(voter_arr, state_arr[i].population, start_index[i], &state_arr[i], candidates);
             candidate_arr[fptp_winner].fptp_mandates += state_arr[i].electoral_votes;
 
-            // RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV
+            // Ranked Choice
             int rcv_winner = ranked_choice_voting(state_arr[i].population, voter_arr, candidate_arr, start_index[i], &state_arr[i], candidates);
             candidate_arr[rcv_winner].rcv_mandates += state_arr[i].electoral_votes;
 
-            // RATED RATED RATED RATED RATED RATED RATED RATED RATED RATED RATED RATED RATED RATED RATED RATED RATED
+            // Rated Choice
             int rated_winner = voting_rated(voter_arr, state_arr[i].population, start_index[i], &state_arr[i], candidates);
             candidate_arr[rated_winner].rated_mandates += state_arr[i].electoral_votes;
 
-            // STAR STAR STAR STAR STAR STAR STAR STAR STAR STAR STAR STAR STAR STAR STAR STAR STAR STAR STAR STAR STAR
+            // STAR Voting
             int star_winner = voting_star(state_arr[i].population, voter_arr, candidate_arr, start_index[i], &state_arr[i], candidates);
             candidate_arr[star_winner].star_mandates += state_arr[i].electoral_votes;
         }
@@ -139,28 +134,28 @@ int main() {
     if(electoral_choice == 2) {
         int winner_index = -1;
         printf("Finding winners...\n");
-        // FPTP FPTP FPTP FPTP FPTP FPTP FPTP FPTP FPTP FPTP FPTP FPTP FPTP FPTP FPTP FPTP FPTP FPTP FPTP FPTP FPTP
+        // First Past The Post
         first_past_the_post(voter_arr, POPULATION, 0, &state_arr[0], candidates);
         for(int i = 0; i < candidates; i++) {
             mandates[i] = state_arr[0].candidate_votes_fptp[i];
         }
         winner_index = print_winner(candidates, "first past the post", mandates, candidate_arr, "votes", electoral_choice);
         printf("Satisfaction: %.2lf out of 100\n",calc_satisfaction(winner_index, voter_arr, POPULATION));
-        // RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV RCV
+        // Ranked Choice
         ranked_choice_voting(POPULATION, voter_arr, candidate_arr, 0, &state_arr[0], candidates);
         for(int i = 0; i < candidates; i++) {
             mandates[i] = state_arr[0].candidate_votes_rcv[i];
         }
-        winner_index = print_winner(candidates, "ranked choice voting", mandates, candidate_arr, "points", electoral_choice);
+        winner_index = print_winner(candidates, "ranked choice voting", mandates, candidate_arr, "ranked votes", electoral_choice);
         printf("Satisfaction: %.2lf out of 100\n",calc_satisfaction(winner_index, voter_arr, POPULATION));
-        // RATED RATED RATED RATED RATED RATED RATED RATED RATED RATED RATED RATED RATED RATED RATED RATED RATED RATED
+        // Rated Voting
         voting_rated(voter_arr, POPULATION, 0, &state_arr[0], candidates);
         for(int i = 0; i < candidates; i++) {
             mandates[i] = state_arr[0].candidate_votes_rated[i];
         }
         winner_index = print_winner(candidates, "rated voting", mandates, candidate_arr, "points", electoral_choice);
         printf("Satisfaction: %.2lf out of 100\n",calc_satisfaction(winner_index, voter_arr, POPULATION));
-        // STAR STAR STAR STAR STAR STAR STAR STAR STAR STAR STAR STAR STAR STAR STAR STAR STAR STAR STAR STAR STAR
+        // STAR Voting
         voting_star(POPULATION, voter_arr, candidate_arr, 0, &state_arr[0], candidates);
         for(int i = 0; i < candidates; i++) {
             mandates[i] = state_arr[0].candidate_votes_star[i];
@@ -174,7 +169,7 @@ int main() {
             printf("The condorcet winner is %s", candidate_arr[cordorcet_win_index].name);
         }
     }
-
+    prompt_stats(state_arr, calc_percent, candidate_arr, candidates);
     free(voter_arr);
     free(state_arr);
     free(candidate_arr);
