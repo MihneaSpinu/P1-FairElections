@@ -14,8 +14,8 @@ int main() {
         voting_system_choice,
         candidates = 0;
 
-    int værdi[5];
-    int fordeling[5];
+    int social_p[5];
+    int economic_p[5];
     int mandates[MAX_CANDIDATES];
     char candidate_name[5][MAX_NAME_LENGTH];
     double calc_percent[STATES][4][5] = {0};
@@ -23,7 +23,7 @@ int main() {
     // SETTINGS
     scan_election_settings(&simulation_choice, &electoral_choice, &candidate_choice,
                            &voting_system_choice, &candidates, candidate_name,
-                           værdi, fordeling);
+                           social_p, economic_p);
 
     // MALLOC ARRAYS
     candidate *candidate_arr = malloc(sizeof(candidate) * candidates);
@@ -35,7 +35,7 @@ int main() {
     }
     // INIT CANDIDATES
     printf("\nInitializing the candidates...\n\n");
-    init_candidates(candidate_arr, candidates, candidate_name, værdi, fordeling);
+    init_candidates(candidate_arr, candidates, candidate_name, social_p, economic_p);
 
     // INIT STATES
     printf("Initializing the states...\n\n");
@@ -55,6 +55,7 @@ int main() {
     // GET DISTANCE
     printf("\nCalculating voter preference...\n");
     get_distance(voter_arr, candidate_arr, POPULATION, candidates);
+    get_ratings(voter_arr, candidates, POPULATION);
     printf("\n");
 
     // CURRENT US SYSTEM
@@ -121,11 +122,11 @@ int main() {
         }
         winner_index = print_winner(candidates, "star voting", mandates, candidate_arr, "mandates", electoral_choice);
         printf("Satisfaction: %.2lf out of 100\n",calc_satisfaction(winner_index, voter_arr, POPULATION));
-        int cordorcet_win_index = condorcet_winner(POPULATION, candidates, voter_arr);
-        if (cordorcet_win_index == -1) {
-            printf("There are no cordorcet winner");
+        int condorcet_win_index = condorcet_winner(POPULATION, candidates, voter_arr);
+        if (condorcet_win_index == -1) {
+            printf("There are no condorcet winner");
         }else {
-            printf("The cordorcet winner is %s", candidate_arr[cordorcet_win_index].name);
+            printf("The condorcet winner is %s", candidate_arr[condorcet_win_index].name);
         }
 
     }
@@ -162,11 +163,11 @@ int main() {
         }
         winner_index = print_winner(candidates, "star voting", mandates, candidate_arr, "votes", electoral_choice);
         printf("Satisfaction: %.2lf out of 100\n",calc_satisfaction(winner_index, voter_arr, POPULATION));
-        int cordorcet_win_index = condorcet_winner(POPULATION, candidates, voter_arr);
-        if (cordorcet_win_index == -1) {
+        int condorcet_win_index = condorcet_winner(POPULATION, candidates, voter_arr);
+        if (condorcet_win_index == -1) {
             printf("There are no condorcet winner");
         }else {
-            printf("The condorcet winner is %s", candidate_arr[cordorcet_win_index].name);
+            printf("The condorcet winner is %s", candidate_arr[condorcet_win_index].name);
         }
     }
     prompt_stats(state_arr, calc_percent, candidate_arr, candidates);
