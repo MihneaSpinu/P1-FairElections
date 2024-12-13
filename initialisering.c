@@ -5,7 +5,7 @@
 
 // funktion til at initialisere staterne
 void init_state(state state_arr[], int num_of_candidate) {
-    FILE* f = fopen("test_state_data.txt", "r"); // test_state_data for 100x mindre
+    FILE* f = fopen("state_data.txt", "r"); // test_state_data for 100x mindre
     if (f == NULL) {
         printf("Error: couldn't open file 'state_data.txt'");
         exit(EXIT_FAILURE);
@@ -39,7 +39,8 @@ void init_state(state state_arr[], int num_of_candidate) {
 }
 
 // funktion til at initialisere kandidaterne
-void init_candidates(candidate candidate_arr[], int num_of_candidates, char candidate_names[][MAX_NAME_LENGTH], int social[], int economic[]) {
+void init_candidates(candidate candidate_arr[], int num_of_candidates, char candidate_names[][MAX_NAME_LENGTH],
+                     int social[], int economic[]) {
 
     for (int i = 0; i < num_of_candidates; i++) {
         strcpy(candidate_arr[i].name, candidate_names[i]);

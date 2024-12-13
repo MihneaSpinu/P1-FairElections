@@ -8,6 +8,7 @@
 int first_past_the_post(voter voter_arr[], int state_population, int start_index, state *current_state, int num_of_candidates) {
 
     int *votes_can = calloc(num_of_candidates, sizeof(int));
+    check_memory_allocation(votes_can);
 
     // Loop through all voters
     for (int i = start_index; i < state_population + start_index; i++) {

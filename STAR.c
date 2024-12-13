@@ -7,10 +7,8 @@ int voting_star(int current_state_population, voter voter_arr[], candidate candi
 
     // Initialize scores for each candidate
     int *scores = calloc(num_of_candidates, sizeof(int));
-    if(scores == NULL) {
-        printf("Memory allocation failed");
-        exit(EXIT_FAILURE);
-    }
+    check_memory_allocation(scores);
+
     // Calculate scores based on distances
     for (int i = start_index; i < current_state_population + start_index; i++) {
         for (int j = 0; j < num_of_candidates; j++) {

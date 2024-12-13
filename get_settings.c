@@ -56,8 +56,8 @@ void scan_election_settings(int *simulation_choice, int *electoral_choice, int *
         strcpy(candidate_name[2], "Joe Biden");
         strcpy(candidate_name[3], "John F. Kennedy");
         strcpy(candidate_name[4], "Richard Nixon");
-        værdi[0] = 50,      værdi[1] = -30,      værdi[2] = -15,       værdi[3] = 20,      værdi[4] = 60;
-        fordeling[0] = 50,  fordeling[1] = -30,  fordeling[2] = -15,   fordeling[3] = 10,  fordeling[4] = 40;
+        værdi[0] = 45,      værdi[1] = -35,      værdi[2] = -27,       værdi[3] = 49,      værdi[4] = 60;
+        fordeling[0] = 55,  fordeling[1] = -35,  fordeling[2] = -27,   fordeling[3] = 49,  fordeling[4] = 55;
     }
     if(*candidates < 2) {
         printf("There has to be at least 2 candidates");
@@ -77,7 +77,7 @@ void custom_candidates(int *candidates, char candidate_name[][MAX_NAME_LENGTH], 
 
     char name[MAX_NAME_LENGTH];
 
-    for(*candidates = 0; *candidates < 5; (*candidates)++) {
+    for(*candidates = 0; *candidates < MAX_CANDIDATES; (*candidates)++) {
         printf("Choose candidate name and position on political compass: [-100,100]\n");
         scanf("%s", &name);
         if(strcmp(name, "exit") == 0) return;
@@ -85,7 +85,8 @@ void custom_candidates(int *candidates, char candidate_name[][MAX_NAME_LENGTH], 
 
         scanf("%d %d", &værdi[*candidates], &fordeling[*candidates]);
 
-        if(værdi[*candidates] < -100 || værdi[*candidates] > 100 || fordeling[*candidates] > 100 || fordeling[*candidates] < -100) {
+        if(værdi[*candidates] < -100 || værdi[*candidates] > 100 ||
+           fordeling[*candidates] > 100 || fordeling[*candidates] < -100) {
             printf("Values out of range (-100,100)");
             exit(EXIT_FAILURE);
         }

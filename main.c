@@ -14,8 +14,8 @@ int main() {
         voting_system_choice,
         candidates = 0;
 
-    int social_p[5];
-    int economic_p[5];
+    int social_p[MAX_CANDIDATES];
+    int economic_p[MAX_CANDIDATES];
     int mandates[MAX_CANDIDATES];
     char candidate_name[5][MAX_NAME_LENGTH];
     double calc_percent[STATES][4][5] = {0};
@@ -29,10 +29,8 @@ int main() {
     candidate *candidate_arr = malloc(sizeof(candidate) * candidates);
     voter *voter_arr = malloc(sizeof(voter) * POPULATION);
     state *state_arr = malloc(sizeof(state) * STATES);
-    if(candidate_arr == NULL || voter_arr == NULL || state_arr == NULL) {
-        printf("Error allocating memory\n");
-        exit(EXIT_FAILURE);
-    }
+    check_memory_allocation(candidate_arr), check_memory_allocation(voter_arr), check_memory_allocation(state_arr);
+
     // INIT CANDIDATES
     printf("\nInitializing the candidates...\n\n");
     init_candidates(candidate_arr, candidates, candidate_name, social_p, economic_p);
@@ -107,26 +105,30 @@ int main() {
         }
         winner_index = print_winner(candidates, "first past the post", mandates, candidate_arr, "mandates", electoral_choice);
         printf("Satisfaction: %.2lf out of 100\n",calc_satisfaction(winner_index, voter_arr, POPULATION));
+
         for(int i = 0; i < candidates; i++) {
             mandates[i] = candidate_arr[i].rcv_mandates;
         }
         winner_index = print_winner(candidates, "ranked choice voting", mandates, candidate_arr, "mandates", electoral_choice);
         printf("Satisfaction: %.2lf out of 100\n",calc_satisfaction(winner_index, voter_arr, POPULATION));
         for(int i = 0; i < candidates; i++) {
+
             mandates[i] = candidate_arr[i].rated_mandates;
         }
         winner_index = print_winner(candidates, "rated voting", mandates, candidate_arr, "mandates", electoral_choice);
         printf("Satisfaction: %.2lf out of 100\n",calc_satisfaction(winner_index, voter_arr, POPULATION));
         for(int i = 0; i < candidates; i++) {
+
             mandates[i] = candidate_arr[i].star_mandates;
         }
         winner_index = print_winner(candidates, "star voting", mandates, candidate_arr, "mandates", electoral_choice);
         printf("Satisfaction: %.2lf out of 100\n",calc_satisfaction(winner_index, voter_arr, POPULATION));
+
         int condorcet_win_index = condorcet_winner(POPULATION, candidates, voter_arr);
         if (condorcet_win_index == -1) {
-            printf("There are no condorcet winner");
+            printf("\nThere is no condorcet winner\n");
         }else {
-            printf("The condorcet winner is %s", candidate_arr[condorcet_win_index].name);
+            printf("\nThe condorcet winner is %s\n", candidate_arr[condorcet_win_index].name);
         }
 
     }
@@ -165,13 +167,16 @@ int main() {
         printf("Satisfaction: %.2lf out of 100\n",calc_satisfaction(winner_index, voter_arr, POPULATION));
         int condorcet_win_index = condorcet_winner(POPULATION, candidates, voter_arr);
         if (condorcet_win_index == -1) {
-            printf("There are no condorcet winner");
+            printf("There is no condorcet winner");
         }else {
             printf("The condorcet winner is %s", candidate_arr[condorcet_win_index].name);
         }
     }
-    prompt_stats(state_arr, calc_percent, candidate_arr, candidates);
+
     free(voter_arr);
+
+    prompt_stats(state_arr, calc_percent, candidate_arr, candidates);
+
     free(state_arr);
     free(candidate_arr);
 
