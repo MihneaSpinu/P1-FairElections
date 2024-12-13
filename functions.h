@@ -135,6 +135,6 @@ void scan_election_settings(int *simulation_choice, int *electoral_choice, int *
 void check_input_validity(int user_input);
 void custom_candidates(int *candidates, char candidate_name[][MAX_NAME_LENGTH], int værdi[], int fordeling[]);
 
-void maine_nebraska(state state_arr[], candidate candidate_arr[], int num_of_candidates);
+void maine_nebraska_congressional(state state_arr[], candidate candidate_arr[], int num_of_candidates);
 
 #endif //FUNCTIONS_H

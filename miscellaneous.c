@@ -145,7 +145,7 @@ double calc_satisfaction(int winner_index, voter voters_arr[], int population) {
 }
 
 
-    void maine_nebraska(state state_arr[], candidate candidate_arr[], int num_of_candidates) {
+    void maine_nebraska_congressional(state state_arr[], candidate candidate_arr[], int num_of_candidates) {
         for (int i = 0; i < STATES; i++) {
             if (strcmp(state_arr[i].name, "Maine") == 0 || strcmp(state_arr[i].name, "Nebraska") == 0) {
                 int district_winners[CONGRESSIONAL_DISTRICTS] = {0};
