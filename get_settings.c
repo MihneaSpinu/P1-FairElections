@@ -6,7 +6,7 @@
 
 void scan_election_settings(int *simulation_choice, int *electoral_choice, int *candidate_choice,
                             int *voting_system_choice, int *candidates, char candidate_name[][MAX_NAME_LENGTH],
-                            int værdi[MAX_CANDIDATES], int fordeling[MAX_CANDIDATES]) {
+                            int social_p[MAX_CANDIDATES], int economic_p[MAX_CANDIDATES]) {
 
     printf("1) Run 2024 election\n2) Run 2020 election\n3) Run 2016 election\n4) Run custom election\n");
     scanf("%d", simulation_choice);
@@ -17,16 +17,16 @@ void scan_election_settings(int *simulation_choice, int *electoral_choice, int *
         *electoral_choice = 1;
         *voting_system_choice = 1;
         strcpy(candidate_name[0], "Donald Trump");
-        værdi[0] = 50, fordeling[0] = 50;
+        social_p[0] = 50, economic_p[0] = 50;
         if(*simulation_choice == 1) {
             strcpy(candidate_name[1], "Kamala Harris");
-            værdi[1] = -30, fordeling[1] = -30;
+            social_p[1] = -30, economic_p[1] = -30;
         } else if(*simulation_choice == 2) {
             strcpy(candidate_name[1], "Joe Biden");
-            værdi[1] = -20, fordeling[1] = -25;
+            social_p[1] = -20, economic_p[1] = -25;
         } else {
             strcpy(candidate_name[1], "Hillary Clinton");
-            værdi[1] = -35, fordeling[1] = -20;
+            social_p[1] = -35, economic_p[1] = -20;
         }
         return;
     }
@@ -47,7 +47,7 @@ void scan_election_settings(int *simulation_choice, int *electoral_choice, int *
     scanf("%d", candidate_choice);
     check_input_validity(*candidate_choice, 2);
     if(*candidate_choice == 2) {
-        custom_candidates(candidates, candidate_name, værdi, fordeling);
+        custom_candidates(candidates, candidate_name, social_p, economic_p);
     }
     if(*candidate_choice == 1) {
         *candidates = 5;
@@ -56,8 +56,8 @@ void scan_election_settings(int *simulation_choice, int *electoral_choice, int *
         strcpy(candidate_name[2], "Joe Biden");
         strcpy(candidate_name[3], "John F. Kennedy");
         strcpy(candidate_name[4], "Richard Nixon");
-        værdi[0] = 45,      værdi[1] = -35,      værdi[2] = -27,       værdi[3] = 49,      værdi[4] = 60;
-        fordeling[0] = 55,  fordeling[1] = -35,  fordeling[2] = -27,   fordeling[3] = 49,  fordeling[4] = 55;
+        social_p[0] = 45,    social_p[1] = -35,    social_p[2] = -27,     social_p[3] = 49,    social_p[4] = 60;
+        economic_p[0] = 55,  economic_p[1] = -35,  economic_p[2] = -27,   economic_p[3] = 49,  economic_p[4] = 55;
     }
     if(*candidates < 2) {
         printf("There has to be at least 2 candidates");

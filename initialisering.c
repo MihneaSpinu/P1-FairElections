@@ -5,6 +5,7 @@
 
 // funktion til at initialisere staterne
 void init_state(state state_arr[], int num_of_candidate) {
+
     FILE* f = fopen("state_data.txt", "r"); // test_state_data for 100x mindre
     if (f == NULL) {
         printf("Error: couldn't open file 'state_data.txt'");
@@ -12,14 +13,15 @@ void init_state(state state_arr[], int num_of_candidate) {
     }
 
     for (int i = 0; i < STATES; i++) {
+
         for(int j = 0; j < num_of_candidate; j++) {
             state_arr[i].candidate_votes_fptp[j] = 0;
             state_arr[i].candidate_votes_star[j] = 0;
             state_arr[i].candidate_votes_rated[j] = 0;
             state_arr[i].candidate_votes_rcv[j] = 0;
         }
-        fscanf(f, "%[^,],%d,%d,", state_arr[i].name, &state_arr[i].population,
-                                           &state_arr[i].electoral_votes);
+        fscanf(f, "%[^,],%d,%d,", state_arr[i].name, &state_arr[i].population, &state_arr[i].electoral_votes);
+
         for(int j = 0; j < RACES; j++) {
             fscanf(f, "%d,", &state_arr[i].race_distribution[j]);
         }
@@ -34,18 +36,17 @@ void init_state(state state_arr[], int num_of_candidate) {
         }
         fscanf(f, "\n");
     }
-
     fclose(f);
 }
 
 // funktion til at initialisere kandidaterne
 void init_candidates(candidate candidate_arr[], int num_of_candidates, char candidate_names[][MAX_NAME_LENGTH],
-                     int social[], int economic[]) {
+                     int social_p[], int economic_p[]) {
 
     for (int i = 0; i < num_of_candidates; i++) {
         strcpy(candidate_arr[i].name, candidate_names[i]);
-        candidate_arr[i].social_policy_c = social[i];
-        candidate_arr[i].economic_policy_c = economic[i];
+        candidate_arr[i].social_policy_c = social_p[i];
+        candidate_arr[i].economic_policy_c = economic_p[i];
         candidate_arr[i].votes_fptp = 0;
         candidate_arr[i].votes_star = 0;
         candidate_arr[i].votes_rated = 0;
@@ -61,13 +62,13 @@ void init_candidates(candidate candidate_arr[], int num_of_candidates, char cand
 // funktion til at initialisere vælgerne
 void init_voters(voter voter_arr[], state current_state, int start_index, int state, double calc_percent[][4][5]) {
 
-    int socialpolicy[4][5] = {
+    int social_policy[4][5] = {
         {30, -30, -20, -20, -10},// RACE
         {30, -30}, // GENDER
         {-30, 10, 40}, // INCOME
         {-30, -20, 0, 10, 40}}; // AGE
 
-    int economicpolicy[4][5] = {
+    int economic_policy[4][5] = {
         {10, -20, -10, -10, 0},// RACE
         {30, -30}, // GENDER
         {-20, 0, 40}, // INCOME
@@ -79,16 +80,16 @@ void init_voters(voter voter_arr[], state current_state, int start_index, int st
     }
 
     init_attributes(current_state.race_distribution, RACES, race, start_index, state, voter_arr,
-                    current_state.population, calc_percent, socialpolicy, economicpolicy);
+                    current_state.population, calc_percent, social_policy, economic_policy);
 
     init_attributes(current_state.gender_distribution, GENDERS, gender, start_index, state, voter_arr,
-                    current_state.population, calc_percent, socialpolicy, economicpolicy);
+                    current_state.population, calc_percent, social_policy, economic_policy);
 
     init_attributes(current_state.income_distribution, INCOME, income, start_index, state, voter_arr,
-                    current_state.population, calc_percent, socialpolicy, economicpolicy);
+                    current_state.population, calc_percent, social_policy, economic_policy);
 
     init_attributes(current_state.age_distribution, AGES, age, start_index, state, voter_arr,
-                    current_state.population, calc_percent, socialpolicy, economicpolicy);
+                    current_state.population, calc_percent, social_policy, economic_policy);
 }
 
 // funktion til at initialisere attributterne for vælgerne

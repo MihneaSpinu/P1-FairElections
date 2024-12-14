@@ -41,7 +41,7 @@ void get_distance(voter voter_arr[], candidate candidate_arr[], int population, 
             voter_arr[i].distance_to[j] = sqrt(pow(x_2 - x_1, 2) + pow(y_2 - y_1, 2));
         }
 
-        if((i+1) % (population / 10) == 0 && i != 0) {
+        if(i % ((population-1) / 10) == 0 && i != 0) {
             printf("%.0f%% of voters calculated\n", (float)i / population * 100);
         }
     }
@@ -51,17 +51,17 @@ void get_distance(voter voter_arr[], candidate candidate_arr[], int population, 
 void get_ratings (voter voter_arr[], int num_of_candidates, int population) {
 
     int distance_rating[] = {15, 30, 45, 60, 75, 90, 105, 120, 135, 150};
-    int size_of_dist_arr = sizeof(distance_rating) / sizeof(distance_rating[0]);
+    int size_of_arr = sizeof(distance_rating) / sizeof(distance_rating[0]);
     int k;
     for (int i = 0; i < population; i++) {
         for (int j = 0; j < num_of_candidates; j++) {
-            for (k = 0; k < size_of_dist_arr; k++) {
+            for (k = 0; k < size_of_arr; k++) {
                 if (voter_arr[i].distance_to[j] <= distance_rating[k]) {
                     voter_arr[i].ratings[j] = 10-k;
                     break;
                 }
             }
-            if (k == size_of_dist_arr) {
+            if (k == size_of_arr) {
                 voter_arr[i].ratings[j] = 10-k;
             }
         }
