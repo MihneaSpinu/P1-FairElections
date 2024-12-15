@@ -17,12 +17,9 @@ int variance() {
 
     int variance = x * h * STD_DEVIATION;
 
-    if(variance > STD_DEVIATION * 10) {
-        return STD_DEVIATION * 10;
-    }
-    if(variance < -(STD_DEVIATION * 10)) {
-        return -(STD_DEVIATION * 10);
-    }
+    // Sets a hard cap of 10 standard deviations
+    if(variance > STD_DEVIATION * 10)    return STD_DEVIATION * 10;
+    if(variance < -(STD_DEVIATION * 10)) return -(STD_DEVIATION * 10);
     return variance;
 }
 
@@ -97,7 +94,7 @@ double calc_satisfaction(int winner_index, voter voters_arr[], int population) {
 void prompt_stats(state state_arr[], double calc_percent[][4][5], candidate candidate_arr[], int num_of_candidates) {
 
     char input[MAX_NAME_LENGTH];
-
+    printf("\n'exit' when done\n");
     do {
         printf("\nSee data for state:\n");
         scanf("%s", &input);
@@ -117,7 +114,7 @@ void prompt_stats(state state_arr[], double calc_percent[][4][5], candidate cand
             }
         }
     }
-    while(strcmp(input, "q") != 0);
+    while(strcmp(input, "exit") != 0);
 }
 
 // Funktion til at printe fordelingen af vælgerne ud fra en givet stat
@@ -172,9 +169,8 @@ int contingent_election(int num_of_candidates, int mandates[], candidate candida
     check_memory_allocation(advanced);
     int most_mandates = -1;
     int top1, top2, top3;
-    int i;
 
-    for(i = 0; i < num_of_candidates; i++) {
+    for(int i = 0; i < num_of_candidates; i++) {
         if(mandates[i] > most_mandates) {
             most_mandates = mandates[i];
             top1 = i;
@@ -183,7 +179,7 @@ int contingent_election(int num_of_candidates, int mandates[], candidate candida
     advanced[top1] = 1;
     most_mandates = -1;
 
-    for(i = 0; i < num_of_candidates; i++) {
+    for(int i = 0; i < num_of_candidates; i++) {
         if(!advanced[i] && mandates[i] > most_mandates) {
             most_mandates = mandates[i];
             top2 = i;
@@ -192,7 +188,7 @@ int contingent_election(int num_of_candidates, int mandates[], candidate candida
     advanced[top2] = 1;
     most_mandates = -1;
 
-    for(i = 0; i < num_of_candidates; i++) {
+    for(int i = 0; i < num_of_candidates; i++) {
         if(!advanced[i] && mandates[i] > most_mandates) {
             most_mandates = mandates[i];
             top3 = i;

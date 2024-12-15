@@ -136,7 +136,7 @@ int main() {
         int winner_index;
         printf("Finding winners...\n");
 
-        // First Past The Post
+        // FIRST PAST THE POST
         first_past_the_post(voter_arr, POPULATION, 0, &state_arr[0], candidates);
         for(int i = 0; i < candidates; i++) {
             mandates[i] = state_arr[0].candidate_votes_fptp[i];
@@ -144,7 +144,7 @@ int main() {
         winner_index = print_winner(candidates, "first past the post", mandates, candidate_arr, "votes", electoral_choice);
         printf("Satisfaction: %.2lf out of 100\n",calc_satisfaction(winner_index, voter_arr, POPULATION));
 
-        // Ranked Choice
+        // RANKED CHOICE VOTING
         ranked_choice_voting(POPULATION, voter_arr, candidate_arr, 0, &state_arr[0], candidates);
         for(int i = 0; i < candidates; i++) {
             mandates[i] = state_arr[0].candidate_votes_rcv[i];
@@ -152,7 +152,7 @@ int main() {
         winner_index = print_winner(candidates, "ranked choice voting", mandates, candidate_arr, "ranked votes", electoral_choice);
         printf("Satisfaction: %.2lf out of 100\n",calc_satisfaction(winner_index, voter_arr, POPULATION));
 
-        // Rated Voting
+        // RATED VOTING
         voting_rated(voter_arr, POPULATION, 0, &state_arr[0], candidates);
         for(int i = 0; i < candidates; i++) {
             mandates[i] = state_arr[0].candidate_votes_rated[i];
@@ -160,7 +160,7 @@ int main() {
         winner_index = print_winner(candidates, "rated voting", mandates, candidate_arr, "points", electoral_choice);
         printf("Satisfaction: %.2lf out of 100\n",calc_satisfaction(winner_index, voter_arr, POPULATION));
 
-        // STAR Voting
+        // STAR VOTING
         voting_star(POPULATION, voter_arr, candidate_arr, 0, &state_arr[0], candidates);
         for(int i = 0; i < candidates; i++) {
             mandates[i] = state_arr[0].candidate_votes_star[i];
@@ -168,6 +168,7 @@ int main() {
         winner_index = print_winner(candidates, "star voting", mandates, candidate_arr, "votes", electoral_choice);
         printf("Satisfaction: %.2lf out of 100\n",calc_satisfaction(winner_index, voter_arr, POPULATION));
 
+        // CONDORCET
         int condorcet_winner_index = condorcet_winner(POPULATION, candidates, voter_arr);
         if (condorcet_winner_index == -1) {
             printf("There is no condorcet winner\n");

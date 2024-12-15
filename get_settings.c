@@ -66,29 +66,30 @@ void scan_election_settings(int *simulation_choice, int *electoral_choice, int *
 }
 
 
-void check_input_validity(int user_input, int choice_amount) {
-    if(user_input < 1 || user_input > choice_amount) {
-        printf("Invalid input");
-        exit(EXIT_FAILURE);
-    }
-}
-
-void custom_candidates(int *candidates, char candidate_name[][MAX_NAME_LENGTH], int værdi[], int fordeling[]) {
+void custom_candidates(int *candidates, char candidate_name[][MAX_NAME_LENGTH], int social_p[], int economic_p[]) {
 
     char name[MAX_NAME_LENGTH];
 
+    printf("\n'exit' when done\n");
     for(*candidates = 0; *candidates < MAX_CANDIDATES; (*candidates)++) {
         printf("Choose candidate name and position on political compass: [-100,100]\n");
         scanf("%s", &name);
         if(strcmp(name, "exit") == 0) return;
         strcpy(candidate_name[*candidates], name);
 
-        scanf("%d %d", &værdi[*candidates], &fordeling[*candidates]);
-
-        if(værdi[*candidates] < -100 || værdi[*candidates] > 100 ||
-           fordeling[*candidates] > 100 || fordeling[*candidates] < -100) {
+        scanf("%d %d", &social_p[*candidates], &economic_p[*candidates]);
+        if(social_p[*candidates] < -100 || social_p[*candidates] > 100 ||
+            economic_p[*candidates] > 100 || economic_p[*candidates] < -100) {
             printf("Values out of range (-100,100)");
             exit(EXIT_FAILURE);
         }
+    }
+}
+
+
+void check_input_validity(int user_input, int choice_amount) {
+    if(user_input < 1 || user_input > choice_amount) {
+        printf("Invalid input");
+        exit(EXIT_FAILURE);
     }
 }
