@@ -14,7 +14,6 @@ int variance() {
     } while (z == 0 || z > 1);
     double h = sqrt(-2 * log(z) / z);
 
-
     int variance = x * h * STD_DEVIATION;
 
     // Sets a hard cap of 10 standard deviations from mean
@@ -48,7 +47,7 @@ void get_distance(voter voter_arr[], candidate candidate_arr[], int population, 
 void get_ratings (voter voter_arr[], int num_of_candidates, int population) {
 
     int distance_rating[] = {15, 30, 45, 60, 75, 90, 105, 120, 135, 150};
-    int size_of_arr = sizeof(distance_rating) / sizeof(distance_rating[0]);
+    int size_of_arr = sizeof(distance_rating) / sizeof(int);
     int k;
     for (int i = 0; i < population; i++) {
         for (int j = 0; j < num_of_candidates; j++) {
@@ -59,7 +58,7 @@ void get_ratings (voter voter_arr[], int num_of_candidates, int population) {
                 }
             }
             if (k == size_of_arr) {
-                voter_arr[i].ratings[j] = 10-k;
+                voter_arr[i].ratings[j] = 0;
             }
         }
     }
@@ -71,23 +70,23 @@ double voters_satisfaction(voter current_voter, int winner_index) {
     double normalized_distance = current_voter.distance_to[winner_index] / MAX_DISTANCE;
 
     // Hard caps normalized_distance to [0,1] to handle unexpected values
-    if (normalized_distance < 0.0) normalized_distance = 0.0;
-    if (normalized_distance > 1.0) normalized_distance = 1.0;
+    if (normalized_distance < 0) normalized_distance = 0;
+    if (normalized_distance > 1) normalized_distance = 1;
 
     // Satisfaction decreases linearly with distance
-    return 1.0 - normalized_distance;
+    return 1 - normalized_distance;
 }
 
 // Calculates the overall satisfaction of the election depending on the winning candidate
 double calc_satisfaction(int winner_index, voter voters_arr[], int population) {
 
-    double total_satisfaction = 0.0;
+    double total_satisfaction = 0;
 
     for (int i = 0; i < population; i++) {
         double voter_satisfaction = voters_satisfaction(voters_arr[i], winner_index);
         total_satisfaction += voter_satisfaction;
     }
-    return (total_satisfaction / ((double)population)) * 100.0;
+    return (total_satisfaction / ((double)population)) * 100;
 }
 
 // Prints data for the given state
@@ -225,7 +224,7 @@ int condorcet_winner(int num_voters, int num_candidates, voter voter_arr[]) {
             pairwise[i][j] = 0;
         }
     }
-    //see pairwise candidates
+    // See pairwise candidates
     for (int i = 0; i < num_voters; i++) {
         for (int j = 0; j < num_candidates; j++) {
             for (int k = j + 1; k < num_candidates; k++) {
@@ -237,7 +236,7 @@ int condorcet_winner(int num_voters, int num_candidates, voter voter_arr[]) {
             }
         }
     }
-    //check for cordocet winner
+    // Check for cordocet winner
     for (int i = 0; i < num_candidates; i++) {
         int is_condorcet = 1;
         for (int j = 0; j < num_candidates; j++) {
@@ -260,3 +259,4 @@ void check_memory_allocation(int array[]) {
         exit(EXIT_FAILURE);
     }
 }
+
