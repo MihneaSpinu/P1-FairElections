@@ -4,7 +4,7 @@
 #include <string.h>
 #include <math.h>
 
-// Box Muller normal distribution funktion
+// Box Muller normal distribution function
 int variance() {
     double x, y, z;
     do {
@@ -17,13 +17,13 @@ int variance() {
 
     int variance = x * h * STD_DEVIATION;
 
-    // Sets a hard cap of 10 standard deviations
-    if(variance > STD_DEVIATION * 10)    return STD_DEVIATION * 10;
-    if(variance < -(STD_DEVIATION * 10)) return -(STD_DEVIATION * 10);
+    // Sets a hard cap of 10 standard deviations from mean
+    if(variance > STD_DEVIATION * 10)    variance = STD_DEVIATION * 10;
+    if(variance < -(STD_DEVIATION * 10)) variance = -(STD_DEVIATION * 10);
     return variance;
 }
 
-// Beregner afstanden fra en givet vælger til hver kandidat
+// Calculates the distance from each voter to each candidate
 void get_distance(voter voter_arr[], candidate candidate_arr[], int population, int num_of_candidates) {
 
     for(int i = 0; i < population; i++) {
@@ -44,7 +44,7 @@ void get_distance(voter voter_arr[], candidate candidate_arr[], int population, 
     }
 }
 
-
+// Determines how each voter rates each candidate
 void get_ratings (voter voter_arr[], int num_of_candidates, int population) {
 
     int distance_rating[] = {15, 30, 45, 60, 75, 90, 105, 120, 135, 150};
@@ -65,12 +65,12 @@ void get_ratings (voter voter_arr[], int num_of_candidates, int population) {
     }
 }
 
-
+// Determines the
 double voters_satisfaction(voter current_voter, int winner_index) {
 
     double normalized_distance = current_voter.distance_to[winner_index] / MAX_DISTANCE;
 
-    // Clamp normalized_distance to [0, 1] to handle unexpected values
+    // Hard caps normalized_distance to [0,1] to handle unexpected values
     if (normalized_distance < 0.0) normalized_distance = 0.0;
     if (normalized_distance > 1.0) normalized_distance = 1.0;
 
@@ -78,7 +78,7 @@ double voters_satisfaction(voter current_voter, int winner_index) {
     return 1.0 - normalized_distance;
 }
 
-
+// Calculates the overall satisfaction of the election depending on the winning candidate
 double calc_satisfaction(int winner_index, voter voters_arr[], int population) {
 
     double total_satisfaction = 0.0;
@@ -90,11 +90,11 @@ double calc_satisfaction(int winner_index, voter voters_arr[], int population) {
     return (total_satisfaction / ((double)population)) * 100.0;
 }
 
-// Printer dataene fra en givet stat
+// Prints data for the given state
 void prompt_stats(state state_arr[], double calc_percent[][4][5], candidate candidate_arr[], int num_of_candidates) {
 
     char input[MAX_NAME_LENGTH];
-    printf("\n'exit' when done\n");
+    printf("\n'exit' when done");
     do {
         printf("\nSee data for state:\n");
         scanf("%s", &input);
@@ -117,7 +117,7 @@ void prompt_stats(state state_arr[], double calc_percent[][4][5], candidate cand
     while(strcmp(input, "exit") != 0);
 }
 
-// Funktion til at printe fordelingen af vælgerne ud fra en givet stat
+// Prints the percentage distribution in each state
 void print_percent(double calc_percent[][4][5], int state_population, int state) {
 
     const char *voter_attributes[4][5] = {
@@ -138,7 +138,7 @@ void print_percent(double calc_percent[][4][5], int state_population, int state)
     }
 }
 
-
+// Prints the winner for the given vote type and system
 int print_winner(int num_of_candidates, char voting_system[], int mandates[],
                   candidate candidate_arr[], char score_type[], int electoral_choice) {
 
@@ -162,13 +162,13 @@ int print_winner(int num_of_candidates, char voting_system[], int mandates[],
     return winner;
 }
 
-
+// Simulates contingent election
 int contingent_election(int num_of_candidates, int mandates[], candidate candidate_arr[], char voting_system[]) {
 
     int *advanced = calloc(num_of_candidates, sizeof(int));
     check_memory_allocation(advanced);
     int most_mandates = -1;
-    int top1, top2, top3;
+    int top1, top2, top3 = 0;
 
     for(int i = 0; i < num_of_candidates; i++) {
         if(mandates[i] > most_mandates) {
@@ -212,7 +212,7 @@ int contingent_election(int num_of_candidates, int mandates[], candidate candida
     return winner;
 }
 
-
+// Checks if there is a condorcet winner, returns index of candidate if there is
 int condorcet_winner(int num_voters, int num_candidates, voter voter_arr[]) {
     int pairwise[num_candidates][num_candidates];
     for (int i = 0; i < num_candidates; i++) {
@@ -248,6 +248,7 @@ int condorcet_winner(int num_voters, int num_candidates, voter voter_arr[]) {
     return -1; // No Condorcet winner
 }
 
+// Checks if malloc / calloc is able to allocate memory
 void check_memory_allocation(int array[]) {
     if(array == NULL) {
         printf("Error allocating memory");

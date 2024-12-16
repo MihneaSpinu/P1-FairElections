@@ -4,6 +4,7 @@
 
 #include "functions.h"
 
+// Scans the users input to determine how to simulate the election
 void scan_election_settings(int *simulation_choice, int *electoral_choice, int *candidate_choice,
                             int *voting_system_choice, int *candidates, char candidate_name[][MAX_NAME_LENGTH],
                             int social_p[MAX_CANDIDATES], int economic_p[MAX_CANDIDATES]) {
@@ -65,7 +66,7 @@ void scan_election_settings(int *simulation_choice, int *electoral_choice, int *
     }
 }
 
-
+// Scans custom candidates from the user, should they have chosen to do so
 void custom_candidates(int *candidates, char candidate_name[][MAX_NAME_LENGTH], int social_p[], int economic_p[]) {
 
     char name[MAX_NAME_LENGTH];
@@ -86,7 +87,7 @@ void custom_candidates(int *candidates, char candidate_name[][MAX_NAME_LENGTH], 
     }
 }
 
-
+// Checks if the input is valid
 void check_input_validity(int user_input, int choice_amount) {
     if(user_input < 1 || user_input > choice_amount) {
         printf("Invalid input");

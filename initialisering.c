@@ -3,10 +3,10 @@
 #include <string.h>
 #include "functions.h"
 
-// funktion til at initialisere staterne
+// Initializes the states
 void init_state(state state_arr[], int num_of_candidate) {
 
-    FILE* f = fopen("test_state_data.txt", "r"); // test_state_data for 100x mindre
+    FILE* f = fopen("test_state_data.txt", "r");
     if (f == NULL) {
         printf("Error: couldn't open file 'state_data.txt'");
         exit(EXIT_FAILURE);
@@ -39,7 +39,7 @@ void init_state(state state_arr[], int num_of_candidate) {
     fclose(f);
 }
 
-// funktion til at initialisere kandidaterne
+// Initializes the candidates
 void init_candidates(candidate candidate_arr[], int num_of_candidates, char candidate_names[][MAX_NAME_LENGTH],
                      int social_p[], int economic_p[]) {
 
@@ -59,7 +59,7 @@ void init_candidates(candidate candidate_arr[], int num_of_candidates, char cand
     }
 }
 
-// funktion til at initialisere vælgerne
+// Initializes the voters
 void init_voters(voter voter_arr[], state current_state, int start_index, int state, double calc_percent[][4][5]) {
 
     int social_policy[4][5] = {
@@ -92,7 +92,7 @@ void init_voters(voter voter_arr[], state current_state, int start_index, int st
                     current_state.population, calc_percent, social_policy, economic_policy);
 }
 
-// funktion til at initialisere attributterne for vælgerne
+// Initializes the voters attributes
 void init_attributes(int distribution[], int attribute_amount, int category, int start_index, int state,
                      voter voter_arr[], int state_population, double calc_percent[][4][5],
                      int economic_policy[][5], int social_policy[][5]) {
@@ -120,6 +120,7 @@ void init_attributes(int distribution[], int attribute_amount, int category, int
     }
 }
 
+// Initializes the correct start index for the voters
 void init_index(int cumulative_state_population, int start_index[], state state_arr[]) {
 
     for(int i = 0; i < STATES; i++) {
