@@ -5,7 +5,7 @@
 
 // funktion til at initialisere staterne
 void init_state(state state_arr[], int num_of_candidate) {
-    FILE* f = fopen("state_data.txt", "r");
+    FILE* f = fopen("test_state_data.txt", "r");
     if (f == NULL) {
         printf("Error: couldn't open file 'state_data.txt'");
         exit(EXIT_FAILURE);
@@ -130,3 +130,37 @@ void init_index(int cumulative_state_population, int start_index[], state state_
         cumulative_state_population += state_arr[i].population;
     }
 }
+/*
+void init_congressional(state congressional_arr[], int num_of_candidate) {
+    FILE* f = fopen("congressional.txt", "r");
+    if (f == NULL) {
+        printf("Error: couldn't open file 'congressional.txt'");
+        exit(EXIT_FAILURE);
+    }
+
+    for (int i = 0; i < CONGRESSIONAL_DISTRICTS; i++) {
+        for(int j = 0; j < num_of_candidate; j++) {
+            congressional_arr[i].candidate_votes_fptp[j] = 0;
+            congressional_arr[i].candidate_votes_star[j] = 0;
+            congressional_arr[i].candidate_votes_rated[j] = 0;
+            congressional_arr[i].candidate_votes_ranked[j] = 0;
+        }
+        fscanf(f, "%[^,],%d,%d,", congressional_arr[i].name, &congressional_arr[i].population,
+                                           &congressional_arr[i].electoral_votes);
+        for(int j = 0; j < RACES; j++) {
+            fscanf(f, "%d,", &congressional_arr[i].race_distribution[j]);
+        }
+        for(int j = 0; j < GENDERS; j++) {
+            fscanf(f, "%d,", &congressional_arr[i].gender_distribution[j]);
+        }
+        for(int j = 0; j < AGES; j++) {
+            fscanf(f, "%d,", &congressional_arr[i].age_distribution[j]);
+        }
+        for(int j = 0; j < INCOME; j++) {
+            fscanf(f, "%d,", &congressional_arr[i].income_distribution[j]);
+        }
+        fscanf(f, "\n");
+    }
+
+    fclose(f);
+}*/

@@ -41,7 +41,7 @@ void get_distance(voter voter_arr[], candidate candidate_arr[], int population, 
         }
 
         if((i+1) % (population / 10) == 0 && i != 0) {
-            printf("%.0lf%% of voters calculated\n", (double)i / population * 100);
+            printf("%.0f%% of voters calculated\n", (float)i / population * 100);
 
         }
     }
@@ -89,7 +89,7 @@ void prompt_stats(state state_arr[], double calc_percent[][4][5], candidate cand
 }
 void get_ratings (voter voter_arr[], int i, int j) {
 
-    int distance_rating[] = {20, 40, 60, 80, 100, 120, 140, 160, 180, 200};
+    int distance_rating[] = {5, 10, 15, 20, 25, 30, 35, 40, 45, 50};
 
     int k;
     for (k = 0; k < sizeof(distance_rating) / sizeof(distance_rating[0]); k++) {
@@ -145,17 +145,17 @@ double calc_satisfaction(int winner_index, voter voters_arr[], int population) {
 }
 
 
-    void maine_nebraska_congressional(state state_arr[], candidate candidate_arr[], int num_of_candidates) {
-        for (int i = 0; i < STATES; i++) {
-            if (strcmp(state_arr[i].name, "Maine") == 0 || strcmp(state_arr[i].name, "Nebraska") == 0) {
+    void maine_nebraska_congressional(state congressional_arr[], candidate candidate_arr[], int num_of_candidates) {
+        for (int i = 0; i < CONGRESSIONAL_DISTRICTS; i++) {
+            if (strcmp(congressional_arr[i].name, "Maine") == 0 || strcmp(congressional_arr[i].name, "Nebraska") == 0) {
                 int district_winners[CONGRESSIONAL_DISTRICTS] = {0};
                 int state_winner = 0;
 
                 for (int j = 0; j < CONGRESSIONAL_DISTRICTS; j++) {
                     int congressional_votes = 0;
                     for (int k = 0; k < num_of_candidates; k++) {
-                        if (state_arr[i].district_votes[j][k] > congressional_votes) {
-                            congressional_votes = state_arr[i].district_votes[j][k];
+                        if (congressional_arr[i].district_votes[j][k] > congressional_votes) {
+                            congressional_votes = congressional_arr[i].district_votes[j][k];
                             district_winners[j] = k;
                         }
                     }
@@ -163,8 +163,8 @@ double calc_satisfaction(int winner_index, voter voters_arr[], int population) {
 
                 int max_votes = 0;
                 for (int k = 0; k < num_of_candidates; k++) {
-                    if (state_arr[i].state_votes[k] > max_votes) {
-                        max_votes = state_arr[i].state_votes[k];
+                    if (congressional_arr[i].state_votes[k] > max_votes) {
+                        max_votes = congressional_arr[i].state_votes[k];
                         state_winner = k;
                     }
                 }

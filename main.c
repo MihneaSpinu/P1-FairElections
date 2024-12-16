@@ -62,6 +62,9 @@ int main() {
 
     printf("Initializing the states...\n\n");
     init_state(state_arr, candidates);
+/*
+    printf("Initializing the congressional districts...\n\n");
+    init_congressional(congressional_arr, candidates);*/
 
     // START INDEX - inddeler vælgerne på de korrekte pladser i voter arrayet
     int cumulative_state_population = 0;
@@ -124,7 +127,27 @@ int main() {
             // STAR VOTING
             int star_winner = voting_star(state_arr[i].population, voter_arr, candidate_arr, start_index[i], &state_arr[i], candidates);
             candidate_arr[star_winner].star_mandates += state_arr[i].electoral_votes;
-        }
+        }/*
+        for(int i = 0; i < CONGRESSIONAL_DISTRICTS; i++) {
+            printf("Calculating winners for %s...\n", congressional_arr[i].name);
+
+            // FIRST PAST THE POST
+            int fptp_winner = first_past_the_post(voter_arr, congressional_arr[i].population, start_index[i], &congressional_arr[i], candidates);
+            candidate_arr[fptp_winner].fptp_mandates += congressional_arr[i].electoral_votes;
+
+            // RANKED VOTING
+            int rcv_winner = ranked_choice_voting(congressional_arr[i].population, voter_arr, candidate_arr, start_index[i], &congressional_arr[i], candidates);
+            candidate_arr[rcv_winner].rcv_mandates += congressional_arr[i].electoral_votes;
+
+            // RATED VOTING
+            int rated_winner = voting_rated(voter_arr, congressional_arr[i].population, start_index[i], &congressional_arr[i], candidates);
+            candidate_arr[rated_winner].rated_mandates += congressional_arr[i].electoral_votes;
+
+            // STAR VOTING
+            int star_winner = voting_star(congressional_arr[i].population, voter_arr, candidate_arr, start_index[i], &congressional_arr[i], candidates);
+            candidate_arr[star_winner].star_mandates += congressional_arr[i].electoral_votes;
+        }*/
+
         char voting_system[][MAX_NAME_LENGTH] = {"FPTP", "RANKED", "RATED", "STAR"};
         for(int i = 0; i < 4; i++) {
             int winner = print_winners(candidate_arr, candidates, i);

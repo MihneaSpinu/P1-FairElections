@@ -4,7 +4,7 @@
 //
 //
 // DEFINES
-#define STATES 51
+#define STATES 49
 #define MAX_CANDIDATES 5
 #define RACES 5
 #define GENDERS 2
@@ -88,6 +88,9 @@ void init_attributes(int distribution[], int attribute_amount, int category, int
                      int fordelingspolitik[][5], int værdipolitik[][5]);
 void init_index(int cumulative_state_population, int start_index[], state state_arr[]);
 
+//Congressional functions
+void maine_nebraska_congressional(state congressional_arr[], candidate candidate_arr[], int num_of_candidates);
+//void init_congressional(state congressional_arr[], int num_of_candidate);
 
 //
 //
@@ -135,6 +138,5 @@ void scan_election_settings(int *simulation_choice, int *electoral_choice, int *
 void check_input_validity(int user_input);
 void custom_candidates(int *candidates, char candidate_name[][MAX_NAME_LENGTH], int værdi[], int fordeling[]);
 
-void maine_nebraska_congressional(state state_arr[], candidate candidate_arr[], int num_of_candidates);
 
 #endif //FUNCTIONS_H
