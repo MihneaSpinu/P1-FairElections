@@ -18,8 +18,7 @@
 //
 //
 // ENUMS
-typedef enum { FPTP, RCV, rated, STAR, national} voting_system_e;
-typedef enum { race, gender, income, age } categories_e;
+enum { race, gender, income, age };
 typedef enum: unsigned char { white, black, hispanic, asian, other } race_e;
 typedef enum: unsigned char { male, female } gender_e;
 typedef enum: unsigned char { low, middle, high } income_e;
@@ -30,8 +29,8 @@ typedef enum: unsigned char { young, adult, middle_aged, old, elderly } age_e;
 // STRUCTS
 typedef struct {
     float distance_to[MAX_CANDIDATES];
-    int værdipolitik_v;
-    int fordelingspolitik_v; // Rangering af kandidater (ranked)
+    int social_policy_v;
+    int economic_policy_v; // Rangering af kandidater (ranked)
     int ratings[MAX_CANDIDATES];
     age_e age_v;
     gender_e gender_v;
@@ -41,8 +40,8 @@ typedef struct {
 
 typedef struct {
     char name[MAX_NAME_LENGTH];
-    int værdipolitik_c;
-    int fordelingspolitik_c;
+    int social_policy_c;
+    int economic_policy_c;
     int votes_fptp;
     int votes_star;
     int votes_rated;
@@ -53,7 +52,6 @@ typedef struct {
     int rated_mandates;
     int eliminated; // Flag for elimineret kandidat (ranked)
     int general_mandates;
-
 } candidate;
 
 typedef struct {
@@ -73,22 +71,22 @@ typedef struct {
 //
 //
 // Initalization functions
-void init_state(state state_arr[], int num_of_candidate); //DONE
+void init_state(state state_arr[], int num_of_candidate);
 void init_candidates(candidate candidate_arr[], int num_of_candidates, char candidate_name[][MAX_NAME_LENGTH],
-                     int værdi[], int fordeling[]); //DONE
+                     int social_p[], int economic_p[]);
 void init_voters(voter voter_arr[], state current_state, int start_index, int state, double calc_percent[][4][5]);
 void init_attributes(int distribution[], int attribute_amount, int category, int start_index,
                      int state, voter voter_arr[], int state_population, double calc_percent[][4][5],
-                     int fordelingspolitik[][5], int værdipolitik[][5]);
+                     int economic_policy[][5], int social_policy[][5]);
 void init_index(int cumulative_state_population, int start_index[], state state_arr[]);
 
-
 //
 //
-// Result function
+// Result functions
 int print_winner(int num_of_candidates, char voting_system[], int mandates[],
                   candidate candidate_arr[], char vote_type[], int electoral_choice);
-int contingent_election(int num_of_candidates, int mandates[], candidate candidate_arr[]);
+int contingent_election(int num_of_candidates, int mandates[], candidate candidate_arr[], char voting_system[]);
+int condorcet_winner(int num_voters, int num_candidates, voter voter_arr[]);
 
 //
 //
@@ -118,22 +116,23 @@ int voting_star(int current_state_population, voter voter_arr[], candidate candi
 
 //
 //
+// Election settings
+void scan_election_settings(int *simulation_choice, int *electoral_choice, int *candidate_choice,
+                            int *voting_system_choice, int *candidates, char candidate_name[][MAX_NAME_LENGTH],
+                            int social_p[MAX_CANDIDATES], int economic_p[MAX_CANDIDATES]);
+void check_input_validity(int user_input, int choice_amount);
+void custom_candidates(int *candidates, char candidate_name[][MAX_NAME_LENGTH], int værdi[], int fordeling[]);
+
+//
+//
 // Misc.
 void print_percent(double calc_percent[][4][5], int state_population, int state);
 void get_distance(voter voters_arr[], candidate candidate_arr[], int population, int num_of_candidates);
 void prompt_stats(state state_arr[], double calc_percent[][4][5], candidate candidate_arr[], int num_of_candidates);
-void election_2024();
-void get_ratings (voter voter_arr[], int i, int j);
+void get_ratings (voter voter_arr[], int num_of_candidates, int population);
 int variance();
 double voters_satisfaction(voter current_voter, int winner_index);
 double calc_satisfaction(int winner_index, voter voters_arr[], int population);
-int condorcet_winner(int num_voters, int num_candidates, voter voter_arr[]);
-
-// Election settings
-void scan_election_settings(int *simulation_choice, int *electoral_choice, int *candidate_choice,
-                            int *voting_system_choice, int *candidates, char candidate_name[][MAX_NAME_LENGTH],
-                            int værdi[MAX_CANDIDATES], int fordeling[MAX_CANDIDATES]);
-void check_input_validity(int user_input, int choice_amount);
-void custom_candidates(int *candidates, char candidate_name[][MAX_NAME_LENGTH], int værdi[], int fordeling[]);
+void check_memory_allocation(int array[]);
 
 #endif //FUNCTIONS_H

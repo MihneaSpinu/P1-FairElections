@@ -2,7 +2,8 @@
 #include <limits.h>
 #include "functions.h"
 
-int ranked_choice_voting(int state_population, voter voter_arr[], candidate candidate_arr[], int start_index, state *current_state, int num_of_candidates) {
+int ranked_choice_voting(int state_population, voter voter_arr[], candidate candidate_arr[],
+                         int start_index, state *current_state, int num_of_candidates) {
     
     int remaining_candidates = num_of_candidates;
     for(int i = 0; i < num_of_candidates; i++) {
@@ -43,7 +44,8 @@ int find_lowest_votes(candidate candidate_arr[], int num_of_candidates) {
     return candidate_to_eliminate;
 }
 
-void distribute_votes(voter voter_arr[], candidate candidate_arr[], int state_population, int start_index, state *current_state, int num_of_candidates) {
+void distribute_votes(voter voter_arr[], candidate candidate_arr[], int state_population,
+                      int start_index, state *current_state, int num_of_candidates) {
 
     int closest_candidate;
     double min_distance;
