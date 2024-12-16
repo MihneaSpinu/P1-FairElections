@@ -168,7 +168,7 @@ int contingent_election(int num_of_candidates, int mandates[], candidate candida
     int *advanced = calloc(num_of_candidates, sizeof(int));
     check_memory_allocation(advanced);
     int most_mandates = -1;
-    int top1, top2, top3 = 0;
+    int top1, top2, top3;
 
     for(int i = 0; i < num_of_candidates; i++) {
         if(mandates[i] > most_mandates) {
@@ -196,7 +196,12 @@ int contingent_election(int num_of_candidates, int mandates[], candidate candida
     }
 
     int winner;
-    int random = rand() % (mandates[top1] + mandates[top2] + mandates[top3]) + 1;
+    int random;
+    if(num_of_candidates == 2) {
+        random = rand() % (mandates[top1] + mandates[top2]) + 1;
+    } else {
+        random = rand() % (mandates[top1] + mandates[top2] + mandates[top3]) + 1;
+    }
     if(random <= mandates[top1]) {
         winner = top1;
     } else if(random <= mandates[top1] + mandates[top2]) {
