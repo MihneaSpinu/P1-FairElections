@@ -3,6 +3,7 @@
 #include <time.h>
 #include "functions.h"
 
+
 int main() {
 
     srand(time(NULL));

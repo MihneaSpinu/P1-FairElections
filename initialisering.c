@@ -28,7 +28,7 @@ void init_candidates(candidate candidate_arr[], int num_of_candidates, char cand
 // Initializes the states
 void init_state(state state_arr[], int num_of_candidates) {
 
-    FILE* f = fopen("state_data.txt", "r");
+    FILE* f = fopen("test_state_data.txt", "r");
     if (f == NULL) {
         printf("Error: couldn't open file 'state_data.txt'");
         exit(EXIT_FAILURE);
@@ -107,10 +107,10 @@ void init_voters(voter voter_arr[], state current_state, int start_index, int st
 
 // Initializes the voters attributes
 void init_attributes(int distribution[], int attribute_amount, int category, int start_index, int state,
-                     voter voter_arr[], int state_population, float calc_percent[][4][5],
+                     voter voter_arr[], int population, float calc_percent[][4][5],
                      int economic_policy[][5], int social_policy[][5]) {
 
-    for (int i = start_index; i < state_population + start_index; i++) {
+    for (int i = start_index; i < population + start_index; i++) {
         int random = rand() % 1000 + 1;
         for (int attribute = 0; attribute < attribute_amount; attribute++) {
             if (random <= distribution[attribute]) {

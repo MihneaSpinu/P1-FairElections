@@ -1,8 +1,8 @@
-#include "functions.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include "functions.h"
 
 
 // Checks if malloc / calloc is able to allocate memory
@@ -16,13 +16,13 @@ void check_memory_allocation(int array[]) {
 
 // Box Muller normal distribution function
 int variance() {
-    float x, y, z;
+    double x, y, z;
     do {
-        x = (float)rand() / RAND_MAX * 2 - 1;
-        y = (float)rand() / RAND_MAX * 2 - 1;
+        x = (double)rand() / RAND_MAX * 2 - 1;
+        y = (double)rand() / RAND_MAX * 2 - 1;
         z = x * x + y * y;
     } while (z == 0 || z > 1);
-    float h = sqrt(-2 * log(z) / z);
+    double h = sqrt(-2 * log(z) / z);
 
     int variance = x * h * STD_DEVIATION;
 
@@ -253,7 +253,7 @@ void prompt_stats(state state_arr[], float calc_percent[][4][5], candidate candi
 }
 
 // Prints the percentage distribution in each state
-void print_percent(float calc_percent[][4][5], int state_population, int state) {
+void print_percent(float calc_percent[][4][5], int population, int state) {
 
     const char *voter_attributes[4][5] = {
         {"White", "Black", "Hispanic", "Asian", "Other"},
@@ -266,7 +266,7 @@ void print_percent(float calc_percent[][4][5], int state_population, int state) 
         for (int attribute = 0; attribute < 5; attribute++) {
             if(calc_percent[state][category][attribute] != 0) {
                 printf("%s: %.2f%% (%d)\n", voter_attributes[category][attribute],
-                                             calc_percent[state][category][attribute] / state_population * 100,
+                                             calc_percent[state][category][attribute] / population * 100,
                                              (int)calc_percent[state][category][attribute]);
             }
         }

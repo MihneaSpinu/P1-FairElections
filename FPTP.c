@@ -4,17 +4,17 @@
 
 
 // Run the first past the post voting system
-int first_past_the_post(voter voter_arr[], int state_population, int start_index,
+int first_past_the_post(voter voter_arr[], int population, int start_index,
                         state *current_state, int num_of_candidates) {
 
     int *candidate_votes = calloc(num_of_candidates, sizeof(int));
     check_memory_allocation(candidate_votes);
 
     // Loop through all voters
-    for (int i = start_index; i < state_population + start_index; i++) {
+    for (int i = start_index; i < population + start_index; i++) {
         // Find the candidate with the smallest distance to the voter
         int min_distance = INT_MAX;
-        int candidate_index = -1;
+        int closest_candidate = -1;
 
         // Loop through all candidates
         for (int j = 0; j < num_of_candidates; j++) {
@@ -22,14 +22,14 @@ int first_past_the_post(voter voter_arr[], int state_population, int start_index
             if (voter_arr[i].distance_to[j] < min_distance) {
                 // Update the candidate with the smallest distance
                 min_distance = voter_arr[i].distance_to[j];
-                candidate_index = j;
+                closest_candidate = j;
             }
         }
 
         // Increment the votes for the candidate
-        if (candidate_index != -1) {
-            candidate_votes[candidate_index]++;
-            current_state->candidate_votes_fptp[candidate_index]++;
+        if (closest_candidate != -1) {
+            candidate_votes[closest_candidate]++;
+            current_state->candidate_votes_fptp[closest_candidate]++;
         }
     }
 

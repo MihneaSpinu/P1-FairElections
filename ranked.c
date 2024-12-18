@@ -3,7 +3,7 @@
 #include "functions.h"
 
 
-int ranked_choice_voting(int state_population, voter voter_arr[], candidate candidate_arr[],
+int ranked_choice_voting(int population, voter voter_arr[], candidate candidate_arr[],
                          int start_index, state *current_state, int num_of_candidates) {
 
     // Resets all candidates' eliminated status
@@ -12,7 +12,7 @@ int ranked_choice_voting(int state_population, voter voter_arr[], candidate cand
         candidate_arr[i].eliminated = 0;
     }
     // First round of voting
-    distribute_votes(voter_arr, candidate_arr, state_population, start_index, current_state, num_of_candidates);
+    distribute_votes(voter_arr, candidate_arr, population, start_index, current_state, num_of_candidates);
 
     while (remaining_candidates > 1) {
 
@@ -22,7 +22,7 @@ int ranked_choice_voting(int state_population, voter voter_arr[], candidate cand
         remaining_candidates--;
 
         // Redistributes the votes from the eliminated candidate
-        distribute_votes(voter_arr, candidate_arr, state_population, start_index, current_state, num_of_candidates);
+        distribute_votes(voter_arr, candidate_arr, population, start_index, current_state, num_of_candidates);
     }
 
     for (int i = 0; i < num_of_candidates; i++) {

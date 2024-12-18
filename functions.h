@@ -12,7 +12,7 @@
 #define AGES 5
 #define MAX_NAME_LENGTH 21
 #define STD_DEVIATION 0
-#define POPULATION 250947200
+#define POPULATION 2509472
 #define MAX_DISTANCE 200
 
 //
@@ -76,7 +76,7 @@ void init_candidates(candidate candidate_arr[], int num_of_candidates, char cand
                      int social_p[], int economic_p[]);
 void init_voters(voter voter_arr[], state current_state, int start_index, int state, float calc_percent[][4][5]);
 void init_attributes(int distribution[], int attribute_amount, int category, int start_index,
-                     int state, voter voter_arr[], int state_population, float calc_percent[][4][5],
+                     int state, voter voter_arr[], int population, float calc_percent[][4][5],
                      int economic_policy[][5], int social_policy[][5]);
 void init_index(int cumulative_state_population, int start_index[], state state_arr[]);
 
@@ -93,10 +93,10 @@ int condorcet_winner(int num_voters, int num_candidates, voter voter_arr[]);
 //
 //
 // Ranked functions
-int ranked_choice_voting(int state_population, voter voter_arr[], candidate candidate_arr[],
+int ranked_choice_voting(int population, voter voter_arr[], candidate candidate_arr[],
                          int start_index, state *current_state, int num_of_candidates);
 int find_lowest_votes(candidate candidate_arr[], int num_of_candidates);
-void distribute_votes(voter voter_arr[], candidate candidate_arr[], int state_population,
+void distribute_votes(voter voter_arr[], candidate candidate_arr[], int population,
                       int start_index, state *current_state, int num_of_candidates);
 
 //
@@ -107,13 +107,13 @@ int voting_rated(voter voter_arr[], int population, int start_index, state *curr
 //
 //
 // FPTP functions
-int first_past_the_post(voter voter_arr[], int state_population, int start_index,
+int first_past_the_post(voter voter_arr[], int population, int start_index,
                         state *current_state, int num_of_candidates);
 
 //
 //
 // STAR functions
-int voting_star(int current_state_population, voter voter_arr[], candidate candidate_arr[],
+int voting_star(int population, voter voter_arr[], candidate candidate_arr[],
                 int start_index, state *current_state, int num_of_candidates);
 
 //
@@ -128,7 +128,7 @@ void custom_candidates(int *candidates, char candidate_name[][MAX_NAME_LENGTH], 
 //
 //
 // Misc.
-void print_percent(float calc_percent[][4][5], int state_population, int state);
+void print_percent(float calc_percent[][4][5], int population, int state);
 void get_distance(voter voters_arr[], candidate candidate_arr[], int population, int num_of_candidates);
 void prompt_stats(state state_arr[], float calc_percent[][4][5], candidate candidate_arr[], int num_of_candidates);
 void get_ratings (voter voter_arr[], int num_of_candidates, int population);
