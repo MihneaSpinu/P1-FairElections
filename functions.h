@@ -11,7 +11,7 @@
 #define INCOME 3
 #define AGES 5
 #define MAX_NAME_LENGTH 21
-#define STD_DEVIATION 5
+#define STD_DEVIATION 0
 #define POPULATION 2509472 // 250947200
 #define MAX_DISTANCE 200
 
@@ -86,6 +86,8 @@ void init_index(int cumulative_state_population, int start_index[], state state_
 int print_winner(int num_of_candidates, char voting_system[], int mandates[],
                   candidate candidate_arr[], char vote_type[], int electoral_choice);
 int contingent_election(int num_of_candidates, int mandates[], candidate candidate_arr[], char voting_system[]);
+int contingent_top_three(int num_of_candidates, int advanced[], int mandates[]);
+int contingent_winner(int num_of_candidates, int mandates[], int top1, int top2, int top3);
 int condorcet_winner(int num_voters, int num_candidates, voter voter_arr[]);
 
 //

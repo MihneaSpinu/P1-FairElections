@@ -64,7 +64,7 @@ void get_ratings (voter voter_arr[], int num_of_candidates, int population) {
     }
 }
 
-// Determines the
+// Determines the average satisfaction of the voter to the winning candidate
 double voters_satisfaction(voter current_voter, int winner_index) {
 
     double normalized_distance = current_voter.distance_to[winner_index] / MAX_DISTANCE;
@@ -166,55 +166,49 @@ int contingent_election(int num_of_candidates, int mandates[], candidate candida
 
     int *advanced = calloc(num_of_candidates, sizeof(int));
     check_memory_allocation(advanced);
+
+    int top1 = contingent_top_three(num_of_candidates, advanced, mandates);
+    int top2 = contingent_top_three(num_of_candidates, advanced, mandates);
+    int top3 = contingent_top_three(num_of_candidates, advanced, mandates);
+
+    int winner = contingent_winner(num_of_candidates, mandates, top1, top2, top3);
+
+    printf("\n%s wins %s by contingent election\n", candidate_arr[winner].name, voting_system);
+    for(int i = 0; i < num_of_candidates; i++) {
+        printf("%s got %d mandates\n", candidate_arr[i].name, mandates[i]);
+    }
+    free(advanced);
+    return winner;
+}
+
+int contingent_top_three(int num_of_candidates, int advanced[], int mandates[]) {
+
     int most_mandates = -1;
-    int top1, top2, top3;
-
-    for(int i = 0; i < num_of_candidates; i++) {
-        if(mandates[i] > most_mandates) {
-            most_mandates = mandates[i];
-            top1 = i;
-        }
-    }
-    advanced[top1] = 1;
-    most_mandates = -1;
-
+    int leading_candidate;
     for(int i = 0; i < num_of_candidates; i++) {
         if(!advanced[i] && mandates[i] > most_mandates) {
             most_mandates = mandates[i];
-            top2 = i;
+            leading_candidate = i;
         }
     }
-    advanced[top2] = 1;
-    most_mandates = -1;
+    advanced[leading_candidate] = 1;
+    return leading_candidate;
+}
 
-    for(int i = 0; i < num_of_candidates; i++) {
-        if(!advanced[i] && mandates[i] > most_mandates) {
-            most_mandates = mandates[i];
-            top3 = i;
-        }
-    }
+int contingent_winner(int num_of_candidates, int mandates[], int top1, int top2, int top3) {
 
-    int winner;
     int random;
     if(num_of_candidates == 2) {
         random = rand() % (mandates[top1] + mandates[top2]) + 1;
     } else {
         random = rand() % (mandates[top1] + mandates[top2] + mandates[top3]) + 1;
     }
-    if(random <= mandates[top1]) {
-        winner = top1;
-    } else if(random <= mandates[top1] + mandates[top2]) {
-        winner = top2;
-    } else {
-        winner = top3;
-    }
-    printf("\n%s wins %s by contingent election\n", candidate_arr[winner].name, voting_system);
-    for(int j = 0; j < num_of_candidates; j++) {
-        printf("%s got %d mandates\n", candidate_arr[j].name, mandates[j]);
-    }
-    free(advanced);
-    return winner;
+
+    if(random <= mandates[top1])                  return top1;
+    if(random <= mandates[top1] + mandates[top2]) return top2;
+    return top3;
 }
+
 
 // Checks if there is a condorcet winner, returns index of candidate if there is
 int condorcet_winner(int num_voters, int num_candidates, voter voter_arr[]) {
@@ -259,4 +253,3 @@ void check_memory_allocation(int array[]) {
         exit(EXIT_FAILURE);
     }
 }
-
