@@ -12,7 +12,7 @@
 #define AGES 5
 #define MAX_NAME_LENGTH 21
 #define STD_DEVIATION 0
-#define POPULATION 2509472 // 250947200
+#define POPULATION 250947200
 #define MAX_DISTANCE 200
 
 //
@@ -30,7 +30,7 @@ typedef enum: unsigned char { young, adult, middle_aged, old, elderly } age_e;
 typedef struct {
     float distance_to[MAX_CANDIDATES];
     int social_policy_v;
-    int economic_policy_v; // Rangering af kandidater (ranked)
+    int economic_policy_v;
     int ratings[MAX_CANDIDATES];
     age_e age_v;
     gender_e gender_v;
@@ -50,8 +50,8 @@ typedef struct {
     int rcv_mandates;
     int fptp_mandates;
     int rated_mandates;
-    int eliminated; // Flag for elimineret kandidat (ranked)
     int general_mandates;
+    int eliminated; // Flag for elimineret kandidat (ranked)
 } candidate;
 
 typedef struct {
@@ -61,9 +61,9 @@ typedef struct {
     int income_distribution[INCOME];
     int age_distribution[AGES];
     int candidate_votes_fptp[MAX_CANDIDATES];
-    int candidate_votes_star[MAX_CANDIDATES];
-    int candidate_votes_rated[MAX_CANDIDATES];
     int candidate_votes_rcv[MAX_CANDIDATES];
+    int candidate_votes_rated[MAX_CANDIDATES];
+    int candidate_votes_star[MAX_CANDIDATES];
     int population;
     int electoral_votes;
 } state;
@@ -74,9 +74,9 @@ typedef struct {
 void init_state(state state_arr[], int num_of_candidate);
 void init_candidates(candidate candidate_arr[], int num_of_candidates, char candidate_name[][MAX_NAME_LENGTH],
                      int social_p[], int economic_p[]);
-void init_voters(voter voter_arr[], state current_state, int start_index, int state, double calc_percent[][4][5]);
+void init_voters(voter voter_arr[], state current_state, int start_index, int state, float calc_percent[][4][5]);
 void init_attributes(int distribution[], int attribute_amount, int category, int start_index,
-                     int state, voter voter_arr[], int state_population, double calc_percent[][4][5],
+                     int state, voter voter_arr[], int state_population, float calc_percent[][4][5],
                      int economic_policy[][5], int social_policy[][5]);
 void init_index(int cumulative_state_population, int start_index[], state state_arr[]);
 
@@ -128,13 +128,13 @@ void custom_candidates(int *candidates, char candidate_name[][MAX_NAME_LENGTH], 
 //
 //
 // Misc.
-void print_percent(double calc_percent[][4][5], int state_population, int state);
+void print_percent(float calc_percent[][4][5], int state_population, int state);
 void get_distance(voter voters_arr[], candidate candidate_arr[], int population, int num_of_candidates);
-void prompt_stats(state state_arr[], double calc_percent[][4][5], candidate candidate_arr[], int num_of_candidates);
+void prompt_stats(state state_arr[], float calc_percent[][4][5], candidate candidate_arr[], int num_of_candidates);
 void get_ratings (voter voter_arr[], int num_of_candidates, int population);
 int variance();
-double voters_satisfaction(voter current_voter, int winner_index);
-double calc_satisfaction(int winner_index, voter voters_arr[], int population);
+float voters_satisfaction(voter current_voter, int winner_index);
+float calc_satisfaction(int winner_index, voter voters_arr[], int population);
 void check_memory_allocation(int array[]);
 
 #endif //FUNCTIONS_H

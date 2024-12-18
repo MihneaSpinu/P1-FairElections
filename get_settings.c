@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include "functions.h"
+
 
 // Scans the users input to determine how to simulate the election
 void scan_election_settings(int *simulation_choice, int *electoral_choice, int *candidate_choice,
@@ -61,10 +61,11 @@ void scan_election_settings(int *simulation_choice, int *electoral_choice, int *
         economic_p[0] = 55,  economic_p[1] = -35,  economic_p[2] = -27,   economic_p[3] = 49,  economic_p[4] = 55;
     }
     if(*candidates < 2) {
-        printf("There has to be at least 2 candidates");
+        printf("Error: There has to be at least 2 candidates");
         exit(EXIT_FAILURE);
     }
 }
+
 
 // Scans custom candidates from the user, should they have chosen to do so
 void custom_candidates(int *candidates, char candidate_name[][MAX_NAME_LENGTH], int social_p[], int economic_p[]) {
@@ -81,16 +82,17 @@ void custom_candidates(int *candidates, char candidate_name[][MAX_NAME_LENGTH], 
         scanf("%d %d", &social_p[*candidates], &economic_p[*candidates]);
         if(social_p[*candidates] < -100 || social_p[*candidates] > 100 ||
             economic_p[*candidates] > 100 || economic_p[*candidates] < -100) {
-            printf("Values out of range (-100,100)");
+            printf("Error: Values out of range (-100,100)");
             exit(EXIT_FAILURE);
         }
     }
 }
 
+
 // Checks if the input is valid
 void check_input_validity(int user_input, int choice_amount) {
     if(user_input < 1 || user_input > choice_amount) {
-        printf("Invalid input");
+        printf("Error: Invalid input");
         exit(EXIT_FAILURE);
     }
 }

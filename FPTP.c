@@ -1,14 +1,14 @@
-#include <stdio.h>
 #include <limits.h>
 #include <stdlib.h>
-
 #include "functions.h"
 
-// Run the first past the post voting system
-int first_past_the_post(voter voter_arr[], int state_population, int start_index, state *current_state, int num_of_candidates) {
 
-    int *votes_can = calloc(num_of_candidates, sizeof(int));
-    check_memory_allocation(votes_can);
+// Run the first past the post voting system
+int first_past_the_post(voter voter_arr[], int state_population, int start_index,
+                        state *current_state, int num_of_candidates) {
+
+    int *candidate_votes = calloc(num_of_candidates, sizeof(int));
+    check_memory_allocation(candidate_votes);
 
     // Loop through all voters
     for (int i = start_index; i < state_population + start_index; i++) {
@@ -28,17 +28,17 @@ int first_past_the_post(voter voter_arr[], int state_population, int start_index
 
         // Increment the votes for the candidate
         if (candidate_index != -1) {
-            votes_can[candidate_index]++;
+            candidate_votes[candidate_index]++;
             current_state->candidate_votes_fptp[candidate_index]++;
         }
     }
 
     int winner = 0;
     for (int i = 0; i < num_of_candidates; i++) {
-        if(votes_can[i] > votes_can[winner]) {
+        if(candidate_votes[i] > candidate_votes[winner]) {
             winner = i;
         }
     }
-    free(votes_can);
+    free(candidate_votes);
     return winner;
 }

@@ -4,15 +4,25 @@
 #include <string.h>
 #include <math.h>
 
+
+// Checks if malloc / calloc is able to allocate memory
+void check_memory_allocation(int array[]) {
+    if(array == NULL) {
+        printf("Error: Unable to allocate memory");
+        exit(EXIT_FAILURE);
+    }
+}
+
+
 // Box Muller normal distribution function
 int variance() {
-    double x, y, z;
+    float x, y, z;
     do {
-        x = (double)rand() / RAND_MAX * 2 - 1;
-        y = (double)rand() / RAND_MAX * 2 - 1;
+        x = (float)rand() / RAND_MAX * 2 - 1;
+        y = (float)rand() / RAND_MAX * 2 - 1;
         z = x * x + y * y;
     } while (z == 0 || z > 1);
-    double h = sqrt(-2 * log(z) / z);
+    float h = sqrt(-2 * log(z) / z);
 
     int variance = x * h * STD_DEVIATION;
 
@@ -21,6 +31,7 @@ int variance() {
     if(variance < -(STD_DEVIATION * 10)) variance = -(STD_DEVIATION * 10);
     return variance;
 }
+
 
 // Calculates the distance from each voter to each candidate
 void get_distance(voter voter_arr[], candidate candidate_arr[], int population, int num_of_candidates) {
@@ -43,6 +54,7 @@ void get_distance(voter voter_arr[], candidate candidate_arr[], int population, 
     }
 }
 
+
 // Determines how each voter rates each candidate
 void get_ratings (voter voter_arr[], int num_of_candidates, int population) {
 
@@ -61,13 +73,95 @@ void get_ratings (voter voter_arr[], int num_of_candidates, int population) {
                 voter_arr[i].ratings[j] = 0;
             }
         }
+        if(i % ((population-1) / 10) == 0 && i != 0) {
+            printf("%.0f%% of voters calculated\n", (float)i / population * 100);
+        }
     }
 }
 
-// Determines the average satisfaction of the voter to the winning candidate
-double voters_satisfaction(voter current_voter, int winner_index) {
 
-    double normalized_distance = current_voter.distance_to[winner_index] / MAX_DISTANCE;
+// Prints the winner for the given vote type and system
+int print_winner(int num_of_candidates, char voting_system[], int mandates[],
+                 candidate candidate_arr[], char score_type[], int electoral_choice) {
+
+    int winner = 0;
+    for(int i = 0; i < num_of_candidates; i++) {
+        if(mandates[winner] < mandates[i]) {
+            winner = i;
+        }
+    }
+
+    if(electoral_choice == 1 && mandates[winner] < 270) {
+        return contingent_election(num_of_candidates, mandates, candidate_arr, voting_system);
+    }
+    printf("\n%s wins %s with %d %s\n", candidate_arr[winner].name, voting_system, mandates[winner], score_type);
+    mandates[winner] = -1;
+    for(int i = 0; i < num_of_candidates; i++) {
+        if(mandates[i] != -1) {
+            printf("%s got %d %s\n", candidate_arr[i].name, mandates[i], score_type);
+        }
+    }
+    return winner;
+}
+
+
+// Simulates contingent election
+int contingent_election(int num_of_candidates, int mandates[], candidate candidate_arr[], char voting_system[]) {
+
+    int *advanced = calloc(num_of_candidates, sizeof(int));
+    check_memory_allocation(advanced);
+
+    int top1 = contingent_top_three(num_of_candidates, advanced, mandates);
+    int top2 = contingent_top_three(num_of_candidates, advanced, mandates);
+    int top3 = contingent_top_three(num_of_candidates, advanced, mandates);
+
+    int winner = contingent_winner(num_of_candidates, mandates, top1, top2, top3);
+
+    printf("\n%s wins %s by contingent election\n", candidate_arr[winner].name, voting_system);
+    for(int i = 0; i < num_of_candidates; i++) {
+        printf("%s got %d mandates\n", candidate_arr[i].name, mandates[i]);
+    }
+    free(advanced);
+    return winner;
+}
+
+
+// Finds the top three candidates
+int contingent_top_three(int num_of_candidates, int advanced[], int mandates[]) {
+
+    int most_mandates = -1;
+    int leading_candidate;
+    for(int i = 0; i < num_of_candidates; i++) {
+        if(!advanced[i] && mandates[i] > most_mandates) {
+            most_mandates = mandates[i];
+            leading_candidate = i;
+        }
+    }
+    advanced[leading_candidate] = 1;
+    return leading_candidate;
+}
+
+
+// Finds the winner of contingent election
+int contingent_winner(int num_of_candidates, int mandates[], int top1, int top2, int top3) {
+
+    int random;
+    if(num_of_candidates == 2) {
+        random = rand() % (mandates[top1] + mandates[top2]) + 1;
+    } else {
+        random = rand() % (mandates[top1] + mandates[top2] + mandates[top3]) + 1;
+    }
+
+    if(random <= mandates[top1])                  return top1;
+    if(random <= mandates[top1] + mandates[top2]) return top2;
+    return top3;
+}
+
+
+// Determines the average satisfaction of the voter to the winning candidate
+float voters_satisfaction(voter current_voter, int winner_index) {
+
+    float normalized_distance = current_voter.distance_to[winner_index] / MAX_DISTANCE;
 
     // Hard caps normalized_distance to [0,1] to handle unexpected values
     if (normalized_distance < 0) normalized_distance = 0;
@@ -77,20 +171,62 @@ double voters_satisfaction(voter current_voter, int winner_index) {
     return 1 - normalized_distance;
 }
 
-// Calculates the overall satisfaction of the election depending on the winning candidate
-double calc_satisfaction(int winner_index, voter voters_arr[], int population) {
 
-    double total_satisfaction = 0;
+// Calculates the overall satisfaction of the election depending on the winning candidate
+float calc_satisfaction(int winner_index, voter voters_arr[], int population) {
+
+    float total_satisfaction = 0;
 
     for (int i = 0; i < population; i++) {
-        double voter_satisfaction = voters_satisfaction(voters_arr[i], winner_index);
+        float voter_satisfaction = voters_satisfaction(voters_arr[i], winner_index);
         total_satisfaction += voter_satisfaction;
     }
-    return (total_satisfaction / ((double)population)) * 100;
+    return (total_satisfaction / ((float)population)) * 100;
 }
 
+
+// Checks if there is a condorcet winner, returns index of candidate if there is
+int condorcet_winner(int population, int num_of_candidates, voter voter_arr[]) {
+
+    int pairwise[num_of_candidates][num_of_candidates];
+    for (int i = 0; i < num_of_candidates; i++) {
+        for (int j = 0; j < num_of_candidates; j++) {
+            pairwise[i][j] = 0;
+        }
+    }
+
+    // See pairwise candidates
+    for (int i = 0; i < population; i++) {
+        for (int j = 0; j < num_of_candidates; j++) {
+            for (int k = j + 1; k < num_of_candidates; k++) {
+                if (voter_arr[i].distance_to[j] < voter_arr[i].distance_to[k]) {
+                    pairwise[j][k]++;
+                } else {
+                    pairwise[k][j]++;
+                }
+            }
+        }
+    }
+
+    // Check for condorcet winner
+    for (int i = 0; i < num_of_candidates; i++) {
+        int is_condorcet = 1;
+        for (int j = 0; j < num_of_candidates; j++) {
+            if (i != j && pairwise[i][j] <= pairwise[j][i]) {
+                is_condorcet = 0;
+                break;
+            }
+        }
+        if(is_condorcet) {
+            return i;
+        }
+    }
+    return -1; // No Condorcet winner
+}
+
+
 // Prints data for the given state
-void prompt_stats(state state_arr[], double calc_percent[][4][5], candidate candidate_arr[], int num_of_candidates) {
+void prompt_stats(state state_arr[], float calc_percent[][4][5], candidate candidate_arr[], int num_of_candidates) {
 
     char input[MAX_NAME_LENGTH];
     printf("\n'exit' when done");
@@ -117,7 +253,7 @@ void prompt_stats(state state_arr[], double calc_percent[][4][5], candidate cand
 }
 
 // Prints the percentage distribution in each state
-void print_percent(double calc_percent[][4][5], int state_population, int state) {
+void print_percent(float calc_percent[][4][5], int state_population, int state) {
 
     const char *voter_attributes[4][5] = {
         {"White", "Black", "Hispanic", "Asian", "Other"},
@@ -129,127 +265,10 @@ void print_percent(double calc_percent[][4][5], int state_population, int state)
         printf("\n");
         for (int attribute = 0; attribute < 5; attribute++) {
             if(calc_percent[state][category][attribute] != 0) {
-                printf("%s: %.2lf%% (%d)\n", voter_attributes[category][attribute],
+                printf("%s: %.2f%% (%d)\n", voter_attributes[category][attribute],
                                              calc_percent[state][category][attribute] / state_population * 100,
                                              (int)calc_percent[state][category][attribute]);
             }
         }
-    }
-}
-
-// Prints the winner for the given vote type and system
-int print_winner(int num_of_candidates, char voting_system[], int mandates[],
-                  candidate candidate_arr[], char score_type[], int electoral_choice) {
-
-    int winner = 0;
-    for(int i = 0; i < num_of_candidates; i++) {
-        if(mandates[winner] < mandates[i]) {
-            winner = i;
-        }
-    }
-
-    if(electoral_choice == 1 && mandates[winner] < 270) {
-        return contingent_election(num_of_candidates, mandates, candidate_arr, voting_system);
-    }
-    printf("\n%s wins %s with %d %s\n", candidate_arr[winner].name, voting_system, mandates[winner], score_type);
-    mandates[winner] = -1;
-    for(int i = 0; i < num_of_candidates; i++) {
-        if(mandates[i] != -1) {
-            printf("%s got %d %s\n", candidate_arr[i].name, mandates[i], score_type);
-        }
-    }
-    return winner;
-}
-
-// Simulates contingent election
-int contingent_election(int num_of_candidates, int mandates[], candidate candidate_arr[], char voting_system[]) {
-
-    int *advanced = calloc(num_of_candidates, sizeof(int));
-    check_memory_allocation(advanced);
-
-    int top1 = contingent_top_three(num_of_candidates, advanced, mandates);
-    int top2 = contingent_top_three(num_of_candidates, advanced, mandates);
-    int top3 = contingent_top_three(num_of_candidates, advanced, mandates);
-
-    int winner = contingent_winner(num_of_candidates, mandates, top1, top2, top3);
-
-    printf("\n%s wins %s by contingent election\n", candidate_arr[winner].name, voting_system);
-    for(int i = 0; i < num_of_candidates; i++) {
-        printf("%s got %d mandates\n", candidate_arr[i].name, mandates[i]);
-    }
-    free(advanced);
-    return winner;
-}
-
-int contingent_top_three(int num_of_candidates, int advanced[], int mandates[]) {
-
-    int most_mandates = -1;
-    int leading_candidate;
-    for(int i = 0; i < num_of_candidates; i++) {
-        if(!advanced[i] && mandates[i] > most_mandates) {
-            most_mandates = mandates[i];
-            leading_candidate = i;
-        }
-    }
-    advanced[leading_candidate] = 1;
-    return leading_candidate;
-}
-
-int contingent_winner(int num_of_candidates, int mandates[], int top1, int top2, int top3) {
-
-    int random;
-    if(num_of_candidates == 2) {
-        random = rand() % (mandates[top1] + mandates[top2]) + 1;
-    } else {
-        random = rand() % (mandates[top1] + mandates[top2] + mandates[top3]) + 1;
-    }
-
-    if(random <= mandates[top1])                  return top1;
-    if(random <= mandates[top1] + mandates[top2]) return top2;
-    return top3;
-}
-
-
-// Checks if there is a condorcet winner, returns index of candidate if there is
-int condorcet_winner(int num_voters, int num_candidates, voter voter_arr[]) {
-    int pairwise[num_candidates][num_candidates];
-    for (int i = 0; i < num_candidates; i++) {
-        for (int j = 0; j < num_candidates; j++) {
-            pairwise[i][j] = 0;
-        }
-    }
-    // See pairwise candidates
-    for (int i = 0; i < num_voters; i++) {
-        for (int j = 0; j < num_candidates; j++) {
-            for (int k = j + 1; k < num_candidates; k++) {
-                if (voter_arr[i].distance_to[j] < voter_arr[i].distance_to[k]) {
-                    pairwise[j][k]++;
-                } else {
-                    pairwise[k][j]++;
-                }
-            }
-        }
-    }
-    // Check for cordocet winner
-    for (int i = 0; i < num_candidates; i++) {
-        int is_condorcet = 1;
-        for (int j = 0; j < num_candidates; j++) {
-            if (i != j && pairwise[i][j] <= pairwise[j][i]) {
-                is_condorcet = 0;
-                break;
-            }
-        }
-        if(is_condorcet) {
-            return i;
-        }
-    }
-    return -1; // No Condorcet winner
-}
-
-// Checks if malloc / calloc is able to allocate memory
-void check_memory_allocation(int array[]) {
-    if(array == NULL) {
-        printf("Error allocating memory");
-        exit(EXIT_FAILURE);
     }
 }

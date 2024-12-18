@@ -1,20 +1,21 @@
-#include <stdio.h>
 #include <stdlib.h>
-
 #include "functions.h"
 
-int voting_star(int current_state_population, voter voter_arr[], candidate candidate_arr[], int start_index, state *current_state, int num_of_candidates) {
+
+int voting_star(int state_population, voter voter_arr[], candidate candidate_arr[],
+                int start_index, state *current_state, int num_of_candidates) {
 
     // Initialize scores for each candidate
     int *scores = calloc(num_of_candidates, sizeof(int));
     check_memory_allocation(scores);
 
     // Calculate scores based on distances
-    for (int i = start_index; i < current_state_population + start_index; i++) {
+    for (int i = start_index; i < state_population + start_index; i++) {
         for (int j = 0; j < num_of_candidates; j++) {
             scores[j] += voter_arr[i].ratings[j];
         }
     }
+
     // Find the top two candidates
     int top1 = 0, top2 = 1;
     if (scores[top2] > scores[top1]) {
@@ -30,9 +31,10 @@ int voting_star(int current_state_population, voter voter_arr[], candidate candi
             top2 = i;
         }
     }
+
     // Runoff between top two candidates (fptp)
     int votes_top1 = 0, votes_top2 = 0;
-    for (int i = start_index; i < start_index + current_state_population; i++) {
+    for (int i = start_index; i < start_index + state_population; i++) {
         if (voter_arr[i].distance_to[top1] < voter_arr[i].distance_to[top2]) {
             votes_top1++;
             current_state->candidate_votes_star[top1]++;
@@ -41,10 +43,12 @@ int voting_star(int current_state_population, voter voter_arr[], candidate candi
             current_state->candidate_votes_star[top2]++;
         }
     }
+
     // Determine the winner
     int winner_index = (votes_top1 > votes_top2) ? top1 : top2;
     candidate winner = candidate_arr[winner_index];
     winner.votes_star = (votes_top1 > votes_top2) ? votes_top1 : votes_top2;
+
     free(scores);
     return winner_index;
 }
