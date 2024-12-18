@@ -144,7 +144,6 @@ int main() {
         } else {
             printf("\nThe condorcet winner is %s\n", candidate_arr[condorcet_win_index].name);
         }
-
     }
 
     // NATION WIDE VOTE

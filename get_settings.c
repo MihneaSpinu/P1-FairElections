@@ -61,7 +61,7 @@ void scan_election_settings(int *simulation_choice, int *electoral_choice, int *
         economic_p[0] = 55,  economic_p[1] = -35,  economic_p[2] = -27,   economic_p[3] = 49,  economic_p[4] = 55;
     }
     if(*candidates < 2) {
-        printf("Error: There has to be at least 2 candidates");
+        printf("Error: there has to be at least 2 candidates");
         exit(EXIT_FAILURE);
     }
 }
@@ -84,7 +84,7 @@ void custom_candidates(int *candidates, char candidate_name[][MAX_NAME_LENGTH], 
         scanf("%d %d", &social_p[*candidates], &economic_p[*candidates]);
         if(social_p[*candidates] < -100 || social_p[*candidates] > 100 ||
             economic_p[*candidates] > 100 || economic_p[*candidates] < -100) {
-            printf("Error: Values out of range (-100,100)");
+            printf("Error: values out of range (-100,100)");
             exit(EXIT_FAILURE);
         }
     }
@@ -94,7 +94,7 @@ void custom_candidates(int *candidates, char candidate_name[][MAX_NAME_LENGTH], 
 // Checks if the input is valid
 void check_input_validity(int user_input, int choice_amount) {
     if(user_input < 1 || user_input > choice_amount) {
-        printf("Error: Invalid input");
+        printf("Error: invalid input");
         exit(EXIT_FAILURE);
     }
 }

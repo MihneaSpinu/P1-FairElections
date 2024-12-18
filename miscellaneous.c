@@ -8,7 +8,7 @@
 // Checks if malloc / calloc is able to allocate memory
 void check_memory_allocation(int array[]) {
     if(array == NULL) {
-        printf("Error: Unable to allocate memory");
+        printf("Error: unable to allocate memory");
         exit(EXIT_FAILURE);
     }
 }
@@ -24,7 +24,7 @@ int variance() {
     } while (z == 0 || z > 1);
     double h = sqrt(-2 * log(z) / z);
 
-    int variance = x * h * STD_DEVIATION;
+    float variance = x * h * STD_DEVIATION;
 
     // Sets a hard cap of 10 standard deviations from mean
     if(variance > STD_DEVIATION * 10)    variance = STD_DEVIATION * 10;
@@ -153,7 +153,7 @@ int contingent_winner(int num_of_candidates, int mandates[], int top1, int top2,
         random = rand() % (mandates[top1] + mandates[top2] + mandates[top3]) + 1;
     }
 
-    if(random <= mandates[top1])                  return top1;
+    if(random <= mandates[top1]) return top1;
     if(random <= mandates[top1] + mandates[top2]) return top2;
     return top3;
 }

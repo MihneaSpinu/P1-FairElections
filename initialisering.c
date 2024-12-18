@@ -28,7 +28,7 @@ void init_candidates(candidate candidate_arr[], int num_of_candidates, char cand
 // Initializes the states
 void init_state(state state_arr[], int num_of_candidates) {
 
-    FILE* f = fopen("test_state_data.txt", "r");
+    FILE* f = fopen("state_data.txt", "r");
     if(f == NULL) {
         printf("Error: couldn't open file 'state_data.txt'");
         exit(EXIT_FAILURE);

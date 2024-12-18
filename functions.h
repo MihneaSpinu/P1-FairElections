@@ -11,8 +11,8 @@
 #define INCOME 3
 #define AGES 5
 #define MAX_NAME_LENGTH 21
-#define STD_DEVIATION 0
-#define POPULATION 2509472
+#define STD_DEVIATION 5
+#define POPULATION 250947200
 #define MAX_DISTANCE 200
 
 //
@@ -29,8 +29,8 @@ typedef enum: unsigned char { young, adult, middle_aged, old, elderly } age_e;
 // STRUCTS
 typedef struct {
     float distance_to[MAX_CANDIDATES];
-    int social_policy_v;
-    int economic_policy_v;
+    float social_policy_v;
+    float economic_policy_v;
     int ratings[MAX_CANDIDATES];
     age_e age_v;
     gender_e gender_v;
