@@ -11,15 +11,15 @@ int first_past_the_post(voter voter_arr[], int population, int start_index,
     check_memory_allocation(candidate_votes);
 
     // Loop through all voters
-    for (int i = start_index; i < population + start_index; i++) {
+    for(int i = start_index; i < population + start_index; i++) {
         // Find the candidate with the smallest distance to the voter
         int min_distance = INT_MAX;
         int closest_candidate = -1;
 
         // Loop through all candidates
-        for (int j = 0; j < num_of_candidates; j++) {
+        for(int j = 0; j < num_of_candidates; j++) {
             // Check if the candidate is eliminated
-            if (voter_arr[i].distance_to[j] < min_distance) {
+            if(voter_arr[i].distance_to[j] < min_distance) {
                 // Update the candidate with the smallest distance
                 min_distance = voter_arr[i].distance_to[j];
                 closest_candidate = j;
@@ -27,14 +27,14 @@ int first_past_the_post(voter voter_arr[], int population, int start_index,
         }
 
         // Increment the votes for the candidate
-        if (closest_candidate != -1) {
+        if(closest_candidate != -1) {
             candidate_votes[closest_candidate]++;
             current_state->candidate_votes_fptp[closest_candidate]++;
         }
     }
 
     int winner = 0;
-    for (int i = 0; i < num_of_candidates; i++) {
+    for(int i = 0; i < num_of_candidates; i++) {
         if(candidate_votes[i] > candidate_votes[winner]) {
             winner = i;
         }

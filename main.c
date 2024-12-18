@@ -50,7 +50,7 @@ int main() {
     init_index(cumulative_state_population, start_index, state_arr);
 
     // INIT VOTERS
-    for (int i = 0; i < STATES; i++) {
+    for(int i = 0; i < STATES; i++) {
         printf("Generating voters for %s...\n", state_arr[i].name);
         init_voters(voter_arr, state_arr[i], start_index[i], i, calc_percent);
     }
@@ -139,9 +139,9 @@ int main() {
         printf("Satisfaction: %.2f out of 100\n",calc_satisfaction(winner_index, voter_arr, POPULATION));
 
         int condorcet_win_index = condorcet_winner(POPULATION, num_of_candidates, voter_arr);
-        if (condorcet_win_index == -1) {
+        if(condorcet_win_index == -1) {
             printf("\nThere is no condorcet winner\n");
-        }else {
+        } else {
             printf("\nThe condorcet winner is %s\n", candidate_arr[condorcet_win_index].name);
         }
 
@@ -190,9 +190,9 @@ int main() {
 
         // CONDORCET
         int condorcet_winner_index = condorcet_winner(POPULATION, num_of_candidates, voter_arr);
-        if (condorcet_winner_index == -1) {
+        if(condorcet_winner_index == -1) {
             printf("There is no condorcet winner\n");
-        }else {
+        } else {
             printf("The condorcet winner is %s\n", candidate_arr[condorcet_winner_index].name);
         }
     }

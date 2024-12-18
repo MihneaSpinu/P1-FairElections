@@ -71,7 +71,7 @@ typedef struct {
 //
 //
 // Initalization functions
-void init_state(state state_arr[], int num_of_candidate);
+void init_state(state state_arr[], int num_of_candidates);
 void init_candidates(candidate candidate_arr[], int num_of_candidates, char candidate_name[][MAX_NAME_LENGTH],
                      int social_p[], int economic_p[]);
 void init_voters(voter voter_arr[], state current_state, int start_index, int state, float calc_percent[][4][5]);

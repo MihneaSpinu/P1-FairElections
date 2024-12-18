@@ -8,7 +8,7 @@
 void init_candidates(candidate candidate_arr[], int num_of_candidates, char candidate_names[][MAX_NAME_LENGTH],
                      int social_p[], int economic_p[]) {
 
-    for (int i = 0; i < num_of_candidates; i++) {
+    for(int i = 0; i < num_of_candidates; i++) {
         strcpy(candidate_arr[i].name, candidate_names[i]);
         candidate_arr[i].social_policy_c = social_p[i];
         candidate_arr[i].economic_policy_c = economic_p[i];
@@ -29,12 +29,12 @@ void init_candidates(candidate candidate_arr[], int num_of_candidates, char cand
 void init_state(state state_arr[], int num_of_candidates) {
 
     FILE* f = fopen("test_state_data.txt", "r");
-    if (f == NULL) {
+    if(f == NULL) {
         printf("Error: couldn't open file 'state_data.txt'");
         exit(EXIT_FAILURE);
     }
 
-    for (int i = 0; i < STATES; i++) {
+    for(int i = 0; i < STATES; i++) {
         for(int j = 0; j < num_of_candidates; j++) {
             state_arr[i].candidate_votes_fptp[j] = 0;
             state_arr[i].candidate_votes_star[j] = 0;
@@ -110,19 +110,15 @@ void init_attributes(int distribution[], int attribute_amount, int category, int
                      voter voter_arr[], int population, float calc_percent[][4][5],
                      int economic_policy[][5], int social_policy[][5]) {
 
-    for (int i = start_index; i < population + start_index; i++) {
+    for(int i = start_index; i < population + start_index; i++) {
         int random = rand() % 1000 + 1;
-        for (int attribute = 0; attribute < attribute_amount; attribute++) {
-            if (random <= distribution[attribute]) {
-                if(category == race) {
-                    voter_arr[i].race_v = attribute;
-                } else if(category == gender) {
-                    voter_arr[i].gender_v = attribute;
-                } else if(category == income) {
-                    voter_arr[i].income_v = attribute;
-                } else {
-                    voter_arr[i].age_v = attribute;
-                }
+        for(int attribute = 0; attribute < attribute_amount; attribute++) {
+            if(random <= distribution[attribute]) {
+
+                if(category == race)        voter_arr[i].race_v = attribute;
+                else if(category == gender) voter_arr[i].gender_v = attribute;
+                else if(category == income) voter_arr[i].income_v = attribute;
+                else if(category == age)    voter_arr[i].age_v = attribute;
 
                 voter_arr[i].economic_policy_v += economic_policy[category][attribute] + variance();
                 voter_arr[i].social_policy_v += social_policy[category][attribute] + variance();

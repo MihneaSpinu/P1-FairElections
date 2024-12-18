@@ -14,7 +14,7 @@ int ranked_choice_voting(int population, voter voter_arr[], candidate candidate_
     // First round of voting
     distribute_votes(voter_arr, candidate_arr, population, start_index, current_state, num_of_candidates);
 
-    while (remaining_candidates > 1) {
+    while(remaining_candidates > 1) {
 
         // Finds the candidate with the lowest votes and eliminates them
         int eliminated_candidate = find_lowest_votes(candidate_arr, num_of_candidates);
@@ -25,8 +25,8 @@ int ranked_choice_voting(int population, voter voter_arr[], candidate candidate_
         distribute_votes(voter_arr, candidate_arr, population, start_index, current_state, num_of_candidates);
     }
 
-    for (int i = 0; i < num_of_candidates; i++) {
-        if (!candidate_arr[i].eliminated) {
+    for(int i = 0; i < num_of_candidates; i++) {
+        if(!candidate_arr[i].eliminated) {
             return i;
         }
     }
@@ -38,8 +38,8 @@ int find_lowest_votes(candidate candidate_arr[], int num_of_candidates) {
     int min_votes = INT_MAX;
     int candidate_to_eliminate;
 
-    for (int i = 0; i < num_of_candidates; i++) {
-        if (!candidate_arr[i].eliminated && candidate_arr[i].votes_rcv < min_votes) {
+    for(int i = 0; i < num_of_candidates; i++) {
+        if(!candidate_arr[i].eliminated && candidate_arr[i].votes_rcv < min_votes) {
             min_votes = candidate_arr[i].votes_rcv;
             candidate_to_eliminate = i;
         }
@@ -61,10 +61,10 @@ void distribute_votes(voter voter_arr[], candidate candidate_arr[], int state_po
         }
     }
 
-    for (int i = start_index; i < state_population + start_index; i++) {
+    for(int i = start_index; i < state_population + start_index; i++) {
         min_distance = INT_MAX;
-        for (int j = 0; j < num_of_candidates; j++) {
-            if (!candidate_arr[j].eliminated && voter_arr[i].distance_to[j] < min_distance) {
+        for(int j = 0; j < num_of_candidates; j++) {
+            if(!candidate_arr[j].eliminated && voter_arr[i].distance_to[j] < min_distance) {
                 closest_candidate = j;
                 min_distance = voter_arr[i].distance_to[j];
             }

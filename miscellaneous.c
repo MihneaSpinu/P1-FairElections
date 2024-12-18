@@ -61,15 +61,16 @@ void get_ratings (voter voter_arr[], int num_of_candidates, int population) {
     int distance_rating[] = {15, 30, 45, 60, 75, 90, 105, 120, 135, 150};
     int size_of_arr = sizeof(distance_rating) / sizeof(int);
     int k;
-    for (int i = 0; i < population; i++) {
-        for (int j = 0; j < num_of_candidates; j++) {
-            for (k = 0; k < size_of_arr; k++) {
-                if (voter_arr[i].distance_to[j] <= distance_rating[k]) {
+
+    for(int i = 0; i < population; i++) {
+        for(int j = 0; j < num_of_candidates; j++) {
+            for(k = 0; k < size_of_arr; k++) {
+                if(voter_arr[i].distance_to[j] <= distance_rating[k]) {
                     voter_arr[i].ratings[j] = 10-k;
                     break;
                 }
             }
-            if (k == size_of_arr) {
+            if(k == size_of_arr) {
                 voter_arr[i].ratings[j] = 0;
             }
         }
@@ -164,8 +165,8 @@ float voters_satisfaction(voter current_voter, int winner_index) {
     float normalized_distance = current_voter.distance_to[winner_index] / MAX_DISTANCE;
 
     // Hard caps normalized_distance to [0,1] to handle unexpected values
-    if (normalized_distance < 0) normalized_distance = 0;
-    if (normalized_distance > 1) normalized_distance = 1;
+    if(normalized_distance < 0) normalized_distance = 0;
+    if(normalized_distance > 1) normalized_distance = 1;
 
     // Satisfaction decreases linearly with distance
     return 1 - normalized_distance;
@@ -177,7 +178,7 @@ float calc_satisfaction(int winner_index, voter voters_arr[], int population) {
 
     float total_satisfaction = 0;
 
-    for (int i = 0; i < population; i++) {
+    for(int i = 0; i < population; i++) {
         float voter_satisfaction = voters_satisfaction(voters_arr[i], winner_index);
         total_satisfaction += voter_satisfaction;
     }
@@ -189,17 +190,17 @@ float calc_satisfaction(int winner_index, voter voters_arr[], int population) {
 int condorcet_winner(int population, int num_of_candidates, voter voter_arr[]) {
 
     int pairwise[num_of_candidates][num_of_candidates];
-    for (int i = 0; i < num_of_candidates; i++) {
-        for (int j = 0; j < num_of_candidates; j++) {
+    for(int i = 0; i < num_of_candidates; i++) {
+        for(int j = 0; j < num_of_candidates; j++) {
             pairwise[i][j] = 0;
         }
     }
 
     // See pairwise candidates
-    for (int i = 0; i < population; i++) {
-        for (int j = 0; j < num_of_candidates; j++) {
-            for (int k = j + 1; k < num_of_candidates; k++) {
-                if (voter_arr[i].distance_to[j] < voter_arr[i].distance_to[k]) {
+    for(int i = 0; i < population; i++) {
+        for(int j = 0; j < num_of_candidates; j++) {
+            for(int k = j + 1; k < num_of_candidates; k++) {
+                if(voter_arr[i].distance_to[j] < voter_arr[i].distance_to[k]) {
                     pairwise[j][k]++;
                 } else {
                     pairwise[k][j]++;
@@ -209,10 +210,10 @@ int condorcet_winner(int population, int num_of_candidates, voter voter_arr[]) {
     }
 
     // Check for condorcet winner
-    for (int i = 0; i < num_of_candidates; i++) {
+    for(int i = 0; i < num_of_candidates; i++) {
         int is_condorcet = 1;
-        for (int j = 0; j < num_of_candidates; j++) {
-            if (i != j && pairwise[i][j] <= pairwise[j][i]) {
+        for(int j = 0; j < num_of_candidates; j++) {
+            if(i != j && pairwise[i][j] <= pairwise[j][i]) {
                 is_condorcet = 0;
                 break;
             }
@@ -261,9 +262,9 @@ void print_percent(float calc_percent[][4][5], int population, int state) {
         {"Low", "Middle", "High"},
         {"Young", "Adult", "Middle aged", "Old", "Elderly"}};
 
-    for (int category = 0; category < 4; category++) {
+    for(int category = 0; category < 4; category++) {
         printf("\n");
-        for (int attribute = 0; attribute < 5; attribute++) {
+        for(int attribute = 0; attribute < 5; attribute++) {
             if(calc_percent[state][category][attribute] != 0) {
                 printf("%s: %.2f%% (%d)\n", voter_attributes[category][attribute],
                                              calc_percent[state][category][attribute] / population * 100,

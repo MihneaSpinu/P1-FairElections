@@ -76,7 +76,9 @@ void custom_candidates(int *candidates, char candidate_name[][MAX_NAME_LENGTH], 
     for(*candidates = 0; *candidates < MAX_CANDIDATES; (*candidates)++) {
         printf("Choose candidate name and position on political compass: [-100,100]\n");
         scanf("%s", &name);
-        if(strcmp(name, "exit") == 0) return;
+        if(strcmp(name, "exit") == 0) {
+            return;
+        }
         strcpy(candidate_name[*candidates], name);
 
         scanf("%d %d", &social_p[*candidates], &economic_p[*candidates]);
