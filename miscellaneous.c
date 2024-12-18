@@ -6,7 +6,7 @@
 
 
 // Checks if malloc / calloc is able to allocate memory
-void check_memory_allocation(int array[]) {
+void check_memory_allocation(void *array) {
     if(array == NULL) {
         printf("Error: unable to allocate memory");
         exit(EXIT_FAILURE);

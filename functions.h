@@ -135,6 +135,6 @@ void get_ratings (voter voter_arr[], int num_of_candidates, int population);
 int variance();
 float voters_satisfaction(voter current_voter, int winner_index);
 float calc_satisfaction(int winner_index, voter voters_arr[], int population);
-void check_memory_allocation(int array[]);
+void check_memory_allocation(void *array);
 
 #endif //FUNCTIONS_H

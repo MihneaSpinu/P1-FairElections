@@ -28,13 +28,13 @@ int main() {
 
     // MALLOC ARRAYS
     candidate *candidate_arr = malloc(sizeof(candidate) * num_of_candidates);
-    check_memory_allocation((int*)candidate_arr);
+    check_memory_allocation(candidate_arr);
 
     voter *voter_arr = malloc(sizeof(voter) * POPULATION);
-    check_memory_allocation((int*)voter_arr);
+    check_memory_allocation(voter_arr);
 
     state *state_arr = malloc(sizeof(state) * STATES);
-    check_memory_allocation((int*)state_arr);
+    check_memory_allocation(state_arr);
 
     // INIT CANDIDATES
     printf("\nInitializing the candidates...\n\n");
