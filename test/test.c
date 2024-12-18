@@ -35,7 +35,22 @@ void test_1() {
     assert(are_floats_equal(voter_arr[4].distance_to[0], 91.923f));
     assert(are_floats_equal(voter_arr[4].distance_to[1], 21.213f));
     assert(are_floats_equal(voter_arr[4].distance_to[2], 21.932f));
-
+    get_ratings(voter_arr, 3, 5);
+    assert(voter_arr[0].ratings[0] == 7);
+    assert(voter_arr[0].ratings[1] == 7);
+    assert(voter_arr[0].ratings[2] == 10);
+    assert(voter_arr[1].ratings[0] == 7);
+    assert(voter_arr[1].ratings[1] == 6);
+    assert(voter_arr[1].ratings[2] == 9);
+    assert(voter_arr[2].ratings[0] == 6);
+    assert(voter_arr[2].ratings[1] == 6);
+    assert(voter_arr[2].ratings[2] == 8);
+    assert(voter_arr[3].ratings[0] == 6);
+    assert(voter_arr[3].ratings[1] == 8);
+    assert(voter_arr[3].ratings[2] == 10);
+    assert(voter_arr[4].ratings[0] == 4);
+    assert(voter_arr[4].ratings[1] == 9);
+    assert(voter_arr[4].ratings[2] == 9);
     int winner_fptp = first_past_the_post(voter_arr, 5, 0, &test_state,3);
     assert(winner_fptp == 2);
     int winner_ranked = ranked_choice_voting(5, voter_arr, candidate_arr, 0,&test_state,3);

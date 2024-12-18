@@ -13,7 +13,6 @@ void init_state(state state_arr[], int num_of_candidate) {
     }
 
     for (int i = 0; i < STATES; i++) {
-
         for(int j = 0; j < num_of_candidate; j++) {
             state_arr[i].candidate_votes_fptp[j] = 0;
             state_arr[i].candidate_votes_star[j] = 0;

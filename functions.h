@@ -5,7 +5,7 @@
 //
 // DEFINES
 #define STATES 51
-#define MAX_CANDIDATES 5
+#define MAX_CANDIDATES 8
 #define RACES 5
 #define GENDERS 2
 #define INCOME 3

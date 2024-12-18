@@ -53,6 +53,7 @@ int main() {
     // GET DISTANCE
     printf("\nCalculating voter preference...\n");
     get_distance(voter_arr, candidate_arr, POPULATION, candidates);
+    printf("Calculationg voter ratings\n");
     get_ratings(voter_arr, candidates, POPULATION);
     printf("\n");
 
